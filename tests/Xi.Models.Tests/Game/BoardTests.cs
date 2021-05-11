@@ -17,7 +17,7 @@ namespace Xi.Models.Tests.Game
     public void Cell_RedOriginAtOneOne_OutOfBoundsTests(params Compass[] compasses)
     {
       var board = new Board("9/1K7/9/9/9/9/9/9/9/9");
-      var cellRedKing = board.Find<King>(Color.Red);
+      var cellRedKing = board.FindCell<King>(Color.Red);
 
       Assert.Null(board.Cell(cellRedKing, compasses));
     }
@@ -32,7 +32,7 @@ namespace Xi.Models.Tests.Game
     public void Cell_BlackOriginAtOneOne_OutOfBoundsTests(params Compass[] compasses)
     {
       var board = new Board("9/1k7/9/9/9/9/9/9/9/9");
-      var cellBlackKing = board.Find<King>(Color.Black);
+      var cellBlackKing = board.FindCell<King>(Color.Black);
 
       Assert.Null(board.Cell(cellBlackKing, compasses));
     }
@@ -52,7 +52,7 @@ namespace Xi.Models.Tests.Game
       var board = new Board("9/1K7/9/9/9/9/9/9/9/9");
 
       // (file: 1, rank: 1)
-      var cellRedKing = board.Find<King>(Color.Red);
+      var cellRedKing = board.FindCell<King>(Color.Red);
 
       var newCell = board.Cell(cellRedKing, compasses);
 
@@ -74,7 +74,7 @@ namespace Xi.Models.Tests.Game
       var board = new Board("9/1k7/9/9/9/9/9/9/9/9");
 
       // (file: 1, rank: 1)
-      var cellBlackKing = board.Find<King>(Color.Black);
+      var cellBlackKing = board.FindCell<King>(Color.Black);
 
       var newCell = board.Cell(cellBlackKing, compasses);
 

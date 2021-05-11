@@ -71,7 +71,7 @@ namespace Xi.Models.Game
       return new Board(clonedCells);
     }
 
-    public Cell Find<TP>(Color color)
+    public Cell FindCell<TP>(Color color)
       where TP : Piece
     {
       var cell = this.cells.SelectMany(c => c).FirstOrDefault(c => c.OccupiedBy<TP>(color));
