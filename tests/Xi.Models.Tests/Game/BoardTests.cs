@@ -3,10 +3,542 @@ namespace Xi.Models.Tests.Game
   using System;
   using System.Linq;
   using NUnit.Framework;
+  using Xi.Models.Exceptions;
+  using Xi.Models.Extensions;
   using Xi.Models.Game;
 
   public class BoardTests
   {
+    [Test]
+    public void IsCheckmate_CannonTrap_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . C . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . c . . . . " +
+        "4 | . . . . c . . . . " +
+        "5 | . . . P . . . C . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . R " +
+        "8 | R . . . . . . . . " +
+        "9 | . . . A K A . . . ").ToFen());
+
+      Assert.True(board.IsCheckmate(Color.Red));
+    }
+
+    [Test]
+    public void AllValidToCells_InCheck_ReturnsThreeCell()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | R . . . . . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      Assert.AreEqual(3, board.AllValidToCells(Color.Red).Count);
+    }
+
+    [Test]
+    public void ValidToCells_InCheck_ReturnsOneCell()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | R . . . . . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var rookCell = board.FindCell<Rook>(Color.Red);
+
+      Assert.AreEqual(1, board.ValidToCells(rookCell).Count);
+    }
+
+    [Test]
+    public void ValidToCells_LockedAdviser_ReturnsNoCells()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var adviserCell = board.FindCell<Adviser>(Color.Red);
+
+      Assert.IsEmpty(board.ValidToCells(adviserCell));
+    }
+
+    [Test]
+    public void ValidToCells_FreeAdviser_ReturnsFourCells()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A K . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      var adviserCell = board.FindCell<Adviser>(Color.Red);
+
+      Assert.AreEqual(4, board.ValidToCells(adviserCell).Count);
+    }
+
+    [Test]
+    public void Move_InvalidRookMove_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | R . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var rookCell = board.FindCell<Rook>(Color.Red);
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(rookCell, board.Cell(rookCell, Compass.NE)!));
+
+      Assert.True(ex!.Message.Contains("Red Rook cannot move there"));
+    }
+
+    [Test]
+    public void Move_FromUnOccupied_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | R . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(0, 4, 1, 4));
+
+      Assert.True(ex!.Message.Contains("is not occupied"));
+    }
+
+    [Test]
+    public void Move_ToOccupiedByOwn_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | R P . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(0, 5, 1, 5));
+
+      Assert.True(ex!.Message.Contains("also occupied by"));
+    }
+
+    [Test]
+    public void Move_KingsEyeingEachOther_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var advisorCell = board.FindCell<Adviser>(Color.Red);
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(advisorCell, board.Cell(advisorCell, Compass.SW)!));
+
+      Assert.True(ex!.Message.Contains("eye each other"));
+    }
+
+    [Test]
+    public void Move_SelfCheck_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . A . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var advisorCell = board.FindCell<Adviser>(Color.Red);
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(advisorCell, board.Cell(advisorCell, Compass.SW)!));
+
+      Assert.True(ex!.Message.Contains("cannot self-check"));
+    }
+
+    [Test]
+    public void Move_StillCheck_ThrowsInvalidMoveException()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . r . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | R . . . . . . . . " +
+        "9 | . . . . K . . . . ").ToFen());
+
+      var rookCell = board.FindCell<Rook>(Color.Red);
+
+      var ex = Assert.Throws<InvalidMoveException>(() => board.Move(rookCell, board.Cell(rookCell, Compass.E)!));
+
+      Assert.True(ex!.Message.Contains("still check"));
+    }
+
+    [Test]
+    public void KingsEyeingEachOther_AreEyeing_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . k . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . K . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.KingsEyeingEachOther());
+    }
+
+    [Test]
+    public void KingsEyeingEachOther_PieceInBetween_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . k . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . P . . . . " +
+        "7 | . . . . K . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.KingsEyeingEachOther());
+    }
+
+    [Test]
+    public void KingsEyeingEachOther_OtherFile_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . k . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . K . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.KingsEyeingEachOther());
+    }
+
+    [Test]
+    public void IsCheck_PawnInFront_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . P . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_PawnFromSide_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k P . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_PawnFromBack_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . P . . . " +
+        "1 | . . . . . k . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_Cannon_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . p . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . C . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_NoJumpPieceCannon_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . C . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_Horse_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . H . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_PawnBlocksHorse_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . p . . . " +
+        "2 | . . . . . H . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_Rook_ReturnsTrue()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . R . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.True(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void IsCheck_CannonBlocksRook_ReturnsFalse()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . k . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . C . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . R . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | . . . . . . . . . ").ToFen());
+
+      Assert.False(board.IsCheck(Color.Black));
+    }
+
+    [Test]
+    public void FindOccupiedCellsBy_TwoRedRooks_ReturnsTwoCells()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . . . . . " +
+        "1 | r . . . . . . . r " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | R . . . . . . . R ").ToFen());
+
+      var attacking = board.FindOccupiedCellsBy(Color.Red);
+
+      Assert.AreEqual(2, attacking.Count);
+    }
+
+    [Test]
+    public void FindAttackingCellsBy_SharedAttackingCells_ReturnsTwentyFiveCells()
+    {
+      var board = new Board((string.Empty +
+        "  | 0 1 2 3 4 5 6 7 8 " +
+        "--+------------------- " +
+        "0 | . . . . . . . . . " +
+        "1 | . . . . . . . . . " +
+        "2 | . . . . . . . . . " +
+        "3 | . . . . . . . . . " +
+        "4 | . . . . . . . . . " +
+        "5 | . . . . . . . . . " +
+        "6 | . . . . . . . . . " +
+        "7 | . . . . . . . . . " +
+        "8 | . . . . . . . . . " +
+        "9 | R . . . . . . . R ").ToFen());
+
+      var attacking = board.FindAttackingCellsBy(Color.Red);
+
+      Assert.AreEqual(9 + 9 + 7, attacking.Count);
+    }
+
     [Test]
     [TestCase(Compass.N, Compass.N)]
     [TestCase(Compass.W, Compass.W)]
