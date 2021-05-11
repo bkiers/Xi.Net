@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Models", "src\Xi.Models\Xi.Models.csproj", "{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{15A7B67F-7F3E-4F99-B20E-645A31E2CC42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Models.Tests", "tests\Xi.Models.Tests\Xi.Models.Tests.csproj", "{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4} = {15A7B67F-7F3E-4F99-B20E-645A31E2CC42}
+	EndGlobalSection
+EndGlobal
