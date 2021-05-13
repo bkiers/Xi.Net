@@ -18,16 +18,22 @@ namespace Xi.BlazorApp.Pages
     public IState<GamesState> GamesState { get; set; } = default!;
 
     [ReducerMethod]
-    public static GamesState ReduceLoadGamesAction(GamesState state, LoadGamesAction action) =>
-      new(true, null, null);
+    public static GamesState ReduceLoadGamesAction(GamesState state, LoadGamesAction action)
+    {
+      return new(true, null, null);
+    }
 
     [ReducerMethod]
-    public static GamesState ReduceLoadGamesSuccessAction(GamesState state, LoadGamesSuccessAction action) =>
-      new(false, null, action.Games);
+    public static GamesState ReduceLoadGamesSuccessAction(GamesState state, LoadGamesSuccessAction action)
+    {
+      return new(false, null, action.Games);
+    }
 
     [ReducerMethod]
-    public static GamesState ReduceLoadGamesFailureAction(GamesState state, LoadGamesFailureAction action) =>
-      new(false, action.ErrorMessage, null);
+    public static GamesState ReduceLoadGamesFailureAction(GamesState state, LoadGamesFailureAction action)
+    {
+      return new(false, action.ErrorMessage, null);
+    }
 
     [EffectMethod]
     public static async Task HandleAsync(LoadGamesAction action, IDispatcher dispatcher)
