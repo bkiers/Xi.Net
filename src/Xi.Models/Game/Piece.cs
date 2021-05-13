@@ -21,7 +21,7 @@ namespace Xi.Models.Game
 
     public static Piece? Parse(char asciiNotation)
     {
-      var color = char.IsLower(asciiNotation) ? Game.Color.Black : Game.Color.Red;
+      var color = char.IsLower(asciiNotation) ? Color.Black : Color.Red;
 
       return asciiNotation.ToString().ToLower() switch
       {

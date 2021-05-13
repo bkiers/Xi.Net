@@ -2,7 +2,7 @@ namespace Xi.Models.Game
 {
   using System.Collections.Generic;
 
-  public class XiGame
+  public class Game
   {
     private readonly List<Board> board = new();
 

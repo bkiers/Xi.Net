@@ -7,6 +7,7 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
   using Xi.BlazorApp.Data;
+  using Xi.BlazorApp.Services;
   using Xi.Services;
 
   public class Startup
@@ -31,6 +32,7 @@ namespace Xi.BlazorApp
 
       services.AddSingleton<WeatherForecastService>();
       services.AddScoped<IGameService, GameService>();
+      services.AddScoped<StateFacade>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

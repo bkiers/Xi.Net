@@ -1,24 +1,38 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 @page "/games"
-@page "/games/{gameId}"
-@using Xi.Models.Game
 
-@if (string.IsNullOrEmpty(gameId))
+@using Xi.BlazorApp.Stores.States
+@using Xi.BlazorApp.Services
+
+@inject IState<GamesState> GamesState
+@inject StateFacade Facade
+
+@if (this.GamesState.Value.IsLoading)
 {
-  <h1>Games</h1>
-
-  <p>TODO: list all games</p>
-  <p><a href="/games/1">Game 1</a></p>
+  <span>Loading...</span>
+}
+else if (GamesState.Value.HasCurrentErrors)
+{
+    <span>Computer says no... :(</span>
+}
+else if (GamesState.Value.Games?.Any() == true)
+{
+  <span>Found @GamesState.Value.Games.Count games!</span>
 }
 else
 {
-  <h3>Game @gameId</h3>
-  <BoardComponent Board="@Board"/>
+  <span>Unknnown state, count: '@GamesState.Value.Games?.Count'</span>
 }
 
 @code {
+  protected override void OnInitialized()
+  {
+    if (GamesState.Value.Games?.Any() != true)
+    {
+      this.Facade.LoadGames();
+    }
 
-  [Parameter]
-  public string gameId { get; set; }
-
-  public Board Board { get; set; } = new();
+    base.OnInitialized();
+  }
 }
