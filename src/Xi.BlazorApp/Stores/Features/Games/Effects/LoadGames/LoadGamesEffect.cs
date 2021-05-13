@@ -7,10 +7,9 @@ namespace Xi.BlazorApp.Stores.Features.Games.Effects.LoadGames
   using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
   using Xi.Models.Game;
 
+  // TODO inject GameService or just a DB context
   public class LoadGamesEffect : Effect<LoadGamesAction>
   {
-    // TODO inject GameService or just a DB context
-
     public override async Task HandleAsync(LoadGamesAction action, IDispatcher dispatcher)
     {
       await Task.Delay(TimeSpan.FromMilliseconds(3000));

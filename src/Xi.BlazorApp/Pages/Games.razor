@@ -1,12 +1,6 @@
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent
-
 @page "/games"
 
-@using Xi.BlazorApp.Stores.States
-@using Xi.BlazorApp.Services
-
-@inject IState<GamesState> GamesState
-@inject StateFacade Facade
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @if (this.GamesState.Value.IsLoading)
 {
@@ -19,20 +13,4 @@ else if (GamesState.Value.HasCurrentErrors)
 else if (GamesState.Value.Games?.Any() == true)
 {
   <span>Found @GamesState.Value.Games.Count games!</span>
-}
-else
-{
-  <span>Unknnown state, count: '@GamesState.Value.Games?.Count'</span>
-}
-
-@code {
-  protected override void OnInitialized()
-  {
-    if (GamesState.Value.Games?.Any() != true)
-    {
-      this.Facade.LoadGames();
-    }
-
-    base.OnInitialized();
-  }
 }

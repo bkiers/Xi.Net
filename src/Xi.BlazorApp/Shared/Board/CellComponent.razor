@@ -1,21 +1,10 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 @using Xi.Models.Game
 @using Xi.Services
 @inject IGameService gameService
 
-<span class="cell-wrapper" @onclick="CellClicked">
-  <img class="cell" src="@ImageUrl" alt="" />
-  <PieceComponent Piece="@Cell.Piece"/>
+<span class="cell-wrapper" @onclick="@this.CellClicked">
+  <img class="cell" src="@this.ImageUrl" alt="" />
+  <PieceComponent Piece="@this.Cell.Piece"/>
 </span>
-
-@code {
-
-  [Parameter]
-  public Cell Cell { get; set; } = default!;
-
-  public string ImageUrl => $"/images/board/{Cell.RankIndex + 1}_{Cell.FileIndex + 1}.png";
-
-  private void CellClicked()
-  {
-    // TODO
-  }
-}

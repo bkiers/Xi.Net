@@ -1,7 +1,7 @@
-@using Xi.Models.Game
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div>
-  @foreach (var rank in Board.Cells())
+  @foreach (var rank in this.Board.Cells())
   {
     <div>
       @foreach (var cell in rank)
@@ -11,9 +11,3 @@
     </div>
   }
 </div>
-
-@code {
-
-  [Parameter]
-  public Board Board { get; set; }
-}

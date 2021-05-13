@@ -1,14 +1,8 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 @using Xi.Models.Game
 
-@if (Piece != null)
+@if (this.Piece != null)
 {
-  <img class="piece" src="@PieceUrl" alt="" />
-}
-
-@code {
-
-  [Parameter]
-  public Piece? Piece { get; set; }
-
-  public string PieceUrl => $"/images/pieces/{Piece!.AsciiNotation.ToLower()}{Piece!.Color.ToString().ToLower()[0]}.svg";
+  <img class="piece" src="@this.PieceUrl" alt="" />
 }

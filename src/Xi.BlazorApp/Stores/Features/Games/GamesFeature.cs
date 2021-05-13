@@ -9,6 +9,6 @@ namespace Xi.BlazorApp.Stores.Features.Games
   {
     public override string GetName() => "Games";
 
-    protected override GamesState GetInitialState() => new GamesState(false, null, new List<Game>());
+    protected override GamesState GetInitialState() => new(false, null, null);
   }
 }

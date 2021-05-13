@@ -6,15 +6,13 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
-  using Xi.BlazorApp.Data;
-  using Xi.BlazorApp.Services;
   using Xi.Services;
 
   public class Startup
   {
     public Startup(IConfiguration configuration)
     {
-      Configuration = configuration;
+      this.Configuration = configuration;
     }
 
     public IConfiguration Configuration { get; }
@@ -30,9 +28,7 @@ namespace Xi.BlazorApp
         .ScanAssemblies(typeof(Program).Assembly)
         .UseReduxDevTools());
 
-      services.AddSingleton<WeatherForecastService>();
       services.AddScoped<IGameService, GameService>();
-      services.AddScoped<StateFacade>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +41,7 @@ namespace Xi.BlazorApp
       else
       {
         app.UseExceptionHandler("/Error");
+
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }

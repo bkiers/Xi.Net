@@ -1,11 +1,19 @@
-namespace Xi.BlazorApp.Stores.Features.Games.Reducers
+namespace Xi.BlazorApp.Pages
 {
+  using System.Linq;
   using Fluxor;
+  using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
   using Xi.BlazorApp.Stores.States;
 
-  public class LoadGamesActionsReducer
+  public partial class Games
   {
+    [Inject]
+    public IDispatcher Dispatcher { get; set; } = default!;
+
+    [Inject]
+    public IState<GamesState> GamesState { get; set; } = default!;
+
     [ReducerMethod]
     public static GamesState ReduceLoadGamesAction(GamesState state, LoadGamesAction action) =>
       new GamesState(true, null, null);
@@ -17,5 +25,15 @@ namespace Xi.BlazorApp.Stores.Features.Games.Reducers
     [ReducerMethod]
     public static GamesState ReduceLoadGamesFailureAction(GamesState state, LoadGamesFailureAction action) =>
       new GamesState(false, action.ErrorMessage, null);
+
+    protected override void OnInitialized()
+    {
+      if (this.GamesState.Value.Games?.Any() != true)
+      {
+        this.Dispatcher.Dispatch(new LoadGamesAction());
+      }
+
+      base.OnInitialized();
+    }
   }
 }
