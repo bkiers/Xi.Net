@@ -2,6 +2,7 @@ namespace Xi.Models.Game
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.Immutable;
   using System.Linq;
   using Xi.Models.Exceptions;
   using Xi.Models.Extensions;
@@ -21,6 +22,13 @@ namespace Xi.Models.Game
     {
       this.cells = cells;
     }
+
+
+    public ImmutableList<ImmutableList<Cell>> Cells()
+    {
+      return this.cells.Select(r => r.ToImmutableList()).ToImmutableList();
+    }
+
 
     public bool KingsEyeingEachOther()
     {

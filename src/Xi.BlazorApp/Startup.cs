@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp
 {
+  using Fluxor;
   using Microsoft.AspNetCore.Builder;
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.Extensions.Configuration;
@@ -23,6 +24,11 @@ namespace Xi.BlazorApp
     {
       services.AddRazorPages();
       services.AddServerSideBlazor();
+
+      services.AddFluxor(o => o
+        .ScanAssemblies(typeof(Program).Assembly)
+        .UseReduxDevTools());
+
       services.AddSingleton<WeatherForecastService>();
       services.AddScoped<IGameService, GameService>();
     }
@@ -43,7 +49,6 @@ namespace Xi.BlazorApp
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();
-
       app.UseRouting();
 
       app.UseEndpoints(endpoints =>

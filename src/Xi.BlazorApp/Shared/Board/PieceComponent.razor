@@ -1,0 +1,14 @@
+@using Xi.Models.Game
+
+@if (Piece != null)
+{
+  <img class="piece" src="@PieceUrl" alt="" />
+}
+
+@code {
+
+  [Parameter]
+  public Piece? Piece { get; set; }
+
+  public string PieceUrl => $"/images/pieces/{Piece!.AsciiNotation.ToLower()}{Piece!.Color.ToString().ToLower()[0]}.svg";
+}

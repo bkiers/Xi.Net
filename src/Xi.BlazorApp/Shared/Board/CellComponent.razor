@@ -1,0 +1,21 @@
+@using Xi.Models.Game
+@using Xi.Services
+@inject IGameService gameService
+
+<span class="cell-wrapper" @onclick="CellClicked">
+  <img class="cell" src="@ImageUrl" alt="" />
+  <PieceComponent Piece="@Cell.Piece"/>
+</span>
+
+@code {
+
+  [Parameter]
+  public Cell Cell { get; set; } = default!;
+
+  public string ImageUrl => $"/images/board/{Cell.RankIndex + 1}_{Cell.FileIndex + 1}.png";
+
+  private void CellClicked()
+  {
+    // TODO
+  }
+}

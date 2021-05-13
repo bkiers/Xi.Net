@@ -1,0 +1,19 @@
+@using Xi.Models.Game
+
+<div>
+  @foreach (var rank in Board.Cells())
+  {
+    <div>
+      @foreach (var cell in rank)
+      {
+        <CellComponent Cell="@cell" />
+      }
+    </div>
+  }
+</div>
+
+@code {
+
+  [Parameter]
+  public Board Board { get; set; }
+}

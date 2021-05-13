@@ -1,0 +1,24 @@
+@page "/games"
+@page "/games/{gameId}"
+@using Xi.Models.Game
+
+@if (string.IsNullOrEmpty(gameId))
+{
+  <h1>Games</h1>
+
+  <p>TODO: list all games</p>
+  <p><a href="/games/1">Game 1</a></p>
+}
+else
+{
+  <h3>Game @gameId</h3>
+  <BoardComponent Board="@Board"/>
+}
+
+@code {
+
+  [Parameter]
+  public string gameId { get; set; }
+
+  public Board Board { get; set; } = new();
+}
