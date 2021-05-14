@@ -1,13 +1,12 @@
 namespace Xi.BlazorApp.Pages
 {
   using System;
-  using System.Collections.Generic;
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
   using Xi.BlazorApp.Stores.States;
-  using Xi.Models.Game;
+  using Xi.Services;
 
   public partial class Games
   {
@@ -33,23 +32,6 @@ namespace Xi.BlazorApp.Pages
     public static GamesState ReduceLoadGamesFailureAction(GamesState state, LoadGamesFailureAction action)
     {
       return new(false, action.ErrorMessage, null);
-    }
-
-    [EffectMethod]
-    public static async Task HandleAsync(LoadGamesAction action, IDispatcher dispatcher)
-    {
-      await Task.Delay(TimeSpan.FromMilliseconds(2000));
-
-      var games = new List<Game>
-      {
-        new(),
-        new(),
-        new(),
-        new(),
-        new(),
-      };
-
-      dispatcher.Dispatch(new LoadGamesSuccessAction(games));
     }
 
     protected override void OnInitialized()

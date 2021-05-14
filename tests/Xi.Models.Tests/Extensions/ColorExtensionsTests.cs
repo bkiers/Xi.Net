@@ -30,7 +30,6 @@ namespace Xi.Models.Tests.Extensions
       Assert.True(Color.Black.IsBlack());
     }
 
-
     [Test]
     public void Opposite_Red_ReturnsBlack()
     {

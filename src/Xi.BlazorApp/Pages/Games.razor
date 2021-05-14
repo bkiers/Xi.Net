@@ -10,7 +10,7 @@ else if (GamesState.Value.HasCurrentErrors)
 {
     <span>Computer says no... :(</span>
 }
-else if (GamesState.Value.Games?.Any() == true)
+else if (GamesState.Value.Games != null)
 {
   <span>Found @GamesState.Value.Games.Count games!</span>
 }

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.BlazorApp", "src\Xi.Blaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Services", "src\Xi.Services\Xi.Services.csproj", "{3A51C725-13CD-408F-A284-45FF05C5AF19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Database", "src\Xi.Database\Xi.Database.csproj", "{43699BA5-826B-4316-9717-03ACACAEA617}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43699BA5-826B-4316-9717-03ACACAEA617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43699BA5-826B-4316-9717-03ACACAEA617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43699BA5-826B-4316-9717-03ACACAEA617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43699BA5-826B-4316-9717-03ACACAEA617}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4} = {15A7B67F-7F3E-4F99-B20E-645A31E2CC42}
