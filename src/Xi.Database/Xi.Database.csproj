@@ -4,7 +4,7 @@
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>SA1633;CS1591;SA1600;SA1602</NoWarn>
+    <NoWarn>SA1633;CS1591;SA1600;SA1602;SA1200;SA1413;SA1601</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
