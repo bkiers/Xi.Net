@@ -15,5 +15,9 @@ else if(GameState.Value.Game != null)
 {
   <h1>Game @GameState.Value.Game!.Id</h1>
 
+  <PlayerComponent Player="@GameState.Value.Game!.BlackPlayer"/>
+
   <p>TODO</p>
+
+  <PlayerComponent Player="@GameState.Value.Game!.RedPlayer"/>
 }
