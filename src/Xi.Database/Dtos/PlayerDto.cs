@@ -2,6 +2,7 @@ namespace Xi.Database.Dtos
 {
   using System.ComponentModel.DataAnnotations;
   using Microsoft.EntityFrameworkCore;
+  using Xi.Models.Game;
 
   [Index(nameof(Email), IsUnique = true)]
   public class PlayerDto
@@ -23,5 +24,10 @@ namespace Xi.Database.Dtos
 
     [Required]
     public bool IsAdmin { get; set; } = false;
+
+    public Player ToPlayer()
+    {
+      return new Player(this.Id, this.Name, this.Email, this.EloRating, this.IsAdmin);
+    }
   }
 }

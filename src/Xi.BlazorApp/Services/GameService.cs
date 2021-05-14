@@ -1,4 +1,4 @@
-namespace Xi.Services
+namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using System.Linq;
@@ -17,19 +17,23 @@ namespace Xi.Services
 
     public List<Game> Games()
     {
-      return this.db.Games
+      var games = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Select(g => g.ToGame())
         .ToList();
+
+      return games;
     }
 
-    public Game Game(int gameId)
+    public Game? Game(int gameId)
     {
       // TODO: load moves
-      return this.db.Games
-        .Single(g => g.Id == gameId)
+      var game = this.db.Games
+        .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
+
+      return game;
     }
   }
 }

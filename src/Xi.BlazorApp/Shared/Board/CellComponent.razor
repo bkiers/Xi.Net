@@ -1,8 +1,6 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @using Xi.Models.Game
-@using Xi.Services
-@inject IGameService gameService
 
 <span class="cell-wrapper" @onclick="@this.CellClicked">
   <img class="cell" src="@this.ImageUrl" alt="" />

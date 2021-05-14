@@ -4,15 +4,20 @@ namespace Xi.Models.Game
 
   public class Game
   {
-    public Game(int id)
+    public Game(int id, Player redPlayer, Player blackPlayer)
     {
       this.Id = id;
+      this.RedPlayer = redPlayer;
+      this.BlackPlayer = blackPlayer;
     }
 
-    public int Id { get; set; }
+    public int Id { get; }
 
+    public Player RedPlayer { get; }
+
+    public Player BlackPlayer { get; }
+
+    // TODO
     private readonly List<Board> board = new();
-
-    // TODO: 2 players
   }
 }

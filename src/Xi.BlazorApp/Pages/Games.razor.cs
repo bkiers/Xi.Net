@@ -1,12 +1,9 @@
 namespace Xi.BlazorApp.Pages
 {
-  using System;
-  using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
   using Xi.BlazorApp.Stores.States;
-  using Xi.Services;
 
   public partial class Games
   {

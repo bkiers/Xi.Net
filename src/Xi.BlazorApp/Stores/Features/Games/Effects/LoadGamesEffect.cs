@@ -2,8 +2,8 @@ namespace Xi.BlazorApp.Stores.Features.Games.Effects
 {
   using System.Threading.Tasks;
   using Fluxor;
+  using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
-  using Xi.Services;
 
   public class LoadGamesEffect : Effect<LoadGamesAction>
   {

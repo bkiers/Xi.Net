@@ -57,9 +57,9 @@ namespace Xi.Database.Dtos
 
     public List<MoveDto> Moves { get; set; } = new();
 
-    public Game AsGame()
+    public Game ToGame()
     {
-      return new Game(this.Id);
+      return new Game(this.Id, this.RedPlayer.ToPlayer(), this.BlackPlayer.ToPlayer());
     }
   }
 }

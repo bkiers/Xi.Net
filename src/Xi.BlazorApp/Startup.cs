@@ -7,8 +7,8 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
+  using Xi.BlazorApp.Services;
   using Xi.Database;
-  using Xi.Services;
 
   public class Startup
   {

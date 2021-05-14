@@ -6,11 +6,28 @@
 {
   <span>Loading...</span>
 }
-else if (GamesState.Value.HasCurrentErrors)
+else if (this.GamesState.Value.HasCurrentErrors)
 {
-    <span>Computer says no... :(</span>
+  <span>Computer says no... :(</span>
+  <span>@this.GamesState.Value.CurrentErrorMessage</span>
 }
-else if (GamesState.Value.Games != null)
+else if (this.GamesState.Value.Games != null)
 {
-  <span>Found @GamesState.Value.Games.Count games!</span>
+  <h2>Games</h2>
+
+  <table>
+    <tr>
+      <th></th>
+      <th>Red</th>
+      <th>Black</th>
+    </tr>
+    @foreach (var game in GamesState.Value.Games)
+    {
+      <tr>
+        <td><a href="/games/@game.Id">@game.Id</a></td>
+        <td>@game.RedPlayer.Name</td>
+        <td>@game.BlackPlayer.Name</td>
+      </tr>
+    }
+  </table>
 }

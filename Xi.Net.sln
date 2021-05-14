@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Models", "src\Xi.Models\Xi.Models.csproj", "{B53D7DC9-1693-4D62-B44C-51BBADFDE9C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{15A7B67F-7F3E-4F99-B20E-645A31E2CC42}"
@@ -7,8 +8,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Models.Tests", "tests\Xi.Models.Tests\Xi.Models.Tests.csproj", "{62A24468-DC96-494B-8F7A-DB9E0FC1A9F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.BlazorApp", "src\Xi.BlazorApp\Xi.BlazorApp.csproj", "{EC9AF088-A97F-4EBB-8113-0B2EA9FC3432}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Services", "src\Xi.Services\Xi.Services.csproj", "{3A51C725-13CD-408F-A284-45FF05C5AF19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xi.Database", "src\Xi.Database\Xi.Database.csproj", "{43699BA5-826B-4316-9717-03ACACAEA617}"
 EndProject
@@ -30,10 +29,6 @@ Global
 		{EC9AF088-A97F-4EBB-8113-0B2EA9FC3432}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9AF088-A97F-4EBB-8113-0B2EA9FC3432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC9AF088-A97F-4EBB-8113-0B2EA9FC3432}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A51C725-13CD-408F-A284-45FF05C5AF19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43699BA5-826B-4316-9717-03ACACAEA617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43699BA5-826B-4316-9717-03ACACAEA617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43699BA5-826B-4316-9717-03ACACAEA617}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,4 +1,4 @@
-namespace Xi.Services
+namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using Xi.Models.Game;
@@ -7,6 +7,6 @@ namespace Xi.Services
   {
     public List<Game> Games();
 
-    public Game Game(int gameId);
+    public Game? Game(int gameId);
   }
 }

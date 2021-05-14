@@ -1,0 +1,17 @@
+@page "/games/{gameId:int}"
+
+@if (this.GameState.Value.IsLoading)
+{
+  <span>Loading...</span>
+}
+else if (this.GameState.Value.HasCurrentErrors)
+{
+  <span>Computer says no... :(</span>
+  <span>@GameState.Value.CurrentErrorMessage</span>
+}
+else
+{
+  <h1>Game @GameState.Value.Game?.Id</h1>
+
+  <p>TODO</p>
+}
