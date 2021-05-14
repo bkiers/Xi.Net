@@ -1,17 +1,19 @@
 @page "/games/{gameId:int}"
 
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 @if (this.GameState.Value.IsLoading)
 {
-  <span>Loading...</span>
+  <p>Loading...</p>
 }
 else if (this.GameState.Value.HasCurrentErrors)
 {
-  <span>Computer says no... :(</span>
-  <span>@GameState.Value.CurrentErrorMessage</span>
+  <p>Computer says no... :(</p>
+  <p>@GameState.Value.CurrentErrorMessage</p>
 }
-else
+else if(GameState.Value.Game != null)
 {
-  <h1>Game @GameState.Value.Game?.Id</h1>
+  <h1>Game @GameState.Value.Game!.Id</h1>
 
   <p>TODO</p>
 }

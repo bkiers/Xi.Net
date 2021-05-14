@@ -20,7 +20,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
 
       if (game == null)
       {
-        dispatcher.Dispatch(new LoadGameFailureAction($"Could not  find a fame with id: '{action.GameId}'"));
+        dispatcher.Dispatch(new LoadGameFailureAction($"Could not find a game with id: '{action.GameId}'"));
       }
       else
       {

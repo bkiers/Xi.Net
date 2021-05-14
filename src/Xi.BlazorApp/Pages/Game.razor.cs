@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Pages
 {
+  using System;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
@@ -38,14 +39,7 @@ namespace Xi.BlazorApp.Pages
     {
       if (this.GameState.Value.Game == null || this.GameState.Value.Game.Id != this.GameId)
       {
-        if (this.GameId.HasValue)
-        {
-          this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
-        }
-        else
-        {
-          this.Dispatcher.Dispatch(new LoadGameFailureAction("Could not find that game."));
-        }
+        this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
 
       base.OnInitialized();

@@ -4,12 +4,12 @@
 
 @if (this.GamesState.Value.IsLoading)
 {
-  <span>Loading...</span>
+  <p>Loading...</p>
 }
 else if (this.GamesState.Value.HasCurrentErrors)
 {
-  <span>Computer says no... :(</span>
-  <span>@this.GamesState.Value.CurrentErrorMessage</span>
+  <p>Computer says no... :(</p>
+  <p>@this.GamesState.Value.CurrentErrorMessage</p>
 }
 else if (this.GamesState.Value.Games != null)
 {

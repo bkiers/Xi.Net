@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Services
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace Xi.BlazorApp.Services
     {
       // TODO: load moves
       var game = this.db.Games
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
