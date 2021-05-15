@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Models
 {
+  using System;
   using Xi.Models.Game;
 
   public class GameViewModel
@@ -10,5 +11,18 @@ namespace Xi.BlazorApp.Models
     }
 
     public Game Game { get; }
+
+
+    public void Click(Cell cell)
+    {
+      var turnColor = this.Game.TurnPlayerColor();
+
+      if (!cell.OccupiedBy(turnColor))
+      {
+        throw new Exception($"It's {this.Game.TurnPlayer.Name}'s turn.");
+      }
+
+      // TODO
+    }
   }
 }

@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Pages
 {
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.States;
 
@@ -32,6 +33,12 @@ namespace Xi.BlazorApp.Pages
     public static GameState ReduceLoadGameFailureAction(GameState state, LoadGameFailureAction action)
     {
       return new(false, action.ErrorMessage, null);
+    }
+
+    [ReducerMethod]
+    public static GameState ReduceClickBoardAction(GameState state, ClickBoardAction action)
+    {
+      return new(false, null, action.GameViewModel);
     }
 
     protected override void OnInitialized()

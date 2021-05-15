@@ -6,18 +6,20 @@
 {
   <p>Loading...</p>
 }
-else if (this.GameState.Value.HasCurrentErrors)
+
+@if (this.GameState.Value.HasCurrentErrors)
 {
   <p>Computer says no... :(</p>
   <p>@GameState.Value.CurrentErrorMessage</p>
 }
-else if(GameState.Value.GameViewModel != null)
+
+@if(GameState.Value.GameViewModel != null)
 {
   <h1>Game @GameState.Value.GameViewModel.Game!.Id</h1>
 
   <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.BlackPlayer"/>
 
-  <p>TODO</p>
+  <BoardComponent Board="@GameState.Value.GameViewModel.Game.CurrentBoard()" />
 
   <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.RedPlayer"/>
 }

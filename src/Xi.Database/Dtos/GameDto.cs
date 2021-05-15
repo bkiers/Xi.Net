@@ -59,7 +59,7 @@ namespace Xi.Database.Dtos
 
     public Game ToGame()
     {
-      return new Game(this.Id, this.RedPlayer.ToPlayer(), this.BlackPlayer.ToPlayer());
+      return new Game(this.Id, this.RedPlayer.ToPlayer(), this.BlackPlayer.ToPlayer(), this.TurnPlayer.ToPlayer());
     }
   }
 }

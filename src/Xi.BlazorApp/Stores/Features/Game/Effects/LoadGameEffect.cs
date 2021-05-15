@@ -16,15 +16,15 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
 
     public override Task HandleAsync(LoadGameAction action, IDispatcher dispatcher)
     {
-      var game = this.gameService.Game(action.GameId);
+      var gameViewModel = this.gameService.Game(action.GameId);
 
-      if (game == null)
+      if (gameViewModel == null)
       {
         dispatcher.Dispatch(new LoadGameFailureAction($"Could not find a game with id: '{action.GameId}'"));
       }
       else
       {
-        dispatcher.Dispatch(new LoadGameSuccessAction(game!));
+        dispatcher.Dispatch(new LoadGameSuccessAction(gameViewModel!));
       }
 
       return Task.CompletedTask;

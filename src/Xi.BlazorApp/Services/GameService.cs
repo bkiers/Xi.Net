@@ -32,6 +32,7 @@ namespace Xi.BlazorApp.Services
       var game = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
+        .Include(g => g.TurnPlayer)
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
