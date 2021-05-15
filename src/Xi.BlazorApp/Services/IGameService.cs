@@ -1,12 +1,12 @@
 namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
-  using Xi.Models.Game;
+  using Xi.BlazorApp.Models;
 
   public interface IGameService
   {
-    public List<Game> Games();
+    public List<GameViewModel> Games();
 
-    public Game? Game(int gameId);
+    public GameViewModel? Game(int gameId);
   }
 }

@@ -1,16 +1,16 @@
 namespace Xi.BlazorApp.Stores.States
 {
   using System.Collections.Generic;
-  using Xi.Models.Game;
+  using Xi.BlazorApp.Models;
 
   public class GamesState : RootState
   {
-    public GamesState(bool isLoading, string? currentErrorMessage, List<Game>? games)
+    public GamesState(bool isLoading, string? currentErrorMessage, List<GameViewModel>? gameViewModels)
       : base(isLoading, currentErrorMessage)
     {
-      this.Games = games;
+      this.GameViewModels = gameViewModels;
     }
 
-    public List<Game>? Games { get; }
+    public List<GameViewModel>? GameViewModels { get; }
   }
 }

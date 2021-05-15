@@ -1,6 +1,5 @@
 namespace Xi.BlazorApp.Pages
 {
-  using System;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
@@ -26,7 +25,7 @@ namespace Xi.BlazorApp.Pages
     [ReducerMethod]
     public static GameState ReduceLoadGameSuccessAction(GameState state, LoadGameSuccessAction action)
     {
-      return new(false, null, action.Game);
+      return new(false, null, action.GameViewModel);
     }
 
     [ReducerMethod]
@@ -37,7 +36,7 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
-      if (this.GameState.Value.Game == null || this.GameState.Value.Game.Id != this.GameId)
+      if (this.GameState.Value.GameViewModel == null || this.GameState.Value.GameViewModel.Game.Id != this.GameId)
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }

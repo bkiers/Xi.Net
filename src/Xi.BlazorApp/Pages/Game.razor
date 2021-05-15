@@ -11,13 +11,13 @@ else if (this.GameState.Value.HasCurrentErrors)
   <p>Computer says no... :(</p>
   <p>@GameState.Value.CurrentErrorMessage</p>
 }
-else if(GameState.Value.Game != null)
+else if(GameState.Value.GameViewModel != null)
 {
-  <h1>Game @GameState.Value.Game!.Id</h1>
+  <h1>Game @GameState.Value.GameViewModel.Game!.Id</h1>
 
-  <PlayerComponent Player="@GameState.Value.Game!.BlackPlayer"/>
+  <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.BlackPlayer"/>
 
   <p>TODO</p>
 
-  <PlayerComponent Player="@GameState.Value.Game!.RedPlayer"/>
+  <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.RedPlayer"/>
 }

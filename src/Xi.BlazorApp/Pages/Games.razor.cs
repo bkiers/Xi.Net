@@ -22,7 +22,7 @@ namespace Xi.BlazorApp.Pages
     [ReducerMethod]
     public static GamesState ReduceLoadGamesSuccessAction(GamesState state, LoadGamesSuccessAction action)
     {
-      return new(false, null, action.Games);
+      return new(false, null, action.GameViewModels);
     }
 
     [ReducerMethod]
@@ -33,7 +33,7 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
-      if (this.GamesState.Value.Games == null)
+      if (this.GamesState.Value.GameViewModels == null)
       {
         this.Dispatcher.Dispatch(new LoadGamesAction());
       }

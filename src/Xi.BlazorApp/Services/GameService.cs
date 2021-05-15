@@ -1,11 +1,10 @@
 namespace Xi.BlazorApp.Services
 {
-  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Microsoft.EntityFrameworkCore;
+  using Xi.BlazorApp.Models;
   using Xi.Database;
-  using Xi.Models.Game;
 
   public class GameService : IGameService
   {
@@ -16,18 +15,18 @@ namespace Xi.BlazorApp.Services
       this.db = db;
     }
 
-    public List<Game> Games()
+    public List<GameViewModel> Games()
     {
       var games = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
-        .Select(g => g.ToGame())
+        .Select(g => new GameViewModel(g.ToGame()))
         .ToList();
 
       return games;
     }
 
-    public Game? Game(int gameId)
+    public GameViewModel? Game(int gameId)
     {
       // TODO: load moves
       var game = this.db.Games
@@ -36,7 +35,7 @@ namespace Xi.BlazorApp.Services
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
-      return game;
+      return game == null ? null : new GameViewModel(game);
     }
   }
 }
