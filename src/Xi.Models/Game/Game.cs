@@ -5,10 +5,11 @@ namespace Xi.Models.Game
 
   public class Game
   {
-    private readonly List<Board> boards = default!;
+    private readonly List<Board> boards;
 
     public Game(int id, Player redPlayer, Player blackPlayer, Player turnPlayer, List<Move> moves)
     {
+      this.boards = new List<Board>();
       this.Id = id;
       this.RedPlayer = redPlayer;
       this.BlackPlayer = blackPlayer;
