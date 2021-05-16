@@ -1,9 +1,10 @@
 namespace Xi.Database
 {
+  using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
   using Microsoft.EntityFrameworkCore;
   using Xi.Database.Dtos;
 
-  public class XiContext : DbContext
+  public class XiContext : IdentityDbContext
   {
     public XiContext(DbContextOptions<XiContext> options)
       : base(options)

@@ -1,24 +1,36 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorLayout
 
+@inject NavigationManager NavigationManager
+
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
+  <div class="sidebar">
+    <NavMenu />
+  </div>
+
+  <div class="main">
+    <div class="top-row px-4">
+      <LoginDisplay />
     </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="#">About</a>
-        </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
+    <div class="content px-4">
+      @Body
     </div>
+  </div>
 </div>
 
-@code {
-  protected override void OnInitialized()
+@code{
+  [CascadingParameter]
+  protected Task<AuthenticationState> AuthStat { get; set; } = default!;
+
+  protected override async Task OnInitializedAsync()
   {
     base.OnInitialized();
+
+    var user = (await AuthStat).User;
+
+    if(user?.Identity?.IsAuthenticated != true)
+    {
+      NavigationManager.NavigateTo("/Identity/Account/Login", true);
+    }
   }
 }

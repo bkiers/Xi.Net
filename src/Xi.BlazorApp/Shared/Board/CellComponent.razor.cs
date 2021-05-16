@@ -1,8 +1,10 @@
 namespace Xi.BlazorApp.Shared.Board
 {
   using System;
+  using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Microsoft.AspNetCore.Components.Authorization;
   using Microsoft.Extensions.Logging;
   using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
@@ -28,8 +30,15 @@ namespace Xi.BlazorApp.Shared.Board
 
     public string ImageUrl => $"/images/board/{this.Cell.RankIndex + 1}_{this.Cell.FileIndex + 1}.png";
 
-    public void CellClicked()
+    // TODO move
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+    public async Task CellClicked()
     {
+      // TODO do the below when the user actually confirms the move
+      var user = (await this.AuthState).User.Identity?.Name!;
+
       // Only dispatch an action when the cell is occupied, or the user already made a first click.
       if (this.Cell.Occupied || this.GameState.Value.GameViewModel!.FirstClick != null)
       {
