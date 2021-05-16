@@ -1,0 +1,27 @@
+namespace Xi.BlazorApp.Stores.Features.Game.Reducers
+{
+  using Fluxor;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
+  using Xi.BlazorApp.Stores.States;
+
+  public class ClickBoardReducers
+  {
+    [ReducerMethod]
+    public static GameState ReduceClickBoardAction(GameState state, ClickBoardAction action)
+    {
+      return new(false, null, action.GameViewModel);
+    }
+
+    [ReducerMethod]
+    public static GameState ReduceClickBoardValidAction(GameState state, ClickBoardValidAction action)
+    {
+      return new(false, null, action.GameViewModel);
+    }
+
+    [ReducerMethod]
+    public static GameState ReduceClickBoardInvalidAction(GameState state, ClickBoardInvalidAction action)
+    {
+      return new(false, action.ErrorMessage, action.GameViewModel);
+    }
+  }
+}

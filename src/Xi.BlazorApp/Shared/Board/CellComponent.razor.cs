@@ -14,6 +14,9 @@ namespace Xi.BlazorApp.Shared.Board
     [Parameter]
     public Cell Cell { get; set; } = default!;
 
+    [Parameter]
+    public bool ShouldHighlight { get; set; }
+
     [Inject]
     public IDispatcher Dispatcher { get; set; } = default!;
 
@@ -27,7 +30,8 @@ namespace Xi.BlazorApp.Shared.Board
 
     public void CellClicked()
     {
-      if (this.Cell.Occupied)
+      // Only dispatch an action when the cell is occupied, or the user already made a first click.
+      if (this.Cell.Occupied || this.GameState.Value.GameViewModel!.FirstClick != null)
       {
         this.Logger.LogDebug($"Clicked cell: {this.Cell}");
         this.Dispatcher.Dispatch(new ClickBoardAction(this.Cell, this.GameState.Value.GameViewModel!));

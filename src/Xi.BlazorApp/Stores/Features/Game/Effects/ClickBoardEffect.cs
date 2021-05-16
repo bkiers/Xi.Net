@@ -5,7 +5,6 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
   using Fluxor;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
 
   public class ClickBoardEffect : Effect<ClickBoardAction>
   {
@@ -24,13 +23,13 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
       {
         gameViewModel.Click(action.ClickedCell);
 
-        // TODO: other action with new viewmodel
-        dispatcher.Dispatch(new LoadGameSuccessAction(gameViewModel!));
+        dispatcher.Dispatch(new ClickBoardValidAction(action.ClickedCell, gameViewModel!));
       }
       catch (Exception e)
       {
-        // TODO: other action with old viewmodel
-        dispatcher.Dispatch(new LoadGameFailureAction(e.Message));
+        gameViewModel.UndoFirstClick();
+
+        dispatcher.Dispatch(new ClickBoardInvalidAction(action.ClickedCell, gameViewModel!, e.Message));
       }
 
       return Task.CompletedTask;

@@ -6,7 +6,9 @@
     <div>
       @foreach (var cell in rank)
       {
-        <CellComponent Cell="@cell" />
+        <CellComponent
+          Cell="@cell"
+          ShouldHighlight="@this.HighlightedCells.Contains(cell)" />
       }
     </div>
   }

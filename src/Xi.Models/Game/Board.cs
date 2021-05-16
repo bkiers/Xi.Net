@@ -23,12 +23,10 @@ namespace Xi.Models.Game
       this.cells = cells;
     }
 
-
     public ImmutableList<ImmutableList<Cell>> Cells()
     {
       return this.cells.Select(r => r.ToImmutableList()).ToImmutableList();
     }
-
 
     public bool KingsEyeingEachOther()
     {
@@ -195,6 +193,11 @@ namespace Xi.Models.Game
       }
 
       return cell;
+    }
+
+    public MoveResult Move(Move move)
+    {
+      return this.Move(move.FromCell, move.ToCell);
     }
 
     public MoveResult Move(Cell fromCell, Cell toCell)

@@ -7,19 +7,24 @@
   <p>Loading...</p>
 }
 
-@if (this.GameState.Value.HasCurrentErrors)
-{
-  <p>Computer says no... :(</p>
-  <p>@GameState.Value.CurrentErrorMessage</p>
-}
-
 @if(GameState.Value.GameViewModel != null)
 {
-  <h1>Game @GameState.Value.GameViewModel.Game!.Id</h1>
+  var game = GameState.Value.GameViewModel.Game!;
+
+  <h3>Game @game.Id</h3>
 
   <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.BlackPlayer"/>
 
-  <BoardComponent Board="@GameState.Value.GameViewModel.Game.CurrentBoard()" />
+  <BoardComponent
+    Board="@GameState.Value.GameViewModel.Game.CurrentBoard()"
+    HighlightedCells="@GameState.Value.GameViewModel.HighlightedCells()" />
 
   <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.RedPlayer"/>
 }
+
+@if (this.GameState.Value.HasErrors)
+{
+  <p>Computer says no... :(</p>
+  <p>@GameState.Value.ErrorMessage</p>
+}
+

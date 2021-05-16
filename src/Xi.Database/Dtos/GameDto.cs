@@ -3,6 +3,7 @@ namespace Xi.Database.Dtos
   using System;
   using System.Collections.Generic;
   using System.ComponentModel.DataAnnotations;
+  using System.Linq;
   using Microsoft.EntityFrameworkCore;
   using Xi.Models.Game;
 
@@ -59,7 +60,12 @@ namespace Xi.Database.Dtos
 
     public Game ToGame()
     {
-      return new Game(this.Id, this.RedPlayer.ToPlayer(), this.BlackPlayer.ToPlayer(), this.TurnPlayer.ToPlayer());
+      return new(
+        this.Id,
+        this.RedPlayer.ToPlayer(),
+        this.BlackPlayer.ToPlayer(),
+        this.TurnPlayer.ToPlayer(),
+        this.Moves.Select(m => new Move(new Cell(m.FromFileIndex, m.FromRankIndex), new Cell(m.ToFileIndex, m.ToRankIndex))).ToList());
     }
   }
 }

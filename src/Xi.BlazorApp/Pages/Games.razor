@@ -6,10 +6,10 @@
 {
   <p>Loading...</p>
 }
-else if (this.GamesState.Value.HasCurrentErrors)
+else if (this.GamesState.Value.HasErrors)
 {
   <p>Computer says no... :(</p>
-  <p>@this.GamesState.Value.CurrentErrorMessage</p>
+  <p>@this.GamesState.Value.ErrorMessage</p>
 }
 else if (this.GamesState.Value.GameViewModels != null)
 {

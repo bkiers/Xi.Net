@@ -28,11 +28,11 @@ namespace Xi.BlazorApp.Services
 
     public GameViewModel? Game(int gameId)
     {
-      // TODO: load moves
       var game = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.TurnPlayer)
+        .Include(g => g.Moves)
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 

@@ -17,30 +17,6 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     public IState<GameState> GameState { get; set; } = default!;
 
-    [ReducerMethod]
-    public static GameState ReduceLoadGameAction(GameState state, LoadGameAction action)
-    {
-      return new(true, null, null);
-    }
-
-    [ReducerMethod]
-    public static GameState ReduceLoadGameSuccessAction(GameState state, LoadGameSuccessAction action)
-    {
-      return new(false, null, action.GameViewModel);
-    }
-
-    [ReducerMethod]
-    public static GameState ReduceLoadGameFailureAction(GameState state, LoadGameFailureAction action)
-    {
-      return new(false, action.ErrorMessage, null);
-    }
-
-    [ReducerMethod]
-    public static GameState ReduceClickBoardAction(GameState state, ClickBoardAction action)
-    {
-      return new(false, null, action.GameViewModel);
-    }
-
     protected override void OnInitialized()
     {
       if (this.GameState.Value.GameViewModel == null || this.GameState.Value.GameViewModel.Game.Id != this.GameId)
