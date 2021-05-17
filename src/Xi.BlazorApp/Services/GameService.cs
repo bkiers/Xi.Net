@@ -5,6 +5,7 @@ namespace Xi.BlazorApp.Services
   using Microsoft.EntityFrameworkCore;
   using Xi.BlazorApp.Models;
   using Xi.Database;
+  using Xi.Database.Dtos;
 
   public class GameService : IGameService
   {
@@ -37,6 +38,22 @@ namespace Xi.BlazorApp.Services
         .ToGame();
 
       return game == null ? null : new GameViewModel(game);
+    }
+
+    public bool NewGame(int initiatedPlayerId, int invitedPlayerId, int redPlayerId, int blackPlayerId, int secondsPerMove)
+    {
+      var game = new GameDto
+      {
+        InitiatedPlayerId = initiatedPlayerId,
+        InvitedPlayerId = invitedPlayerId,
+        RedPlayerId = redPlayerId,
+        BlackPlayerId = blackPlayerId,
+        SecondsPerMove = secondsPerMove,
+      };
+
+      this.db.Games.Add(game);
+
+      return this.db.SaveChanges() == 1;
     }
   }
 }

@@ -9,7 +9,7 @@
 
   <div class="main">
     <div class="top-row px-4">
-      <LoginDisplay />
+      TODO
     </div>
 
     <div class="content px-4">
@@ -17,20 +17,3 @@
     </div>
   </div>
 </div>
-
-@code{
-  [CascadingParameter]
-  protected Task<AuthenticationState> AuthStat { get; set; } = default!;
-
-  protected override async Task OnInitializedAsync()
-  {
-    base.OnInitialized();
-
-    var user = (await AuthStat).User;
-
-    if(user?.Identity?.IsAuthenticated != true)
-    {
-      NavigationManager.NavigateTo("/Identity/Account/Login", true);
-    }
-  }
-}
