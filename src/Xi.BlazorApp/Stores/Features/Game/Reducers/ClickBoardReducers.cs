@@ -7,19 +7,19 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
   public class ClickBoardReducers
   {
     [ReducerMethod]
-    public static GameState ReduceClickBoardAction(GameState state, ClickBoardAction action)
+    public static GameState Reduce(GameState state, ClickBoardAction action)
     {
       return new(false, null, action.GameViewModel);
     }
 
     [ReducerMethod]
-    public static GameState ReduceClickBoardValidAction(GameState state, ClickBoardValidAction action)
+    public static GameState Reduce(GameState state, ClickBoardValidAction action)
     {
       return new(false, null, action.GameViewModel);
     }
 
     [ReducerMethod]
-    public static GameState ReduceClickBoardInvalidAction(GameState state, ClickBoardInvalidAction action)
+    public static GameState Reduce(GameState state, ClickBoardInvalidAction action)
     {
       return new(false, action.ErrorMessage, action.GameViewModel);
     }

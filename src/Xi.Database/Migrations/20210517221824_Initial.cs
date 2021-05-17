@@ -16,7 +16,6 @@ namespace Xi.Database.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
                     EloRating = table.Column<int>(type: "integer", nullable: false),
                     IsAdmin = table.Column<bool>(type: "boolean", nullable: false)
                 },

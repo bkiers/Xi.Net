@@ -7,19 +7,19 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
   public class LoadGameReducers
   {
     [ReducerMethod]
-    public static GameState ReduceLoadGameAction(GameState state, LoadGameAction action)
+    public static GameState Reduce(GameState state, LoadGameAction action)
     {
       return new(true, null, null);
     }
 
     [ReducerMethod]
-    public static GameState ReduceLoadGameSuccessAction(GameState state, LoadGameSuccessAction action)
+    public static GameState Reduce(GameState state, LoadGameSuccessAction action)
     {
       return new(false, null, action.GameViewModel);
     }
 
     [ReducerMethod]
-    public static GameState ReduceLoadGameFailureAction(GameState state, LoadGameFailureAction action)
+    public static GameState Reduce(GameState state, LoadGameFailureAction action)
     {
       return new(false, action.ErrorMessage, null);
     }

@@ -1,9 +1,7 @@
 namespace Xi.BlazorApp.Stores.Features.Games
 {
-  using System.Collections.Generic;
   using Fluxor;
   using Xi.BlazorApp.Stores.States;
-  using Xi.Models.Game;
 
   public class GamesFeature : Feature<GamesState>
   {

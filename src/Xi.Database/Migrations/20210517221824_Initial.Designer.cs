@@ -10,7 +10,7 @@ using Xi.Database;
 namespace Xi.Database.Migrations
 {
     [DbContext(typeof(XiContext))]
-    [Migration("20210514091204_Initial")]
+    [Migration("20210517221824_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,10 +127,6 @@ namespace Xi.Database.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
 

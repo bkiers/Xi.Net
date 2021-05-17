@@ -17,9 +17,6 @@ namespace Xi.Database.Dtos
     public string Email { get; set; } = default!;
 
     [Required]
-    public string PasswordHash { get; set; } = default!;
-
-    [Required]
     public int EloRating { get; set; } = 1000;
 
     [Required]
