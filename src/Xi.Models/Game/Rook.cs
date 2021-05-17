@@ -27,7 +27,6 @@ namespace Xi.Models.Game
       return cells.Where(c => c != null && !c.OccupiedBy(turnColor)).ToList()!;
     }
 
-
     private static void Fill(List<Cell?> cells, Cell current, Board board, Compass compass, int maxSteps)
     {
       for (var i = 1; i <= maxSteps; i++)

@@ -139,7 +139,6 @@ namespace Xi.Models.Game
       return attacking;
     }
 
-
     public ISet<Cell> AllValidToCells(Color color)
     {
       var validCells = new HashSet<Cell>();
@@ -180,7 +179,6 @@ namespace Xi.Models.Game
 
       return validCells;
     }
-
 
     public Cell FindCell<TP>(Color color)
       where TP : Piece

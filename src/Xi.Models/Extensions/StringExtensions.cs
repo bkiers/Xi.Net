@@ -29,7 +29,6 @@ namespace Xi.Models.Extensions
         => Regex.Replace(current, replacement[0], replacement[1]));
     }
 
-
     public static List<List<Cell>> ParseFen(this string value)
     {
       var cellRows = new List<List<Cell>>();

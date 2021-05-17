@@ -17,7 +17,7 @@ namespace Xi.Models.Game
 
     public string Email { get; }
 
-    public int EloRating{ get; }
+    public int EloRating { get; }
 
     public bool IsAdmin { get; }
   }
