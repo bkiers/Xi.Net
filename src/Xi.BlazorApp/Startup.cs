@@ -109,6 +109,7 @@ namespace Xi.BlazorApp
 
       services.AddScoped<IGameService, GameService>();
       services.AddScoped<IPlayerService, PlayerService>();
+      services.AddScoped<Current>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

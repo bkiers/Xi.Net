@@ -4,9 +4,9 @@ namespace Xi.BlazorApp.Models
   using System.Collections.Generic;
   using Xi.Models.Game;
 
-  public class GameViewModel
+  public class GameModel
   {
-    public GameViewModel(Game game)
+    public GameModel(Game game)
     {
       this.Game = game;
       this.FirstClick = null;

@@ -17,7 +17,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
 
     public override Task HandleAsync(ClickBoardAction action, IDispatcher dispatcher)
     {
-      var gameViewModel = action.GameViewModel;
+      var gameViewModel = action.GameModel;
 
       try
       {

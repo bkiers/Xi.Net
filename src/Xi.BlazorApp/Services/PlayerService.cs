@@ -1,13 +1,9 @@
 namespace Xi.BlazorApp.Services
 {
-  using System;
   using System.Collections.Generic;
   using System.Linq;
-  using System.Threading.Tasks;
-  using Microsoft.AspNetCore.Components.Authorization;
   using Microsoft.Extensions.Options;
   using Xi.BlazorApp.Config;
-  using Xi.BlazorApp.Extensions;
   using Xi.Database;
   using Xi.Database.Dtos;
   using Xi.Models.Game;
@@ -43,7 +39,6 @@ namespace Xi.BlazorApp.Services
         .FirstOrDefault(p => p.Email == email)?
         .ToPlayer();
     }
-
 
     public Player FindByEmailOrCreate(string email, string name)
     {

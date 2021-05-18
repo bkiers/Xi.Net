@@ -1,5 +1,6 @@
 namespace Xi.Database.Dtos
 {
+  using System;
   using System.ComponentModel.DataAnnotations;
   using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,9 @@ namespace Xi.Database.Dtos
 
     [Required]
     public int GameId { get; set; }
+
+    [Required]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public GameDto Game { get; set; } = default!;
   }

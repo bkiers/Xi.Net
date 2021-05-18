@@ -6,10 +6,10 @@ namespace Xi.BlazorApp.Services
 
   public interface IGameService
   {
-    public List<GameViewModel> Games();
+    public List<GameModel> Games();
 
-    public GameViewModel? Game(int gameId);
+    public GameModel? Game(int gameId);
 
-    GameViewModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
+    GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
   }
 }

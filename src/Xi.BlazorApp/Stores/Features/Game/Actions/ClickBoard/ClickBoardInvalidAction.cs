@@ -5,16 +5,16 @@ namespace Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard
 
   public class ClickBoardInvalidAction
   {
-    public ClickBoardInvalidAction(Cell clickedCell, GameViewModel gameViewModel, string errorMessage)
+    public ClickBoardInvalidAction(Cell clickedCell, GameModel gameModel, string errorMessage)
     {
       this.ClickedCell = clickedCell;
-      this.GameViewModel = gameViewModel;
+      this.GameModel = gameModel;
       this.ErrorMessage = errorMessage;
     }
 
     public Cell ClickedCell { get; }
 
-    public GameViewModel GameViewModel { get; }
+    public GameModel GameModel { get; }
 
     public string ErrorMessage { get; }
   }

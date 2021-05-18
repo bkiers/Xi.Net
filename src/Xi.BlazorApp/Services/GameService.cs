@@ -17,18 +17,18 @@ namespace Xi.BlazorApp.Services
       this.db = db;
     }
 
-    public List<GameViewModel> Games()
+    public List<GameModel> Games()
     {
       var games = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
-        .Select(g => new GameViewModel(g.ToGame()))
+        .Select(g => new GameModel(g.ToGame()))
         .ToList();
 
       return games;
     }
 
-    public GameViewModel? Game(int gameId)
+    public GameModel? Game(int gameId)
     {
       var game = this.db.Games
         .Include(g => g.RedPlayer)
@@ -38,11 +38,10 @@ namespace Xi.BlazorApp.Services
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
-      return game == null ? null : new GameViewModel(game);
+      return game == null ? null : new GameModel(game);
     }
 
-
-    public GameViewModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
+    public GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
     {
       var game = new GameDto
       {

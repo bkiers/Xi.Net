@@ -1,14 +1,9 @@
 @page "/games/new"
 @attribute [Authorize]
 
-@using Xi.BlazorApp.Models
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@if (this.LoggedInPlayerState.Value.Player == null)
-{
-  <span>Loading...</span>
-}
-else if (this.NewGameState.Value.GameViewModel != null)
+@if (this.NewGameState.Value.GameViewModel != null)
 {
   <span>Sucess!</span>
 }
@@ -31,7 +26,7 @@ else
     <div class="form-group">
       <label for="OpponentPlayerId">Against opponent</label>
       <InputSelect class="form-control" id="OpponentPlayerId" @bind-Value="@NewGameModel.OpponentPlayerId">
-        @foreach (var player in PlayerService.AllPlayersExcept(this.LoggedInPlayerState.PlayerId()))
+        @foreach (var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPLayerId()))
         {
           <option value="@player.Id">@player.Name</option>
         }

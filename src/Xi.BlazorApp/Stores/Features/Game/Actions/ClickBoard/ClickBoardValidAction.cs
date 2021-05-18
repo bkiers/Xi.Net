@@ -5,14 +5,14 @@ namespace Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard
 
   public class ClickBoardValidAction
   {
-    public ClickBoardValidAction(Cell clickedCell, GameViewModel gameViewModel)
+    public ClickBoardValidAction(Cell clickedCell, GameModel gameModel)
     {
       this.ClickedCell = clickedCell;
-      this.GameViewModel = gameViewModel;
+      this.GameModel = gameModel;
     }
 
     public Cell ClickedCell { get; }
 
-    public GameViewModel GameViewModel { get; }
+    public GameModel GameModel { get; }
   }
 }
