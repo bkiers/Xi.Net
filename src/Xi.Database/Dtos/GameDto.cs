@@ -65,7 +65,11 @@ namespace Xi.Database.Dtos
         this.RedPlayer.ToPlayer(),
         this.BlackPlayer.ToPlayer(),
         this.TurnPlayer.ToPlayer(),
-        this.Moves.Select(m => new Move(new Cell(m.FromFileIndex, m.FromRankIndex), new Cell(m.ToFileIndex, m.ToRankIndex))).ToList());
+        this.Moves.Select(m => new Move(
+          new Cell(m.FromFileIndex, m.FromRankIndex),
+          new Cell(m.ToFileIndex, m.ToRankIndex),
+          m.CreatedAt))
+          .ToList());
     }
   }
 }

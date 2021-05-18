@@ -14,7 +14,7 @@ namespace Xi.Models.Game
       this.RedPlayer = redPlayer;
       this.BlackPlayer = blackPlayer;
       this.TurnPlayer = turnPlayer;
-      this.Moves = moves;
+      this.Moves = moves.OrderBy(m => m.CreatedAt).ToList();
 
       this.ReplayMoves();
     }

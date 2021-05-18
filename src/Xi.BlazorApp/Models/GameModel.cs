@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Models
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using Xi.Models.Game;
 
   public class GameModel
@@ -14,7 +15,7 @@ namespace Xi.BlazorApp.Models
 
     public Game Game { get; }
 
-    public Cell? FirstClick { get; protected set; }
+    public Cell? FirstClick { get; private set; }
 
     public void Click(Cell cell)
     {
@@ -51,6 +52,14 @@ namespace Xi.BlazorApp.Models
 
       if (this.FirstClick == null)
       {
+        if (this.Game.Moves.Any())
+        {
+          var lastMove = this.Game.Moves.Last();
+
+          set.Add(lastMove.FromCell);
+          set.Add(lastMove.ToCell);
+        }
+
         return set;
       }
 
