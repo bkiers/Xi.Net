@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using Xi.BlazorApp.Models;
+  using Xi.Models.Game;
 
   public interface IGameService
   {
@@ -9,11 +10,6 @@ namespace Xi.BlazorApp.Services
 
     public GameViewModel? Game(int gameId);
 
-    public bool NewGame(
-      int initiatedPlayerId,
-      int invitedPlayerId,
-      int redPlayerId,
-      int blackPlayerId,
-      int secondsPerMove);
+    GameViewModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
   }
 }

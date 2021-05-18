@@ -12,6 +12,6 @@ namespace Xi.BlazorApp.Services
 
     public Player? FindByEmail(string email);
 
-    public Task<Player> LoggedInUserAsync();
+    public Player FindByEmailOrCreate(string email, string name);
   }
 }

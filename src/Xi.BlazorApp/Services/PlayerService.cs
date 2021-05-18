@@ -16,13 +16,11 @@ namespace Xi.BlazorApp.Services
   {
     private readonly XiContext db;
     private readonly XiConfig config;
-    private readonly AuthenticationStateProvider authenticationStateProvider;
 
-    public PlayerService(XiContext db, IOptions<XiConfig> options, AuthenticationStateProvider authenticationStateProvider)
+    public PlayerService(XiContext db, IOptions<XiConfig> options)
     {
       this.db = db;
       this.config = options.Value;
-      this.authenticationStateProvider = authenticationStateProvider;
     }
 
     public List<Player> AllPlayers()
@@ -42,20 +40,16 @@ namespace Xi.BlazorApp.Services
     public Player? FindByEmail(string email)
     {
       return this.db.Players
-        .FirstOrDefault(p => p.Email.Equals(email, StringComparison.OrdinalIgnoreCase))?
+        .FirstOrDefault(p => p.Email == email)?
         .ToPlayer();
     }
 
-    public async Task<Player> LoggedInUserAsync()
+
+    public Player FindByEmailOrCreate(string email, string name)
     {
-      var state = await this.authenticationStateProvider.GetAuthenticationStateAsync();
+      var player = this.FindByEmail(email);
 
-      var name = state.Get("name");
-      var email = state.Get("emailaddress", false);
-
-      var existingPlayer = this.FindByEmail(email);
-
-      if (existingPlayer == null)
+      if (player == null)
       {
         var newPlayer = new PlayerDto
         {
@@ -64,12 +58,12 @@ namespace Xi.BlazorApp.Services
         };
 
         this.db.Players.Add(newPlayer);
-        await this.db.SaveChangesAsync();
+        this.db.SaveChanges();
 
-        existingPlayer = newPlayer.ToPlayer();
+        player = newPlayer.ToPlayer();
       }
 
-      return existingPlayer;
+      return player;
     }
   }
 }
