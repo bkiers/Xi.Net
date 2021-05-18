@@ -8,13 +8,23 @@ namespace Xi.Models.Game
     {
       this.FromCell = fromCell;
       this.ToCell = toCell;
-      this.CreatedAt = createdAt ?? DateTime.UtcNow;
+      this.CreatedAt = createdAt;
     }
 
     public Cell FromCell { get; }
 
     public Cell ToCell { get; }
 
-    public DateTime CreatedAt { get; }
+    public DateTime? CreatedAt { get; }
+
+    public string DisplayFor(Color color)
+    {
+      var formerRank = color == Color.Black ? this.FromCell.RankIndex + 1 : 10 - this.FromCell.RankIndex;
+      var formerFile = color == Color.Black ? this.FromCell.FileIndex + 1 : 9 - this.FromCell.FileIndex;
+      var newRank = color == Color.Black ? this.ToCell.RankIndex + 1 : 10 - this.ToCell.RankIndex;
+      var newFile = color == Color.Black ? this.ToCell.FileIndex + 1 : 9 - this.ToCell.FileIndex;
+
+      return $"({formerRank}{formerFile})-{newRank}{newFile}";
+    }
   }
 }

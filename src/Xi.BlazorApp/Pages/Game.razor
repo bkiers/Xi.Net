@@ -8,19 +8,27 @@
   <p>Loading...</p>
 }
 
-@if(GameState.Value.GameViewModel != null)
+@if(GameState.Value.GameModel != null)
 {
-  var game = GameState.Value.GameViewModel.Game!;
+  var model = this.GameState.Value.GameModel!;
+  var game = model.Game!;
 
-  <h3>Game @game.Id</h3>
+  <div class="container">
+    <div class="left-element">
+      <h3>Game @game.Id</h3>
 
-  <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.BlackPlayer"/>
+        <PlayerComponent Player="@game.BlackPlayer"/>
 
-  <BoardComponent
-    Board="@GameState.Value.GameViewModel.Game.CurrentBoard()"
-    HighlightedCells="@GameState.Value.GameViewModel.HighlightedCells()" />
+        <BoardComponent
+          Board="@model.CurrentBoard()"
+          HighlightedCells="@model.HighlightedCells()" />
 
-  <PlayerComponent Player="@GameState.Value.GameViewModel.Game!.RedPlayer"/>
+        <PlayerComponent Player="@game.RedPlayer"/>
+    </div>
+    <div class="right-element">
+      <MovesComponent GameModel="@model" />
+    </div>
+  </div>
 }
 
 @if (this.GameState.Value.HasErrors)

@@ -1,0 +1,39 @@
+@using System.Drawing
+
+<div>
+  <table class="table-condensed table-borderless">
+    <tbody>
+    <tr>
+      <td></td>
+      <td><i @onclick="@First" class="fas fa-angle-double-left"></i></td>
+      <td><i @onclick="@Previous" class="fas fa-angle-left"></i></td>
+      <td><i @onclick="@Next" class="fas fa-angle-right"></i></td>
+      <td><i @onclick="@Last" class="fas fa-angle-double-right"></i></td>
+      <i class=""></i>
+    </tr>
+    </tbody>
+  </table>
+  <table class="table-condensed table-borderless">
+    <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">red</th>
+      <th scope="col">black</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for ( int i = 0, j = 1; i < this.GameModel.Game.Moves.Count; i += 2, j++ )
+    {
+      <tr>
+        <td>@j</td>
+        <td class="@(i == this.GameModel.CurrentMoveIndex ? "selected" : "")">
+          @this.GameModel.Game.Moves[i].DisplayFor(Xi.Models.Game.Color.Red)
+        </td>
+        <td class="@(i + 1 == this.GameModel.CurrentMoveIndex ? "selected" : "")">
+          @(( i + 1 ) < this.GameModel.Game.Moves.Count ? this.GameModel.Game.Moves[i + 1].DisplayFor(Xi.Models.Game.Color.Black) : "")
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>

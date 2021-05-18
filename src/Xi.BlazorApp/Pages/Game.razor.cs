@@ -19,7 +19,7 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
-      if (this.GameState.Value.GameViewModel == null || this.GameState.Value.GameViewModel.Game.Id != this.GameId)
+      if (this.GameState.Value.GameModel == null || this.GameState.Value.GameModel.Game.Id != this.GameId)
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }

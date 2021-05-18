@@ -29,9 +29,9 @@ namespace Xi.Models.Game
 
     public List<Move> Moves { get; }
 
-    public Board CurrentBoard()
+    public Board Board(int boardIndex)
     {
-      return this.boards.Last();
+      return this.boards[boardIndex];
     }
 
     public Color TurnPlayerColor()
@@ -43,7 +43,7 @@ namespace Xi.Models.Game
 
     public void Move(Move move, bool appendToMoves = true)
     {
-      var moveResult = this.CurrentBoard().Move(move);
+      var moveResult = this.boards.Last().Move(move);
 
       if (appendToMoves)
       {
@@ -56,7 +56,7 @@ namespace Xi.Models.Game
 
     public ISet<Cell> ValidToCells(Cell fromCell)
     {
-      return this.CurrentBoard().ValidToCells(fromCell);
+      return this.boards.Last().ValidToCells(fromCell);
     }
 
     private void ReplayMoves()

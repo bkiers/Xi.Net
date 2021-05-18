@@ -4,12 +4,12 @@ namespace Xi.BlazorApp.Stores.States
 
   public class GameState : RootState
   {
-    public GameState(bool isLoading, string? errorMessage, GameModel? gameViewModel)
+    public GameState(bool isLoading, string? errorMessage, GameModel? gameModel)
       : base(isLoading, errorMessage)
     {
-      this.GameViewModel = gameViewModel;
+      this.GameModel = gameModel;
     }
 
-    public GameModel? GameViewModel { get; }
+    public GameModel? GameModel { get; }
   }
 }

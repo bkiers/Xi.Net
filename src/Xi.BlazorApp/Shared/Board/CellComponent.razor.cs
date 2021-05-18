@@ -33,10 +33,10 @@ namespace Xi.BlazorApp.Shared.Board
     public void CellClicked()
     {
       // Only dispatch an action when the cell is occupied, or the user already made a first click.
-      if (this.Cell.Occupied || this.GameState.Value.GameViewModel!.FirstClick != null)
+      if (this.Cell.Occupied || this.GameState.Value.GameModel!.FirstClick != null)
       {
         this.Logger.LogDebug($"Clicked cell: {this.Cell}");
-        this.Dispatcher.Dispatch(new ClickBoardAction(this.Cell, this.GameState.Value.GameViewModel!));
+        this.Dispatcher.Dispatch(new ClickBoardAction(this.Cell, this.GameState.Value.GameModel!));
       }
     }
 

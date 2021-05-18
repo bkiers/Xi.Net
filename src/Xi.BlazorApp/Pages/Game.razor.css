@@ -1,0 +1,17 @@
+.container {
+  position: fixed;
+  left: 270px;
+  padding: 0;
+  margin: 0;
+}
+
+.left-element {
+  display: inline-block;
+  float: left;
+}
+
+.right-element {
+  display: inline-block;
+  float: left;
+  padding-left: 20px;
+}
