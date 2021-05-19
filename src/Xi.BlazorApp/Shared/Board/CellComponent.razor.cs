@@ -19,6 +19,9 @@ namespace Xi.BlazorApp.Shared.Board
     [Parameter]
     public bool ShouldHighlight { get; set; }
 
+    [Parameter]
+    public bool FlipBoard { get; set; }
+
     [Inject]
     public IDispatcher Dispatcher { get; set; } = default!;
 
@@ -28,7 +31,9 @@ namespace Xi.BlazorApp.Shared.Board
     [Inject]
     public ILogger<CellComponent> Logger { get; set; } = default!;
 
-    public string ImageUrl => $"/images/board/{this.Cell.RankIndex + 1}_{this.Cell.FileIndex + 1}.png";
+    public string ImageUrl => this.FlipBoard
+      ? $"/images/board/{10 - this.Cell.RankIndex}_{this.Cell.FileIndex + 1}.png"
+      : $"/images/board/{this.Cell.RankIndex + 1}_{this.Cell.FileIndex + 1}.png";
 
     public void CellClicked()
     {
@@ -38,11 +43,6 @@ namespace Xi.BlazorApp.Shared.Board
         this.Logger.LogDebug($"Clicked cell: {this.Cell}");
         this.Dispatcher.Dispatch(new ClickBoardAction(this.Cell, this.GameState.Value.GameModel!));
       }
-    }
-
-    protected override void OnInitialized()
-    {
-      base.OnInitialized();
     }
   }
 }

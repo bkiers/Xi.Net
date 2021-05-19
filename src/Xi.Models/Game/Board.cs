@@ -23,9 +23,11 @@ namespace Xi.Models.Game
       this.cells = cells;
     }
 
-    public ImmutableList<ImmutableList<Cell>> Cells()
+    public ImmutableList<ImmutableList<Cell>> Cells(bool flipBoard = false)
     {
-      return this.cells.Select(r => r.ToImmutableList()).ToImmutableList();
+      var rows = this.cells.Select(r => r.ToImmutableList()).ToImmutableList();
+
+      return flipBoard ? rows.Reverse() : rows;
     }
 
     public bool KingsEyeingEachOther()

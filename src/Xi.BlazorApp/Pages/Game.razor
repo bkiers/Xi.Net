@@ -17,13 +17,14 @@
     <div class="left-element">
       <h3>Game @game.Id</h3>
 
-        <PlayerComponent Player="@game.BlackPlayer"/>
+        <PlayerComponent Player="@(this.FlipBoard() ? game.RedPlayer : game.BlackPlayer)"/>
 
         <BoardComponent
           Board="@model.CurrentBoard()"
-          HighlightedCells="@model.HighlightedCells()" />
+          HighlightedCells="@model.HighlightedCells()"
+          FlipBoard="@this.FlipBoard()" />
 
-        <PlayerComponent Player="@game.RedPlayer"/>
+        <PlayerComponent Player="@(this.FlipBoard() ? game.BlackPlayer : game.RedPlayer)"/>
     </div>
     <div class="right-element">
       <MovesComponent GameModel="@model" />

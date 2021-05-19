@@ -2,9 +2,11 @@ namespace Xi.BlazorApp.Pages
 {
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.States;
+  using Xi.Models.Game;
 
   public partial class Game
   {
@@ -17,6 +19,9 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     public IState<GameState> GameState { get; set; } = default!;
 
+    [Inject]
+    public Current Current { get; set; } = default!;
+
     protected override void OnInitialized()
     {
       if (this.GameState.Value.GameModel == null || this.GameState.Value.GameModel.Game.Id != this.GameId)
@@ -25,6 +30,18 @@ namespace Xi.BlazorApp.Pages
       }
 
       base.OnInitialized();
+    }
+
+    private bool FlipBoard()
+    {
+      return this.LoggedInPlayerColor() == Color.Black;
+    }
+
+    private Color LoggedInPlayerColor()
+    {
+      return this.Current.LoggedInPLayerId() == this.GameState.Value.GameModel?.Game.BlackPlayer.Id
+        ? Color.Black
+        : Color.Red;
     }
   }
 }

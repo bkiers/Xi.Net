@@ -1,14 +1,15 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div>
-  @foreach (var rank in this.Board.Cells())
+  @foreach (var rank in this.Board.Cells(this.FlipBoard))
   {
     <div>
       @foreach (var cell in rank)
       {
         <CellComponent
           Cell="@cell"
-          ShouldHighlight="@this.HighlightedCells.Contains(cell)" />
+          ShouldHighlight="@this.HighlightedCells.Contains(cell)"
+          FlipBoard="@this.FlipBoard" />
       }
     </div>
   }
