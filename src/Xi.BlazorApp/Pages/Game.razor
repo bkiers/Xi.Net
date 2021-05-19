@@ -10,12 +10,31 @@
 
 @if(GameState.Value.GameModel != null)
 {
-  var model = this.GameState.Value.GameModel!;
+  var model = GameState.Value.GameModel;
   var game = model.Game!;
 
-  <div class="container">
-    <div class="left-element">
-      <h3>Game @game.Id</h3>
+  if (!game.Accepted)
+  {
+    <h3>@game.RedPlayer.Name (red) - @game.BlackPlayer.Name (black)</h3>
+
+    if (this.Current.LoggedInPLayerId() == game.InitiatedPlayer.Id)
+    {
+      <p>The game needs to be accepted by @(game.InvitedPlayer.Name).</p>
+    }
+    else
+    {
+      <p>Accept this game with @(game.SecondsPerMove / (24  * 60 * 60)) days per move?</p>
+      <p>
+        <button @onclick="@DeclineGame" type="button" class="btn btn-danger">Decline</button>
+        <button @onclick="@AcceptGame" type="button" class="btn btn-success">Accept</button>
+      </p>
+    }
+  }
+  else
+  {
+    <div class="container">
+      <div class="left-element">
+        <h3>Game @game.Id</h3>
 
         <PlayerComponent Player="@(this.FlipBoard() ? game.RedPlayer : game.BlackPlayer)"/>
 
@@ -25,11 +44,12 @@
           FlipBoard="@this.FlipBoard()" />
 
         <PlayerComponent Player="@(this.FlipBoard() ? game.BlackPlayer : game.RedPlayer)"/>
+      </div>
+      <div class="right-element">
+        <MovesComponent GameModel="@model" />
+      </div>
     </div>
-    <div class="right-element">
-      <MovesComponent GameModel="@model" />
-    </div>
-  </div>
+  }
 }
 
 @if (this.GameState.Value.HasErrors)

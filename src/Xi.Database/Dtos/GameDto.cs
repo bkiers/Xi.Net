@@ -65,6 +65,10 @@ namespace Xi.Database.Dtos
         this.RedPlayer.ToPlayer(),
         this.BlackPlayer.ToPlayer(),
         this.TurnPlayer.ToPlayer(),
+        this.InitiatedPlayer.ToPlayer(),
+        this.InvitedPlayer.ToPlayer(),
+        this.SecondsPerMove,
+        this.Accepted,
         this.Moves.Select(m => new Move(
           new Cell(m.FromFileIndex, m.FromRankIndex),
           new Cell(m.ToFileIndex, m.ToRankIndex),

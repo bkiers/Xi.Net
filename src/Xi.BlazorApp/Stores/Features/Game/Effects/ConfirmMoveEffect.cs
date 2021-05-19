@@ -17,11 +17,10 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
 
     public override Task HandleAsync(ConfirmMoveAction action, IDispatcher dispatcher)
     {
-      // TODO check action.LoggedInUserId
       try
       {
         var move = action.GameModel.Game.Moves[action.Index];
-        var game = this.gameService.Move(action.GameModel.Game.Id, move.FromCell, move.ToCell);
+        var game = this.gameService.Move(action.LoggedInUserId, action.GameModel.Game.Id, move.FromCell, move.ToCell);
 
         dispatcher.Dispatch(new ConfirmMoveSuccessAction(game!));
       }

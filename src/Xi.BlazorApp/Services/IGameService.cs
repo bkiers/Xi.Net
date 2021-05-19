@@ -6,12 +6,16 @@ namespace Xi.BlazorApp.Services
 
   public interface IGameService
   {
+    GameModel Accept(int loggedInPlayerId, int gameId);
+
+    bool Decline(int loggedInPlayerId, int gameId);
+
     List<GameModel> Games();
 
     GameModel? Game(int gameId);
 
     GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
 
-    GameModel? Move(int gameId, Cell fromCell, Cell toCell);
+    GameModel? Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell);
   }
 }

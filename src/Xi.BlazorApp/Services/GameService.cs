@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Services
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,31 @@ namespace Xi.BlazorApp.Services
     public GameService(XiContext db)
     {
       this.db = db;
+    }
+
+    public GameModel Accept(int loggedInPlayerId, int gameId)
+    {
+      var game = this.db.Games
+        .Include(g => g.InvitedPlayer)
+        .Single(g => g.Id == gameId);
+
+      if (game.InvitedPlayer.Id != loggedInPlayerId)
+      {
+        throw new Exception($"Only {game.InvitedPlayer.Name} can accept this game.");
+      }
+
+      game.Accepted = true;
+      game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
+
+      this.db.SaveChanges();
+
+      return new GameModel(game.ToGame());
+    }
+
+    public bool Decline(int loggedInPlayerId, int gameId)
+    {
+      // TODO
+      throw new NotImplementedException();
     }
 
     public List<GameModel> Games()
@@ -34,6 +60,8 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.TurnPlayer)
+        .Include(g => g.InitiatedPlayer)
+        .Include(g => g.InvitedPlayer)
         .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
@@ -59,8 +87,23 @@ namespace Xi.BlazorApp.Services
       return this.Game(game.Id);
     }
 
-    public GameModel? Move(int gameId, Cell fromCell, Cell toCell)
+    public GameModel? Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
     {
+      var game = this.db.Games
+        .Include(g => g.TurnPlayer)
+        .Include(g => g.InvitedPlayer)
+        .Single(g => g.Id == gameId);
+
+      if (!game.Accepted)
+      {
+        throw new Exception($"{game.InvitedPlayer.Name} first needs to accept this game.");
+      }
+
+      if (game.TurnPlayerId != loggedInPlayerId)
+      {
+        throw new Exception($"It's {game.TurnPlayer.Name}'s turn.");
+      }
+
       var move = new MoveDto
       {
         GameId = gameId,
@@ -70,8 +113,14 @@ namespace Xi.BlazorApp.Services
         ToRankIndex = toCell.RankIndex,
       };
 
+      using var transaction = this.db.Database.BeginTransaction();
+
       this.db.Moves.Add(move);
+
+      game.TurnPlayerId = game.RedPlayerId == loggedInPlayerId ? game.BlackPlayerId : game.RedPlayerId;
+
       this.db.SaveChanges();
+      transaction.Commit();
 
       return this.Game(gameId);
     }

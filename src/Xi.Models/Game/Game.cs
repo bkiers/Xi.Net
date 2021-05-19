@@ -7,13 +7,26 @@ namespace Xi.Models.Game
   {
     private readonly List<Board> boards;
 
-    public Game(int id, Player redPlayer, Player blackPlayer, Player turnPlayer, IEnumerable<Move> moves)
+    public Game(
+      int id,
+      Player redPlayer,
+      Player blackPlayer,
+      Player turnPlayer,
+      Player initiatedPlayer,
+      Player invitedPlayer,
+      int secondsPerMove,
+      bool accepted,
+      IEnumerable<Move> moves)
     {
       this.boards = new List<Board>();
       this.Id = id;
       this.RedPlayer = redPlayer;
       this.BlackPlayer = blackPlayer;
       this.TurnPlayer = turnPlayer;
+      this.InitiatedPlayer = initiatedPlayer;
+      this.InvitedPlayer = invitedPlayer;
+      this.SecondsPerMove = secondsPerMove;
+      this.Accepted = accepted;
       this.Moves = moves.ToList();
 
       this.ReplayMoves();
@@ -26,6 +39,14 @@ namespace Xi.Models.Game
     public Player BlackPlayer { get; }
 
     public Player TurnPlayer { get; }
+
+    public Player InitiatedPlayer { get; }
+
+    public Player InvitedPlayer { get; }
+
+    public int SecondsPerMove { get; }
+
+    public bool Accepted { get; }
 
     public List<Move> Moves { get; }
 
@@ -43,7 +64,16 @@ namespace Xi.Models.Game
 
     public Game RemoveMovesFrom(int index)
     {
-      return new Game(this.Id, this.RedPlayer, this.BlackPlayer, this.TurnPlayer, this.Moves.GetRange(0, index));
+      return new Game(
+        this.Id,
+        this.RedPlayer,
+        this.BlackPlayer,
+        this.TurnPlayer,
+        this.InitiatedPlayer,
+        this.InvitedPlayer,
+        this.SecondsPerMove,
+        this.Accepted,
+        this.Moves.GetRange(0, index));
     }
 
     public void Move(Move move, bool appendToMoves = true)

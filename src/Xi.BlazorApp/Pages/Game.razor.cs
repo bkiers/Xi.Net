@@ -5,6 +5,7 @@ namespace Xi.BlazorApp.Pages
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
   using Xi.Models.Game;
 
@@ -42,6 +43,16 @@ namespace Xi.BlazorApp.Pages
       return this.Current.LoggedInPLayerId() == this.GameState.Value.GameModel?.Game.BlackPlayer.Id
         ? Color.Black
         : Color.Red;
+    }
+
+    private void AcceptGame()
+    {
+      this.Dispatcher.Dispatch(new AcceptGameAction(this.GameState.Value.GameModel, this.Current.LoggedInPLayer()));
+    }
+
+    private void DeclineGame()
+    {
+      this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel, this.Current.LoggedInPLayer()));
     }
   }
 }
