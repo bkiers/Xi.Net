@@ -7,14 +7,14 @@ namespace Xi.Models.Game
   {
     private readonly List<Board> boards;
 
-    public Game(int id, Player redPlayer, Player blackPlayer, Player turnPlayer, List<Move> moves)
+    public Game(int id, Player redPlayer, Player blackPlayer, Player turnPlayer, IEnumerable<Move> moves)
     {
       this.boards = new List<Board>();
       this.Id = id;
       this.RedPlayer = redPlayer;
       this.BlackPlayer = blackPlayer;
       this.TurnPlayer = turnPlayer;
-      this.Moves = moves.OrderBy(m => m.CreatedAt).ToList();
+      this.Moves = moves.ToList();
 
       this.ReplayMoves();
     }

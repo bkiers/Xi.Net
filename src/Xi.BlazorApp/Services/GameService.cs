@@ -34,7 +34,7 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.TurnPlayer)
-        .Include(g => g.Moves)
+        .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
