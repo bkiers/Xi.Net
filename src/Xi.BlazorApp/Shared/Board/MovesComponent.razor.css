@@ -3,10 +3,6 @@ td {
   padding-right: 5px;
 }
 
-td.selected {
-  background: #dedede;
-}
-
 i.fa {
   padding-left: 5px;
   padding-right: 5px;
@@ -14,5 +10,9 @@ i.fa {
 }
 
 table {
-  min-width: 150px;
+  min-width: 160px;
+}
+
+th {
+  text-align: center;
 }

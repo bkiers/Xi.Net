@@ -4,10 +4,10 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
   using System.Linq;
   using Fluxor;
   using Xi.BlazorApp.Models;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.CycleMoves;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
   using Xi.BlazorApp.Stores.States;
 
-  public class CycleMovesReducers
+  public class MovesReducers
   {
     [ReducerMethod]
     public static GameState Reduce(GameState state, PreviousMoveAction action)
@@ -51,6 +51,35 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
         action.GameModel.FirstClick);
 
       return new GameState(false, null, model);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, RemoveMovesAction action)
+    {
+      var model = new GameModel(
+        action.GameModel.Game.RemoveMovesFrom(action.FromIndex),
+        action.FromIndex - 1,
+        null);
+
+      return new GameState(false, null, model);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, ConfirmMoveAction action)
+    {
+      return new(false, null, action.GameModel);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, ConfirmMoveSuccessAction action)
+    {
+      return new(false, null, action.GameModel);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, ConfirmMoveFailureAction action)
+    {
+      return new(false, action.ErrorMessage, action.GameModel);
     }
   }
 }

@@ -3,7 +3,7 @@ namespace Xi.BlazorApp.Shared.Board
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Models;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.CycleMoves;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
 
   public partial class MovesComponent
   {

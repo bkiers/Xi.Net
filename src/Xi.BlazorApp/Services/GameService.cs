@@ -58,5 +58,22 @@ namespace Xi.BlazorApp.Services
 
       return this.Game(game.Id);
     }
+
+    public GameModel? Move(int gameId, Cell fromCell, Cell toCell)
+    {
+      var move = new MoveDto
+      {
+        GameId = gameId,
+        FromFileIndex = fromCell.FileIndex,
+        FromRankIndex = fromCell.RankIndex,
+        ToFileIndex = toCell.FileIndex,
+        ToRankIndex = toCell.RankIndex,
+      };
+
+      this.db.Moves.Add(move);
+      this.db.SaveChanges();
+
+      return this.Game(gameId);
+    }
   }
 }

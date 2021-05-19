@@ -27,6 +27,14 @@ namespace Xi.BlazorApp.Models
 
     public Cell? FirstClick { get; private set; }
 
+    public bool CanBeConfirmed(int index)
+    {
+      var lastConfirmedMove = this.Game.Moves.FindLast(m => m.CreatedAt.HasValue);
+      var indexLastConfirmedMove = lastConfirmedMove == null ? -1 : this.Game.Moves.IndexOf(lastConfirmedMove);
+
+      return indexLastConfirmedMove + 1 == index;
+    }
+
     public Board CurrentBoard()
     {
       // There is always 1 board more than there are moves: the first board is the start-board.

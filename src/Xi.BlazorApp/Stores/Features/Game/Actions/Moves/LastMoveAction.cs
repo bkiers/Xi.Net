@@ -1,4 +1,4 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.CycleMoves
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.Moves
 {
   using Xi.BlazorApp.Models;
 

@@ -41,6 +41,11 @@ namespace Xi.Models.Game
       return isBlackTurn ? Color.Black : Color.Red;
     }
 
+    public Game RemoveMovesFrom(int index)
+    {
+      return new Game(this.Id, this.RedPlayer, this.BlackPlayer, this.TurnPlayer, this.Moves.GetRange(0, index));
+    }
+
     public void Move(Move move, bool appendToMoves = true)
     {
       var moveResult = this.boards.Last().Move(move);

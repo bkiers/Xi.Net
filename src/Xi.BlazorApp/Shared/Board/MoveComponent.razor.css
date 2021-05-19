@@ -1,0 +1,22 @@
+td.selected {
+  background: #dedede;
+}
+
+td {
+  min-width: 120px;
+  padding-left: 5px;
+}
+
+.remove-move {
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #7f0032;
+  float: right;
+}
+
+.confirm-move {
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #1f5700;
+  float: right;
+}
