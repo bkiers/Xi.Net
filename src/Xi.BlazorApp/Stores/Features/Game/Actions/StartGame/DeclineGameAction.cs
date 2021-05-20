@@ -7,7 +7,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Actions.StartGame
   public class DeclineGameAction : FailureAction
   {
     public DeclineGameAction(GameModel gameModel, Player player)
-      : base("The game was declined.")
+      : base("The game is removed.")
     {
       this.GameModel = gameModel;
       this.Player = player;

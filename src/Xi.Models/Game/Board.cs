@@ -64,6 +64,11 @@ namespace Xi.Models.Game
       return this.IsCheck(color) && this.AllValidToCells(color).Count == 0;
     }
 
+    public bool IsStalemate(Color color)
+    {
+      return !this.IsCheck(color) && this.AllValidToCells(color).Count == 0;
+    }
+
     public Cell Cell(int fileIndex, int rankIndex)
     {
       if (fileIndex is < 0 or > 8)

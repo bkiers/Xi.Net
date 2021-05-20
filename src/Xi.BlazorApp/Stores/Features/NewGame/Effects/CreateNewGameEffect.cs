@@ -4,6 +4,7 @@ namespace Xi.BlazorApp.Stores.Features.NewGame.Effects
   using System.Threading.Tasks;
   using Fluxor;
   using Xi.BlazorApp.Services;
+  using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
   using Xi.BlazorApp.Stores.Features.NewGame.Actions.CreateNewGame;
 
   public class CreateNewGameEffect : Effect<CreateNewGameAction>
@@ -26,6 +27,7 @@ namespace Xi.BlazorApp.Stores.Features.NewGame.Effects
           action.DaysPerMove);
 
         dispatcher.Dispatch(new CreateNewGameSuccessAction(game!));
+        dispatcher.Dispatch(new LoadGamesAction());
       }
       catch (Exception e)
       {

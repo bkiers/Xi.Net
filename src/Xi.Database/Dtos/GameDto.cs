@@ -67,6 +67,7 @@ namespace Xi.Database.Dtos
         this.TurnPlayer.ToPlayer(),
         this.InitiatedPlayer.ToPlayer(),
         this.InvitedPlayer.ToPlayer(),
+        this.WinnerPlayer?.ToPlayer(),
         this.SecondsPerMove,
         this.Accepted,
         this.Moves.Select(m => new Move(

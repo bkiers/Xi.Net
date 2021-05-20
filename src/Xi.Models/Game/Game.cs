@@ -14,6 +14,7 @@ namespace Xi.Models.Game
       Player turnPlayer,
       Player initiatedPlayer,
       Player invitedPlayer,
+      Player? winnerPlayer,
       int secondsPerMove,
       bool accepted,
       IEnumerable<Move> moves)
@@ -25,6 +26,7 @@ namespace Xi.Models.Game
       this.TurnPlayer = turnPlayer;
       this.InitiatedPlayer = initiatedPlayer;
       this.InvitedPlayer = invitedPlayer;
+      this.WinnerPlayer = winnerPlayer;
       this.SecondsPerMove = secondsPerMove;
       this.Accepted = accepted;
       this.Moves = moves.ToList();
@@ -44,6 +46,8 @@ namespace Xi.Models.Game
 
     public Player InvitedPlayer { get; }
 
+    public Player? WinnerPlayer { get; }
+
     public int SecondsPerMove { get; }
 
     public bool Accepted { get; }
@@ -53,6 +57,11 @@ namespace Xi.Models.Game
     public Board Board(int boardIndex)
     {
       return this.boards[boardIndex];
+    }
+
+    public Board CurrentBoard()
+    {
+      return this.boards.Last();
     }
 
     public Color TurnPlayerColor()
@@ -71,6 +80,7 @@ namespace Xi.Models.Game
         this.TurnPlayer,
         this.InitiatedPlayer,
         this.InvitedPlayer,
+        this.WinnerPlayer,
         this.SecondsPerMove,
         this.Accepted,
         this.Moves.GetRange(0, index));
@@ -92,6 +102,36 @@ namespace Xi.Models.Game
     public ISet<Cell> ValidToCells(Cell fromCell)
     {
       return this.boards.Last().ValidToCells(fromCell);
+    }
+
+    public Player? CheckPlayer()
+    {
+      if (this.CurrentBoard().IsCheck(Color.Red))
+      {
+        return this.RedPlayer;
+      }
+
+      return this.CurrentBoard().IsCheck(Color.Black) ? this.BlackPlayer : null;
+    }
+
+    public Player? CheckmatePlayer()
+    {
+      if (this.CurrentBoard().IsCheckmate(Color.Red))
+      {
+        return this.RedPlayer;
+      }
+
+      return this.CurrentBoard().IsCheckmate(Color.Black) ? this.BlackPlayer : null;
+    }
+
+    public Player? StalematePlayer()
+    {
+      if (this.CurrentBoard().IsStalemate(Color.Red))
+      {
+        return this.RedPlayer;
+      }
+
+      return this.CurrentBoard().IsStalemate(Color.Black) ? this.BlackPlayer : null;
     }
 
     private void ReplayMoves()

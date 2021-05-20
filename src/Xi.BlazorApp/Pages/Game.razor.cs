@@ -3,7 +3,6 @@ namespace Xi.BlazorApp.Pages
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.ClickBoard;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
@@ -47,12 +46,12 @@ namespace Xi.BlazorApp.Pages
 
     private void AcceptGame()
     {
-      this.Dispatcher.Dispatch(new AcceptGameAction(this.GameState.Value.GameModel, this.Current.LoggedInPLayer()));
+      this.Dispatcher.Dispatch(new AcceptGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPLayer()));
     }
 
     private void DeclineGame()
     {
-      this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel, this.Current.LoggedInPLayer()));
+      this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPLayer()));
     }
   }
 }

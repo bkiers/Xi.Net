@@ -17,17 +17,17 @@
   {
     <h3>@game.RedPlayer.Name (red) - @game.BlackPlayer.Name (black)</h3>
 
-    if (this.Current.LoggedInPLayerId() == game.InitiatedPlayer.Id)
-    {
-      <p>The game needs to be accepted by @(game.InvitedPlayer.Name).</p>
-    }
-    else
+    if (this.Current.LoggedInPLayerId() == game.InvitedPlayer.Id)
     {
       <p>Accept this game with @(game.SecondsPerMove / (24  * 60 * 60)) days per move?</p>
       <p>
         <button @onclick="@DeclineGame" type="button" class="btn btn-danger">Decline</button>
         <button @onclick="@AcceptGame" type="button" class="btn btn-success">Accept</button>
       </p>
+    }
+    else
+    {
+      <p>The game needs to be accepted by @(game.InvitedPlayer.Name).</p>
     }
   }
   else
@@ -52,9 +52,20 @@
   }
 }
 
-@if (this.GameState.Value.HasErrors)
+@if (this.GameState.Value.GameModel?.Game.CheckmatePlayer() != null)
 {
-  <p>Computer says no... :(</p>
-  <p>@GameState.Value.ErrorMessage</p>
+  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" />
+}
+else if (this.GameState.Value.GameModel?.Game.StalematePlayer() != null)
+{
+  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" />
+}
+else if (this.GameState.Value.GameModel?.Game.CheckPlayer() != null)
+{
+  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" />
+}
+else if (this.GameState.Value.HasErrors)
+{
+  <Alert ErrorMessage="@this.GameState.Value.ErrorMessage" />
 }
 

@@ -7,6 +7,7 @@ namespace Xi.BlazorApp.Services
   using Xi.BlazorApp.Models;
   using Xi.Database;
   using Xi.Database.Dtos;
+  using Xi.Models.Extensions;
   using Xi.Models.Game;
 
   public class GameService : IGameService
@@ -39,13 +40,24 @@ namespace Xi.BlazorApp.Services
 
     public bool Decline(int loggedInPlayerId, int gameId)
     {
-      // TODO
-      throw new NotImplementedException();
+      var game = this.db.Games
+        .Include(g => g.InvitedPlayer)
+        .Single(g => g.Id == gameId);
+
+      if (game.InvitedPlayer.Id != loggedInPlayerId)
+      {
+        throw new Exception($"Only {game.InvitedPlayer.Name} can decline this game.");
+      }
+
+      this.db.Games.Remove(game);
+
+      return this.db.SaveChanges() == 1;
     }
 
     public List<GameModel> Games()
     {
       var games = this.db.Games
+        .OrderByDescending(g => g.Id)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Select(g => new GameModel(g.ToGame()))
@@ -119,10 +131,18 @@ namespace Xi.BlazorApp.Services
 
       game.TurnPlayerId = game.RedPlayerId == loggedInPlayerId ? game.BlackPlayerId : game.RedPlayerId;
 
+      var gameModel = this.Game(gameId)!;
+      var colorMoved = loggedInPlayerId == game.RedPlayerId ? Color.Red : Color.Black;
+
+      if (gameModel.Game.CurrentBoard().IsCheckmate(colorMoved.Opposite()) || gameModel.Game.CurrentBoard().IsStalemate(colorMoved.Opposite()))
+      {
+        game.WinnerPlayerId = loggedInPlayerId;
+      }
+
       this.db.SaveChanges();
       transaction.Commit();
 
-      return this.Game(gameId);
+      return gameModel;
     }
   }
 }

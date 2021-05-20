@@ -1,0 +1,12 @@
+<div class="alert bottom alert-warning alert-dismissible fade show" role="alert">
+  @ErrorMessage
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+@code {
+
+  [Parameter]
+  public string ErrorMessage { get; set; } = default!;
+}
