@@ -27,7 +27,7 @@ namespace Xi.BlazorApp.Shared.Board
 
     private void ConfirmMove()
     {
-      this.Dispatcher.Dispatch(new ConfirmMoveAction(this.Current.LoggedInPLayerId(), this.GameModel, this.Index));
+      this.Dispatcher.Dispatch(new ConfirmMoveAction(this.Current.LoggedInPlayerId(), this.GameModel, this.Index));
     }
   }
 }

@@ -26,7 +26,7 @@ else
     <div class="form-group">
       <label for="OpponentPlayerId">Against opponent</label>
       <InputSelect class="form-control" id="OpponentPlayerId" @bind-Value="@NewGameModel.OpponentPlayerId">
-        @foreach (var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPLayerId()))
+        @foreach (var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPlayerId()))
         {
           <option value="@player.Id">@player.Name</option>
         }

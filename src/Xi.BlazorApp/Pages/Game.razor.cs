@@ -39,19 +39,19 @@ namespace Xi.BlazorApp.Pages
 
     private Color LoggedInPlayerColor()
     {
-      return this.Current.LoggedInPLayerId() == this.GameState.Value.GameModel?.Game.BlackPlayer.Id
+      return this.Current.LoggedInPlayerId() == this.GameState.Value.GameModel?.Game.BlackPlayer.Id
         ? Color.Black
         : Color.Red;
     }
 
     private void AcceptGame()
     {
-      this.Dispatcher.Dispatch(new AcceptGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPLayer()));
+      this.Dispatcher.Dispatch(new AcceptGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
 
     private void DeclineGame()
     {
-      this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPLayer()));
+      this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
   }
 }

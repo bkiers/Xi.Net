@@ -26,7 +26,7 @@ namespace Xi.BlazorApp.Pages
     private void HandleSubmit()
     {
       this.Dispatcher.Dispatch(new CreateNewGameAction(
-        this.Current.LoggedInPLayer().Id,
+        this.Current.LoggedInPlayer().Id,
         this.NewGameModel.PlayingWithColor,
         this.NewGameModel.OpponentPlayerId,
         this.NewGameModel.DaysPerMove));

@@ -16,19 +16,19 @@ namespace Xi.BlazorApp.Services
       this.playerService = playerService;
     }
 
-    public int LoggedInPLayerId()
+    public int LoggedInPlayerId()
     {
-      return this.LoggedInPLayer().Id;
+      return this.LoggedInPlayer().Id;
     }
 
-    public Player LoggedInPLayer()
+    public Player LoggedInPlayer()
     {
-      var task = Task.Run(async () => await this.LoggedInPLayerAsync());
+      var task = Task.Run(async () => await this.LoggedInPlayerAsync());
 
       return task.Result;
     }
 
-    public async Task<Player> LoggedInPLayerAsync()
+    public async Task<Player> LoggedInPlayerAsync()
     {
       var state = await this.authenticationStateProvider.GetAuthenticationStateAsync();
 

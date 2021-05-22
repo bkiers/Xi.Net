@@ -17,7 +17,7 @@
   {
     <h3>@game.RedPlayer.Name (red) - @game.BlackPlayer.Name (black)</h3>
 
-    if (this.Current.LoggedInPLayerId() == game.InvitedPlayer.Id)
+    if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
     {
       <p>Accept this game with @(game.SecondsPerMove / (24  * 60 * 60)) days per move?</p>
       <p>
@@ -54,18 +54,17 @@
 
 @if (this.GameState.Value.GameModel?.Game.CheckmatePlayer() != null)
 {
-  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" />
+  <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
 }
 else if (this.GameState.Value.GameModel?.Game.StalematePlayer() != null)
 {
-  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" />
+  <Alert Message="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
 }
 else if (this.GameState.Value.GameModel?.Game.CheckPlayer() != null)
 {
-  <Alert ErrorMessage="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" />
+  <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
 }
 else if (this.GameState.Value.HasErrors)
 {
-  <Alert ErrorMessage="@this.GameState.Value.ErrorMessage" />
+  <Alert Message="@this.GameState.Value.ErrorMessage" Type="@Alert.AlertType.Info" />
 }
-
