@@ -35,7 +35,7 @@ namespace Xi.BlazorApp.Services
 
       this.db.SaveChanges();
 
-      return new GameModel(game.ToGame());
+      return this.Game(game.Id)!;
     }
 
     public bool Decline(int loggedInPlayerId, int gameId)
