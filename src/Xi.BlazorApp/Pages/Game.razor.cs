@@ -1,8 +1,14 @@
 namespace Xi.BlazorApp.Pages
 {
+  using System.Net.Http;
+  using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Microsoft.AspNetCore.SignalR.Client;
+  using Microsoft.Extensions.Logging;
+  using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
+  using Xi.BlazorApp.Shared.Board;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
@@ -10,6 +16,8 @@ namespace Xi.BlazorApp.Pages
 
   public partial class Game
   {
+    private HubConnection? hubConnection;
+
     [Parameter]
     public int? GameId { get; set; }
 
@@ -22,14 +30,38 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     public Current Current { get; set; } = default!;
 
-    protected override void OnInitialized()
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    [Inject]
+    public ILogger<CellComponent> Logger { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
       if (this.GameState.Value.GameModel == null || this.GameState.Value.GameModel.Game.Id != this.GameId)
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
 
-      base.OnInitialized();
+      this.hubConnection = new HubConnectionBuilder()
+        .WithUrl($"https://localhost:9900{GamesHub.HubUrl}", options =>
+        {
+          options.WebSocketConfiguration = conf =>
+          {
+            conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
+          };
+          options.HttpMessageHandlerFactory = factory => new HttpClientHandler
+          {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
+          };
+        })
+        .Build();
+
+      this.hubConnection.On<int>("MoveMade", this.Refresh);
+
+      await this.hubConnection.StartAsync();
+
+      await base.OnInitializedAsync();
     }
 
     private bool FlipBoard()
@@ -52,6 +84,16 @@ namespace Xi.BlazorApp.Pages
     private void DeclineGame()
     {
       this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
+    }
+
+    private void Refresh(int gameId)
+    {
+      if (this.GameId!.Value == gameId)
+      {
+        this.Logger.LogDebug($"Refreshing: {gameId}");
+
+        this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
+      }
     }
   }
 }

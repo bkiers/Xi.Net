@@ -13,6 +13,7 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
   using Xi.BlazorApp.Config;
+  using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
   using Xi.Database;
 
@@ -142,6 +143,7 @@ namespace Xi.BlazorApp
       {
         endpoints.MapBlazorHub();
         endpoints.MapFallbackToPage("/_Host");
+        endpoints.MapHub<GamesHub>(GamesHub.HubUrl);
       });
     }
   }

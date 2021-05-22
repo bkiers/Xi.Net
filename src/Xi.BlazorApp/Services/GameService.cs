@@ -99,7 +99,7 @@ namespace Xi.BlazorApp.Services
       return this.Game(game.Id);
     }
 
-    public GameModel? Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
+    public GameModel Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
     {
       var game = this.db.Games
         .Include(g => g.TurnPlayer)
