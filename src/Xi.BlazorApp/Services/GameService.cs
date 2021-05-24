@@ -71,7 +71,6 @@ namespace Xi.BlazorApp.Services
       var game = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
-        .Include(g => g.TurnPlayer)
         .Include(g => g.InitiatedPlayer)
         .Include(g => g.InvitedPlayer)
         .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
@@ -90,7 +89,6 @@ namespace Xi.BlazorApp.Services
         RedPlayerId = loggedInPlayerColor == Color.Red ? loggedInPlayerId : opponentPlayerId,
         BlackPlayerId = loggedInPlayerColor == Color.Black ? loggedInPlayerId : opponentPlayerId,
         SecondsPerMove = daysPerMove * 24 * 60 * 60,
-        TurnPlayerId = loggedInPlayerColor == Color.Red ? loggedInPlayerId : opponentPlayerId,
       };
 
       this.db.Games.Add(game);
@@ -102,8 +100,10 @@ namespace Xi.BlazorApp.Services
     public GameModel Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
     {
       var game = this.db.Games
-        .Include(g => g.TurnPlayer)
         .Include(g => g.InvitedPlayer)
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
+        .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
         .Single(g => g.Id == gameId);
 
       if (!game.Accepted)
@@ -111,9 +111,9 @@ namespace Xi.BlazorApp.Services
         throw new Exception($"{game.InvitedPlayer.Name} first needs to accept this game.");
       }
 
-      if (game.TurnPlayerId != loggedInPlayerId)
+      if (game.TurnPlayerId() != loggedInPlayerId)
       {
-        throw new Exception($"It's {game.TurnPlayer.Name}'s turn.");
+        throw new Exception($"It's {game.TurnPlayer().Name}'s turn.");
       }
 
       var move = new MoveDto
@@ -128,8 +128,6 @@ namespace Xi.BlazorApp.Services
       using var transaction = this.db.Database.BeginTransaction();
 
       this.db.Moves.Add(move);
-
-      game.TurnPlayerId = game.RedPlayerId == loggedInPlayerId ? game.BlackPlayerId : game.RedPlayerId;
 
       var gameModel = this.Game(gameId)!;
       var colorMoved = loggedInPlayerId == game.RedPlayerId ? Color.Red : Color.Black;

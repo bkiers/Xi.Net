@@ -11,7 +11,6 @@ namespace Xi.Models.Game
       int id,
       Player redPlayer,
       Player blackPlayer,
-      Player turnPlayer,
       Player initiatedPlayer,
       Player invitedPlayer,
       Player? winnerPlayer,
@@ -23,7 +22,6 @@ namespace Xi.Models.Game
       this.Id = id;
       this.RedPlayer = redPlayer;
       this.BlackPlayer = blackPlayer;
-      this.TurnPlayer = turnPlayer;
       this.InitiatedPlayer = initiatedPlayer;
       this.InvitedPlayer = invitedPlayer;
       this.WinnerPlayer = winnerPlayer;
@@ -39,8 +37,6 @@ namespace Xi.Models.Game
     public Player RedPlayer { get; }
 
     public Player BlackPlayer { get; }
-
-    public Player TurnPlayer { get; }
 
     public Player InitiatedPlayer { get; }
 
@@ -77,7 +73,6 @@ namespace Xi.Models.Game
         this.Id,
         this.RedPlayer,
         this.BlackPlayer,
-        this.TurnPlayer,
         this.InitiatedPlayer,
         this.InvitedPlayer,
         this.WinnerPlayer,

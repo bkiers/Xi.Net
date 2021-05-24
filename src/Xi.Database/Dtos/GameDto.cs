@@ -38,11 +38,6 @@ namespace Xi.Database.Dtos
     public PlayerDto InvitedPlayer { get; set; } = default!;
 
     [Required]
-    public int TurnPlayerId { get; set; }
-
-    public PlayerDto TurnPlayer { get; set; } = default!;
-
-    [Required]
     public int RedPlayerId { get; set; }
 
     public PlayerDto RedPlayer { get; set; } = default!;
@@ -64,7 +59,6 @@ namespace Xi.Database.Dtos
         this.Id,
         this.RedPlayer.ToPlayer(),
         this.BlackPlayer.ToPlayer(),
-        this.TurnPlayer.ToPlayer(),
         this.InitiatedPlayer.ToPlayer(),
         this.InvitedPlayer.ToPlayer(),
         this.WinnerPlayer?.ToPlayer(),
@@ -75,6 +69,16 @@ namespace Xi.Database.Dtos
           new Cell(m.ToFileIndex, m.ToRankIndex),
           m.CreatedAt))
           .ToList());
+    }
+
+    public int TurnPlayerId()
+    {
+      return this.Moves.Count % 2 == 1 ? this.BlackPlayerId : this.RedPlayerId;
+    }
+
+    public PlayerDto TurnPlayer()
+    {
+      return this.Moves.Count % 2 == 1 ? this.BlackPlayer : this.RedPlayer;
     }
   }
 }

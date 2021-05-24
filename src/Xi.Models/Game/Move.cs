@@ -26,5 +26,10 @@ namespace Xi.Models.Game
 
       return $"({formerRank}{formerFile})-{newRank}{newFile}";
     }
+
+    public override string ToString()
+    {
+      return $"{this.FromCell} -> {this.ToCell}";
+    }
   }
 }

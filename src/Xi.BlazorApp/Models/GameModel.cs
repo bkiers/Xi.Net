@@ -54,7 +54,7 @@ namespace Xi.BlazorApp.Models
       switch (this.FirstClick)
       {
         case null when !cell.OccupiedBy(turnColor):
-          throw new Exception($"It's {this.Game.TurnPlayer.Name}'s turn.");
+          throw new Exception($"It's {turnColor}'s turn.");
         case null:
           this.FirstClick = cell;
           break;

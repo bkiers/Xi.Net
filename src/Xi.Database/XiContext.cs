@@ -29,7 +29,6 @@ namespace Xi.Database
       modelBuilder.Entity<GameDto>().HasOne(g => g.AcceptedDrawPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.InitiatedPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.InvitedPlayer);
-      modelBuilder.Entity<GameDto>().HasOne(g => g.TurnPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.RedPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.BlackPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.WinnerPlayer);

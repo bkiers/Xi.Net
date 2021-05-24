@@ -1,6 +1,5 @@
 namespace Xi.BlazorApp.Pages
 {
-  using System.Net.Http;
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
@@ -22,19 +21,16 @@ namespace Xi.BlazorApp.Pages
     public int? GameId { get; set; }
 
     [Inject]
-    public IDispatcher Dispatcher { get; set; } = default!;
+    private IDispatcher Dispatcher { get; set; } = default!;
 
     [Inject]
-    public IState<GameState> GameState { get; set; } = default!;
+    private IState<GameState> GameState { get; set; } = default!;
 
     [Inject]
-    public Current Current { get; set; } = default!;
+    private Current Current { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
-
-    [Inject]
-    public ILogger<CellComponent> Logger { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,21 +39,9 @@ namespace Xi.BlazorApp.Pages
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
 
-      this.hubConnection = new HubConnectionBuilder()
-        .WithUrl($"https://localhost:9900{GamesHub.HubUrl}", options =>
-        {
-          options.WebSocketConfiguration = conf =>
-          {
-            conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
-          };
-          options.HttpMessageHandlerFactory = factory => new HttpClientHandler
-          {
-            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
-          };
-        })
-        .Build();
+      this.hubConnection = GamesHub.Connection(this.NavigationManager.BaseUri);
 
-      this.hubConnection.On<int>("MoveMade", this.Refresh);
+      this.hubConnection.On<int>(EventTypes.MoveMade.ToString(), this.Refresh);
 
       await this.hubConnection.StartAsync();
 
@@ -88,10 +72,10 @@ namespace Xi.BlazorApp.Pages
 
     private void Refresh(int gameId)
     {
+      var user = this.Current.LoggedInPlayer().Name;
+
       if (this.GameId!.Value == gameId)
       {
-        this.Logger.LogDebug($"Refreshing: {gameId}");
-
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
     }

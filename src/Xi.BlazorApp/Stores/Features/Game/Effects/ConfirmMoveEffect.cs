@@ -1,10 +1,10 @@
 namespace Xi.BlazorApp.Stores.Features.Game.Effects
 {
   using System;
-  using System.Net.Http;
   using System.Threading.Tasks;
   using Fluxor;
-  using Microsoft.AspNetCore.SignalR.Client;
+  using Microsoft.AspNetCore.Components;
+  using Xi.BlazorApp.Extensions;
   using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
@@ -12,10 +12,12 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
   public class ConfirmMoveEffect : Effect<ConfirmMoveAction>
   {
     private readonly IGameService gameService;
+    private readonly NavigationManager navigationManager;
 
-    public ConfirmMoveEffect(IGameService gameService)
+    public ConfirmMoveEffect(IGameService gameService, NavigationManager navigationManager)
     {
       this.gameService = gameService;
+      this.navigationManager = navigationManager;
     }
 
     public override async Task HandleAsync(ConfirmMoveAction action, IDispatcher dispatcher)
@@ -31,33 +33,12 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
       {
         dispatcher.Dispatch(new ConfirmMoveFailureAction(action.GameModel, e.Message));
       }
+      finally
+      {
+        var hubConnection = GamesHub.Connection(this.navigationManager.BaseUri);
 
-      await this.Foo(action.GameModel.Game.Id);
-
-      // return Task.CompletedTask;
-    }
-
-    private async Task Foo(int gameId)
-    {
-      var hubConnection = new HubConnectionBuilder()
-        .WithUrl($"https://localhost:9900{GamesHub.HubUrl}", options =>
-        {
-          options.WebSocketConfiguration = conf =>
-          {
-            conf.RemoteCertificateValidationCallback = (message, cert, chain, errors) => true;
-          };
-          options.HttpMessageHandlerFactory = factory => new HttpClientHandler
-          {
-            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true,
-          };
-        })
-        .Build();
-
-      await hubConnection.StartAsync();
-
-      await hubConnection.SendAsync("MoveMade", gameId);
-
-      await hubConnection.StopAsync();
+        await hubConnection.StartSendStopAsync(EventTypes.MoveMade.ToString(), action.GameModel.Game.Id);
+      }
     }
   }
 }
