@@ -12,6 +12,7 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
+  using Toolbelt.Blazor.Extensions.DependencyInjection;
   using Xi.BlazorApp.Config;
   using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
@@ -111,6 +112,8 @@ namespace Xi.BlazorApp
       services.AddScoped<IGameService, GameService>();
       services.AddScoped<IPlayerService, PlayerService>();
       services.AddScoped<Current>();
+
+      services.AddHotKeys();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

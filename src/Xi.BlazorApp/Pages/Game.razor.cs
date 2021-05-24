@@ -4,10 +4,8 @@ namespace Xi.BlazorApp.Pages
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Microsoft.AspNetCore.SignalR.Client;
-  using Microsoft.Extensions.Logging;
   using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Shared.Board;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
@@ -72,8 +70,6 @@ namespace Xi.BlazorApp.Pages
 
     private void Refresh(int gameId)
     {
-      var user = this.Current.LoggedInPlayer().Name;
-
       if (this.GameId!.Value == gameId)
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
