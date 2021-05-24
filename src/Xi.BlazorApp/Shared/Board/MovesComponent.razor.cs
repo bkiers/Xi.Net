@@ -21,10 +21,10 @@ namespace Xi.BlazorApp.Shared.Board
     protected override async Task OnInitializedAsync()
     {
       this.HotKeys.CreateContext()
-        .Add(ModKeys.Ctrl, Keys.Left, this.Previous)
-        .Add(ModKeys.Ctrl, Keys.Right, this.Next)
-        .Add(ModKeys.Ctrl, Keys.Home, this.First)
-        .Add(ModKeys.Ctrl, Keys.End, this.Last);
+        .Add(ModKeys.None, Keys.Left, this.Previous)
+        .Add(ModKeys.None, Keys.Right, this.Next)
+        .Add(ModKeys.None, Keys.Home, this.First)
+        .Add(ModKeys.None, Keys.End, this.Last);
 
       await base.OnInitializedAsync();
     }
