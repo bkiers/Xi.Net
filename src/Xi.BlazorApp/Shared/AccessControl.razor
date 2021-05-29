@@ -1,8 +1,8 @@
 <AuthorizeView>
   <Authorized>
-    <a href="logout">Log out @Current.LoggedInPlayer().Name</a>
+    <a href="logout">Log out @this.Current.LoggedInPlayer().Name</a>
   </Authorized>
   <NotAuthorized>
-    <a href="login?redirectUri=/">Log in</a>
+    <a href="login?redirectUri=/@this.ReturnUrl">Log in</a>
   </NotAuthorized>
 </AuthorizeView>

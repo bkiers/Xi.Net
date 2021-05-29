@@ -6,6 +6,11 @@ namespace Xi.BlazorApp.Shared
   public partial class AccessControl
   {
     [Inject]
-    public Current Current { get; set; } = default!;
+    private Current Current { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private string ReturnUrl => this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri);
   }
 }
