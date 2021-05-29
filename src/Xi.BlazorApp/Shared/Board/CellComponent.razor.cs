@@ -23,16 +23,16 @@ namespace Xi.BlazorApp.Shared.Board
     public bool FlipBoard { get; set; }
 
     [Inject]
-    public IDispatcher Dispatcher { get; set; } = default!;
+    private IDispatcher Dispatcher { get; set; } = default!;
 
     [Inject]
-    public IState<GameState> GameState { get; set; } = default!;
+    private IState<GameState> GameState { get; set; } = default!;
 
-    public string ImageUrl => this.FlipBoard
-      ? $"/images/board/{10 - this.Cell.RankIndex}_{this.Cell.FileIndex + 1}.png"
+    private string ImageUrl => this.FlipBoard
+      ? $"/images/board/{10 - this.Cell.RankIndex}_{9 - this.Cell.FileIndex}.png"
       : $"/images/board/{this.Cell.RankIndex + 1}_{this.Cell.FileIndex + 1}.png";
 
-    public void CellClicked()
+    private void CellClicked()
     {
       // Only dispatch an action when the cell is occupied, or the user already made a first click.
       if (this.Cell.Occupied || this.GameState.Value.GameModel!.FirstClick != null)

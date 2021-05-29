@@ -25,7 +25,9 @@ namespace Xi.Models.Game
 
     public ImmutableList<ImmutableList<Cell>> Cells(bool flipBoard = false)
     {
-      var rows = this.cells.Select(r => r.ToImmutableList()).ToImmutableList();
+      var rows = this.cells
+        .Select(r => flipBoard ? r.ToImmutableList().Reverse() : r.ToImmutableList())
+        .ToImmutableList();
 
       return flipBoard ? rows.Reverse() : rows;
     }

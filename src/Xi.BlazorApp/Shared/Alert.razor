@@ -1,4 +1,6 @@
-<div class="alert bottom alert-@this.Type.ToString().ToLower() @(this.Dismissible ? "alert-dismissible" : "") fade show" role="alert">
+<div
+  class="alert bottom alert-@this.Type.ToString().ToLower() @(this.Dismissible ? "alert-dismissible" : "") fade show"
+  role="alert">
   @Message
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     @if (this.Dismissible)
