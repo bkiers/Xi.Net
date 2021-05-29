@@ -2,8 +2,6 @@ namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using System.Linq;
-  using Microsoft.Extensions.Options;
-  using Xi.BlazorApp.Config;
   using Xi.Database;
   using Xi.Database.Dtos;
   using Xi.Models.Game;
@@ -11,12 +9,10 @@ namespace Xi.BlazorApp.Services
   public class PlayerService : IPlayerService
   {
     private readonly XiContext db;
-    private readonly XiConfig config;
 
-    public PlayerService(XiContext db, IOptions<XiConfig> options)
+    public PlayerService(XiContext db)
     {
       this.db = db;
-      this.config = options.Value;
     }
 
     public List<Player> AllPlayers()
@@ -37,6 +33,13 @@ namespace Xi.BlazorApp.Services
     {
       return this.db.Players
         .FirstOrDefault(p => p.Email == email)?
+        .ToPlayer();
+    }
+
+    public Player FindById(int playerId)
+    {
+      return this.db.Players
+        .Single(p => p.Id == playerId)
         .ToPlayer();
     }
 

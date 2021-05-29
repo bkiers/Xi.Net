@@ -22,9 +22,12 @@ namespace Xi.Database.Dtos
     [Required]
     public bool IsAdmin { get; set; } = false;
 
+    [Required]
+    public bool ShowPossibleMoves { get; set; } = false;
+
     public Player ToPlayer()
     {
-      return new Player(this.Id, this.Name, this.Email, this.EloRating, this.IsAdmin);
+      return new Player(this.Id, this.Name, this.Email, this.EloRating, this.ShowPossibleMoves, this.IsAdmin);
     }
   }
 }

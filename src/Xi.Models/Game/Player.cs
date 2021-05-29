@@ -2,12 +2,13 @@ namespace Xi.Models.Game
 {
   public class Player
   {
-    public Player(int id, string name, string email, int eloRating, bool isAdmin)
+    public Player(int id, string name, string email, int eloRating, bool showPossibleMoves, bool isAdmin)
     {
       this.Id = id;
       this.Name = name;
       this.Email = email;
       this.EloRating = eloRating;
+      this.ShowPossibleMoves = showPossibleMoves;
       this.IsAdmin = isAdmin;
     }
 
@@ -18,6 +19,8 @@ namespace Xi.Models.Game
     public string Email { get; }
 
     public int EloRating { get; }
+
+    public bool ShowPossibleMoves { get; }
 
     public bool IsAdmin { get; }
   }

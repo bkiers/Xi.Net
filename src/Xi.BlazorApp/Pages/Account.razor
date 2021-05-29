@@ -1,0 +1,27 @@
+@page "/account"
+@attribute [Authorize]
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@if (this.AccountState.Value.IsLoading)
+{
+  <h1>Loading...</h1>
+}
+else if (this.AccountState.Value.Player != null)
+{
+  <h1>@this.AccountState.Value.Player!.Name</h1>
+
+  <EditForm Model="@this.UpdateAccountModel">
+    <ToggleComponent
+      @bind-Value="@this.UpdateAccountModel.ShowPossibleMoves"
+      OnToggled="@this.OnShowPossibleMovesToggled" />
+
+    @* <label class="checkbox-inline"> *@
+    @*   <InputCheckbox *@
+    @*     @bind-Value="@this.UpdateAccountModel.ShowPossibleMoves" *@
+    @*     type="checkbox" *@
+    @*     data-toggle="toggle"/> *@
+    @*   Highlight possible moves? *@
+    @* </label> *@
+  </EditForm>
+}
