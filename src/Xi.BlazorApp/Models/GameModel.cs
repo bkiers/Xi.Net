@@ -77,7 +77,7 @@ namespace Xi.BlazorApp.Models
       }
     }
 
-    public ISet<Cell> HighlightedCells()
+    public ISet<Cell> HighlightedCells(bool showPossibleMoves)
     {
       var set = new HashSet<Cell>();
 
@@ -95,7 +95,11 @@ namespace Xi.BlazorApp.Models
       }
 
       set.Add(this.FirstClick);
-      set.UnionWith(this.Game.ValidToCells(this.FirstClick));
+
+      if (showPossibleMoves)
+      {
+        set.UnionWith(this.Game.ValidToCells(this.FirstClick));
+      }
 
       return set;
     }

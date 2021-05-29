@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using System.Linq;
+  using Xi.BlazorApp.Models;
   using Xi.Database;
   using Xi.Database.Dtos;
   using Xi.Models.Game;
@@ -62,6 +63,18 @@ namespace Xi.BlazorApp.Services
       }
 
       return player;
+    }
+
+    public Player Update(int playerId, bool showPossibleMoves)
+    {
+      var player = this.db.Players.Single(p => p.Id == playerId);
+
+      player.ShowPossibleMoves = showPossibleMoves;
+
+      this.db.Players.Update(player);
+      this.db.SaveChanges();
+
+      return player.ToPlayer();
     }
   }
 }

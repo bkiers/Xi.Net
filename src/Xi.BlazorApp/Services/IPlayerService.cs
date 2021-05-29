@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using System.Threading.Tasks;
+  using Xi.BlazorApp.Models;
   using Xi.Models.Game;
 
   public interface IPlayerService
@@ -15,5 +16,7 @@ namespace Xi.BlazorApp.Services
     public Player FindById(int playerId);
 
     public Player FindByEmailOrCreate(string email, string name);
+
+    public Player Update(int playerId, bool showPossibleMoves);
   }
 }

@@ -9,19 +9,13 @@
 }
 else if (this.AccountState.Value.Player != null)
 {
-  <h1>@this.AccountState.Value.Player!.Name</h1>
+  var player = this.AccountState.Value.Player!;
 
-  <EditForm Model="@this.UpdateAccountModel">
-    <ToggleComponent
-      @bind-Value="@this.UpdateAccountModel.ShowPossibleMoves"
-      OnToggled="@this.OnShowPossibleMovesToggled" />
+  <h1>@player.Name</h1>
 
-    @* <label class="checkbox-inline"> *@
-    @*   <InputCheckbox *@
-    @*     @bind-Value="@this.UpdateAccountModel.ShowPossibleMoves" *@
-    @*     type="checkbox" *@
-    @*     data-toggle="toggle"/> *@
-    @*   Highlight possible moves? *@
-    @* </label> *@
-  </EditForm>
+  <ToggleComponent
+    Text="Show possible moves?"
+    ToolTip="When checked, all possible moves will be highlighted when you select a piece in a game."
+    Value="@player.ShowPossibleMoves"
+    OnToggled="@this.OnShowPossibleMovesToggled" />
 }

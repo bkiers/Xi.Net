@@ -4,11 +4,14 @@ namespace Xi.BlazorApp.Stores.Features.Account.Actions.UpdateAccount
 
   public class UpdateAccountAction
   {
-    public UpdateAccountAction(UpdateAccountModel updateAccountModel)
+    public UpdateAccountAction(int playerId, bool showPossibleMoves)
     {
-      this.UpdateAccountModel = updateAccountModel;
+      this.PlayerId = playerId;
+      this.ShowPossibleMoves = showPossibleMoves;
     }
 
-    public UpdateAccountModel UpdateAccountModel { get; }
+    public int PlayerId { get; }
+
+    public bool ShowPossibleMoves { get; }
   }
 }

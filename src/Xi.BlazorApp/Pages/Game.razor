@@ -40,7 +40,7 @@
 
         <BoardComponent
           Board="@model.CurrentBoard()"
-          HighlightedCells="@model.HighlightedCells()"
+          HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
           FlipBoard="@this.FlipBoard()" />
 
         <PlayerComponent Player="@(this.FlipBoard() ? game.BlackPlayer : game.RedPlayer)"/>

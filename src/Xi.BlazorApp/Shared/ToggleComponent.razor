@@ -1,10 +1,18 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<div class="btn-group btn-group-sm" role="group">
+<div
+  class="btn-group btn-group-sm"
+  role="group"
+  data-toggle="@(this.ToolTip == null ? string.Empty : "tooltip")"
+  data-placement="@(this.ToolTip == null ? string.Empty : "top")"
+  title="@(this.ToolTip ?? string.Empty)">
+
   <button type="button" class="btn btn-@(this.Value ? "success" : "secondary")" @onclick="@(() => this.Toggle(true))">
     <i class="fas fa-check confirm-move"></i>
   </button>
   <button type="button" class="btn btn-@(this.Value ? "secondary" : "danger")" @onclick="@(() => this.Toggle(false))">
     <i class="fas fa-times confirm-move"></i>
   </button>
+
+  <span class="caption">@this.Text</span>
 </div>

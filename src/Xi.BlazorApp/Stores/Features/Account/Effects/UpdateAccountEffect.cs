@@ -3,7 +3,6 @@ namespace Xi.BlazorApp.Stores.Features.Account.Effects
   using System.Threading.Tasks;
   using Fluxor;
   using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Account.Actions.LoadAccount;
   using Xi.BlazorApp.Stores.Features.Account.Actions.UpdateAccount;
 
   public class UpdateAccountEffect : Effect<UpdateAccountAction>
@@ -17,10 +16,9 @@ namespace Xi.BlazorApp.Stores.Features.Account.Effects
 
     public override Task HandleAsync(UpdateAccountAction action, IDispatcher dispatcher)
     {
-      // TODO
-      // var player = this.playerService.FindById(action.PlayerId);
-      //
-      // dispatcher.Dispatch(new UpdateAccountSuccessAction(player));
+      var player = this.playerService.Update(action.PlayerId, action.ShowPossibleMoves);
+
+      dispatcher.Dispatch(new UpdateAccountSuccessAction(player));
 
       return Task.CompletedTask;
     }

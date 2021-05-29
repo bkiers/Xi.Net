@@ -6,10 +6,16 @@ namespace Xi.BlazorApp.Shared
   public partial class ToggleComponent
   {
     [Parameter]
+    public string Text { get; set; } = default!;
+
+    [Parameter]
+    public string? ToolTip { get; set; }
+
+    [Parameter]
     public bool Value { get; set; }
 
     [Parameter]
-    public Action<bool> ValueChanged { get; set; } = default!;
+    public Action<bool>? ValueChanged { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnToggled { get; set; }
@@ -18,15 +24,18 @@ namespace Xi.BlazorApp.Shared
     {
       if (this.Value == value)
       {
-        // Only trigger a change if the value really changed.
+        // Only trigger a change if the value actually changed.
         return;
       }
 
       this.Value = value;
-      this.ValueChanged.Invoke(value);
+
+      // If there's an `@bind-Value` assigned, invoke it.
+      this.ValueChanged?.Invoke(value);
 
       if (this.OnToggled.HasDelegate)
       {
+        // OnToggled="@..." was set: invoke it.
         this.OnToggled.InvokeAsync(this.Value);
       }
     }

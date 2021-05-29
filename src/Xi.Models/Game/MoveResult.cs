@@ -11,7 +11,5 @@ namespace Xi.Models.Game
     public Board Board { get; }
 
     public Piece? CapturedPiece { get; }
-
-    // TODO: moves list?
   }
 }
