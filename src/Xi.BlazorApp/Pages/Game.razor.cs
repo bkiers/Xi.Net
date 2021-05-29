@@ -4,7 +4,6 @@ namespace Xi.BlazorApp.Pages
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Microsoft.AspNetCore.SignalR.Client;
-  using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
@@ -36,12 +35,6 @@ namespace Xi.BlazorApp.Pages
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
-
-      this.hubConnection = GamesHub.Connection(this.NavigationManager.BaseUri);
-
-      this.hubConnection.On<int>(EventTypes.MoveMade.ToString(), this.Refresh);
-
-      await this.hubConnection.StartAsync();
 
       await base.OnInitializedAsync();
     }

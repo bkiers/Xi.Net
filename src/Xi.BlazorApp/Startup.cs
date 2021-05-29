@@ -14,7 +14,6 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.Hosting;
   using Toolbelt.Blazor.Extensions.DependencyInjection;
   using Xi.BlazorApp.Config;
-  using Xi.BlazorApp.Hubs;
   using Xi.BlazorApp.Services;
   using Xi.Database;
 
@@ -36,7 +35,7 @@ namespace Xi.BlazorApp
 
       services.Configure<CookiePolicyOptions>(options =>
       {
-        options.CheckConsentNeeded = context => true;
+        options.CheckConsentNeeded = _ => true;
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
@@ -146,7 +145,6 @@ namespace Xi.BlazorApp
       {
         endpoints.MapBlazorHub();
         endpoints.MapFallbackToPage("/_Host");
-        endpoints.MapHub<GamesHub>(GamesHub.HubUrl);
       });
     }
   }
