@@ -27,7 +27,6 @@ dotnet user-secrets init
 ```
 
 ```
-dotnet user-secrets set "Auth0:Domain" "YOUR_AUTH0_DOMAIN"
-dotnet user-secrets set "Auth0:ClientId" "YOUR_CLIENT_ID"
-dotnet user-secrets set "Auth0:ClientSecret" "YOUR_CLIENT_SECRET"
+dotnet user-secrets set "Google:ClientId" "YOUR_CLIENT_ID"
+dotnet user-secrets set "Google:ClientSecret" "YOUR_CLIENT_SECRET"
 ```

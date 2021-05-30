@@ -12,8 +12,6 @@ namespace Xi.BlazorApp.Pages
 
   public partial class Game
   {
-    private HubConnection? hubConnection;
-
     [Parameter]
     public int? GameId { get; set; }
 

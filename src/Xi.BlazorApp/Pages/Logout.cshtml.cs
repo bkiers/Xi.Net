@@ -3,14 +3,17 @@ namespace Xi.BlazorApp.Pages
   using System.Threading.Tasks;
   using Microsoft.AspNetCore.Authentication;
   using Microsoft.AspNetCore.Authentication.Cookies;
+  using Microsoft.AspNetCore.Mvc;
   using Microsoft.AspNetCore.Mvc.RazorPages;
 
   public class Logout : PageModel
   {
-    public async Task OnGet()
+    public async Task<IActionResult> OnGetAsync(string returnUrl = "/")
     {
-      await this.HttpContext.SignOutAsync("Auth0", new AuthenticationProperties { RedirectUri = "/" });
+      // Clear the existing external cookie.
       await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+      return this.LocalRedirect(returnUrl);
     }
   }
 }

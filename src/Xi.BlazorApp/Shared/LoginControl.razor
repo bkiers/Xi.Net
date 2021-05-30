@@ -1,0 +1,18 @@
+<AuthorizeView>
+  <Authorized>
+    <a
+      class="ml-md-auto btn btn-light btn-sm"
+      href="/Logout"
+      target="_top">
+      Logout @this.Current.LoggedInPlayer().Name
+    </a>
+  </Authorized>
+  <NotAuthorized>
+    <a
+      class="ml-md-auto btn btn-light btn-sm"
+      href="/Login?redirectUrl=/@this.ReturnUrl"
+      target="_top">
+      Login
+    </a>
+  </NotAuthorized>
+</AuthorizeView>

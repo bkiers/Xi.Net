@@ -3,13 +3,13 @@ namespace Xi.BlazorApp.Shared
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Services;
 
-  public partial class AccessControl
+  public partial class LoginControl
   {
     [Inject]
-    private Current Current { get; set; } = default!;
+    private NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private Current Current { get; set; } = default!;
 
     private string ReturnUrl => this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri);
   }

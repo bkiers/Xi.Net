@@ -1,19 +1,18 @@
 namespace Xi.BlazorApp.Services
 {
-  using System.Threading.Tasks;
-  using Microsoft.AspNetCore.Components.Authorization;
-  using Xi.BlazorApp.Extensions;
+  using System.Security.Claims;
+  using Microsoft.AspNetCore.Http;
   using Xi.Models.Game;
 
   public class Current
   {
-    private readonly AuthenticationStateProvider authenticationStateProvider;
     private readonly IPlayerService playerService;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    public Current(AuthenticationStateProvider authenticationStateProvider, IPlayerService playerService)
+    public Current(IPlayerService playerService, IHttpContextAccessor httpContextAccessor)
     {
-      this.authenticationStateProvider = authenticationStateProvider;
       this.playerService = playerService;
+      this.httpContextAccessor = httpContextAccessor;
     }
 
     public int LoggedInPlayerId()
@@ -23,19 +22,19 @@ namespace Xi.BlazorApp.Services
 
     public Player LoggedInPlayer()
     {
-      var task = Task.Run(async () => await this.LoggedInPlayerAsync());
+      var user = this.httpContextAccessor.HttpContext?.User;
 
-      return task.Result;
-    }
-
-    public async Task<Player> LoggedInPlayerAsync()
-    {
-      var state = await this.authenticationStateProvider.GetAuthenticationStateAsync();
-
-      var email = state.Get("emailaddress", false);
-      var name = state.Get("name");
+      var name = user!.FindFirst(ClaimTypes.GivenName)!.Value;
+      var email = user!.FindFirst(ClaimTypes.Email)!.Value;
 
       return this.playerService.FindByEmailOrCreate(email, name);
+    }
+
+    public bool LoggedIn()
+    {
+      var user = this.httpContextAccessor.HttpContext?.User;
+
+      return user?.FindFirst(ClaimTypes.Email) != null;
     }
   }
 }
