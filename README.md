@@ -29,4 +29,5 @@ dotnet user-secrets init
 ```
 dotnet user-secrets set "Google:ClientId" "YOUR_CLIENT_ID"
 dotnet user-secrets set "Google:ClientSecret" "YOUR_CLIENT_SECRET"
+dotnet user-secrets set "XiConfig:SendGridApiKey" "YOUR_API_KEY"
 ```

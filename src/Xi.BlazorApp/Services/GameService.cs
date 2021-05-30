@@ -66,6 +66,22 @@ namespace Xi.BlazorApp.Services
       return games;
     }
 
+    public List<GameModel> UnfinishedGames()
+    {
+      var games = this.db.Games
+        .Where(g => g.Accepted && !g.AcceptedDrawPlayerId.HasValue && !g.WinnerPlayerId.HasValue)
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
+        .Include(g => g.Reminders)
+        .AsSplitQuery()
+        .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
+        .AsSplitQuery()
+        .Select(g => new GameModel(g.ToGame()))
+        .ToList();
+
+      return games;
+    }
+
     public GameModel? Game(int gameId)
     {
       var game = this.db.Games
@@ -74,6 +90,7 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.InitiatedPlayer)
         .Include(g => g.InvitedPlayer)
         .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
+        .AsSplitQuery()
         .SingleOrDefault(g => g.Id == gameId)?
         .ToGame();
 
@@ -104,6 +121,7 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
+        .AsSplitQuery()
         .Single(g => g.Id == gameId);
 
       if (!game.Accepted)
@@ -135,9 +153,15 @@ namespace Xi.BlazorApp.Services
       if (gameModel.Game.CurrentBoard().IsCheckmate(colorMoved.Opposite()) || gameModel.Game.CurrentBoard().IsStalemate(colorMoved.Opposite()))
       {
         game.WinnerPlayerId = loggedInPlayerId;
+        game.ClockRunsOutAt = null;
+      }
+      else
+      {
+        game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
       }
 
       this.db.SaveChanges();
+
       transaction.Commit();
 
       return gameModel;

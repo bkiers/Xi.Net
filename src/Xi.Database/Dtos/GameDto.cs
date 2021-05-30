@@ -53,6 +53,8 @@ namespace Xi.Database.Dtos
 
     public List<MoveDto> Moves { get; set; } = new();
 
+    public List<ReminderDto> Reminders { get; set; } = new();
+
     public Game ToGame()
     {
       return new(
@@ -63,12 +65,14 @@ namespace Xi.Database.Dtos
         this.InvitedPlayer.ToPlayer(),
         this.WinnerPlayer?.ToPlayer(),
         this.SecondsPerMove,
+        this.ClockRunsOutAt,
         this.Accepted,
         this.Moves.Select(m => new Move(
           new Cell(m.FromFileIndex, m.FromRankIndex),
           new Cell(m.ToFileIndex, m.ToRankIndex),
           m.CreatedAt))
-          .ToList());
+          .ToList(),
+        this.Reminders.Select(r => new Reminder(r.MoveNumber)));
     }
 
     public int TurnPlayerId()

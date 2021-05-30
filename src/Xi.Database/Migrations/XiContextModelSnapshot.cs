@@ -137,6 +137,26 @@ namespace Xi.Database.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("Xi.Database.Dtos.ReminderDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MoveNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId", "MoveNumber");
+
+                    b.ToTable("Reminders");
+                });
+
             modelBuilder.Entity("Xi.Database.Dtos.GameDto", b =>
                 {
                     b.HasOne("Xi.Database.Dtos.PlayerDto", "AcceptedDrawPlayer")
@@ -195,9 +215,22 @@ namespace Xi.Database.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("Xi.Database.Dtos.ReminderDto", b =>
+                {
+                    b.HasOne("Xi.Database.Dtos.GameDto", "Game")
+                        .WithMany("Reminders")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("Xi.Database.Dtos.GameDto", b =>
                 {
                     b.Navigation("Moves");
+
+                    b.Navigation("Reminders");
                 });
 #pragma warning restore 612, 618
         }

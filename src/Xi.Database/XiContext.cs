@@ -16,6 +16,8 @@ namespace Xi.Database
 
     public DbSet<PlayerDto> Players { get; set; } = default!;
 
+    public DbSet<ReminderDto> Reminders { get; set; } = default!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       base.OnModelCreating(modelBuilder);
@@ -32,6 +34,11 @@ namespace Xi.Database
       modelBuilder.Entity<GameDto>().HasOne(g => g.RedPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.BlackPlayer);
       modelBuilder.Entity<GameDto>().HasOne(g => g.WinnerPlayer);
+
+      // ReminderDto
+      modelBuilder.Entity<ReminderDto>()
+        .HasOne(m => m.Game)
+        .WithMany(g => g.Reminders);
     }
   }
 }

@@ -1,6 +1,5 @@
 namespace Xi.BlazorApp
 {
-  using System.Net.Http;
   using Fluxor;
   using Microsoft.AspNetCore.Authentication;
   using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,7 +11,9 @@ namespace Xi.BlazorApp
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Hosting;
   using Toolbelt.Blazor.Extensions.DependencyInjection;
+  using Xi.BlazorApp.BackgroundServices;
   using Xi.BlazorApp.Config;
+  using Xi.BlazorApp.EventHandlers;
   using Xi.BlazorApp.Services;
   using Xi.Database;
 
@@ -41,6 +42,7 @@ namespace Xi.BlazorApp
 
       services.AddScoped<IGameService, GameService>();
       services.AddScoped<IPlayerService, PlayerService>();
+      services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<Current>();
 
       services.AddHotKeys();
@@ -59,6 +61,18 @@ namespace Xi.BlazorApp
       services.AddScoped<HttpContextAccessor>();
 
       services.AddSingleton(this.Configuration);
+      services.AddSingleton(services);
+
+      services.AddHostedService<TimeCheckService>();
+
+      services.AddEventBus(builder =>
+      {
+        builder.AddInMemoryEventBus(subscriber =>
+        {
+          subscriber.Subscribe<EmailReminderEventHandler.Event, EmailReminderEventHandler>();
+          subscriber.Subscribe<TimeRanOutEventHandler.Event, TimeRanOutEventHandler>();
+        });
+      });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,5 +1,6 @@
 namespace Xi.Models.Game
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
 
@@ -15,8 +16,10 @@ namespace Xi.Models.Game
       Player invitedPlayer,
       Player? winnerPlayer,
       int secondsPerMove,
+      DateTime? clockRunsOutAt,
       bool accepted,
-      IEnumerable<Move> moves)
+      IEnumerable<Move> moves,
+      IEnumerable<Reminder> reminders)
     {
       this.boards = new List<Board>();
       this.Id = id;
@@ -26,8 +29,10 @@ namespace Xi.Models.Game
       this.InvitedPlayer = invitedPlayer;
       this.WinnerPlayer = winnerPlayer;
       this.SecondsPerMove = secondsPerMove;
+      this.ClockRunsOutAt = clockRunsOutAt;
       this.Accepted = accepted;
       this.Moves = moves.ToList();
+      this.Reminders = reminders.ToList();
 
       this.ReplayMoves();
     }
@@ -46,9 +51,13 @@ namespace Xi.Models.Game
 
     public int SecondsPerMove { get; }
 
+    public DateTime? ClockRunsOutAt { get; }
+
     public bool Accepted { get; }
 
     public List<Move> Moves { get; }
+
+    public List<Reminder> Reminders { get; }
 
     public Board Board(int boardIndex)
     {
@@ -67,6 +76,11 @@ namespace Xi.Models.Game
       return isBlackTurn ? Color.Black : Color.Red;
     }
 
+    public Player TurnPlayer()
+    {
+      return this.TurnPlayerColor() == Color.Red ? this.RedPlayer : this.BlackPlayer;
+    }
+
     public Game RemoveMovesFrom(int index)
     {
       return new Game(
@@ -77,8 +91,10 @@ namespace Xi.Models.Game
         this.InvitedPlayer,
         this.WinnerPlayer,
         this.SecondsPerMove,
+        this.ClockRunsOutAt,
         this.Accepted,
-        this.Moves.GetRange(0, index));
+        this.Moves.GetRange(0, index),
+        this.Reminders);
     }
 
     public void Move(Move move, bool appendToMoves = true)

@@ -41,6 +41,11 @@ namespace Xi.BlazorApp.Models
       return this.Game.Board(this.CurrentMoveIndex + 1);
     }
 
+    public Player OpponentOf(Player player)
+    {
+      return this.Game.RedPlayer.Id == player.Id ? this.Game.BlackPlayer : this.Game.RedPlayer;
+    }
+
     public void Click(Cell cell)
     {
       if (this.Game.Moves.Count != this.CurrentMoveIndex + 1)

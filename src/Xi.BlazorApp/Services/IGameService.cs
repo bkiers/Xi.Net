@@ -12,6 +12,8 @@ namespace Xi.BlazorApp.Services
 
     List<GameModel> Games();
 
+    List<GameModel> UnfinishedGames();
+
     GameModel? Game(int gameId);
 
     GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);

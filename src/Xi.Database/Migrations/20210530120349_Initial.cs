@@ -17,7 +17,8 @@ namespace Xi.Database.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     EloRating = table.Column<int>(type: "integer", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "boolean", nullable: false)
+                    IsAdmin = table.Column<bool>(type: "boolean", nullable: false),
+                    ShowPossibleMoves = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +38,6 @@ namespace Xi.Database.Migrations
                     AcceptedDrawPlayerId = table.Column<int>(type: "integer", nullable: true),
                     InitiatedPlayerId = table.Column<int>(type: "integer", nullable: false),
                     InvitedPlayerId = table.Column<int>(type: "integer", nullable: false),
-                    TurnPlayerId = table.Column<int>(type: "integer", nullable: false),
                     RedPlayerId = table.Column<int>(type: "integer", nullable: false),
                     BlackPlayerId = table.Column<int>(type: "integer", nullable: false),
                     WinnerPlayerId = table.Column<int>(type: "integer", nullable: true)
@@ -76,12 +76,6 @@ namespace Xi.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Games_Players_TurnPlayerId",
-                        column: x => x.TurnPlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Games_Players_WinnerPlayerId",
                         column: x => x.WinnerPlayerId,
                         principalTable: "Players",
@@ -99,13 +93,34 @@ namespace Xi.Database.Migrations
                     FromFileIndex = table.Column<int>(type: "integer", nullable: false),
                     ToRankIndex = table.Column<int>(type: "integer", nullable: false),
                     ToFileIndex = table.Column<int>(type: "integer", nullable: false),
-                    GameId = table.Column<int>(type: "integer", nullable: false)
+                    GameId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Moves", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Moves_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reminders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    GameId = table.Column<int>(type: "integer", nullable: false),
+                    MoveNumber = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reminders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reminders_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
@@ -138,11 +153,6 @@ namespace Xi.Database.Migrations
                 column: "RedPlayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_TurnPlayerId",
-                table: "Games",
-                column: "TurnPlayerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Games_WinnerPlayerId",
                 table: "Games",
                 column: "WinnerPlayerId");
@@ -157,12 +167,20 @@ namespace Xi.Database.Migrations
                 table: "Players",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reminders_GameId_MoveNumber",
+                table: "Reminders",
+                columns: new[] { "GameId", "MoveNumber" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Moves");
+
+            migrationBuilder.DropTable(
+                name: "Reminders");
 
             migrationBuilder.DropTable(
                 name: "Games");

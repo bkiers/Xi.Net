@@ -7,16 +7,16 @@ namespace Xi.BlazorApp.Services
 
   public interface IPlayerService
   {
-    public List<Player> AllPlayers();
+    List<Player> AllPlayers();
 
-    public List<Player> AllPlayersExcept(int playerId);
+    List<Player> AllPlayersExcept(int playerId);
 
-    public Player? FindByEmail(string email);
+    Player? FindByEmail(string email);
 
-    public Player FindById(int playerId);
+    Player FindById(int playerId);
 
-    public Player FindByEmailOrCreate(string email, string name);
+    Player FindByEmailOrCreate(string email, string name);
 
-    public Player Update(int playerId, bool showPossibleMoves);
+    Player Update(int playerId, bool showPossibleMoves);
   }
 }
