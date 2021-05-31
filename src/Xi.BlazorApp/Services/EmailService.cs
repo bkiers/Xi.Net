@@ -1,7 +1,7 @@
 namespace Xi.BlazorApp.Services
 {
+  using System;
   using System.Dynamic;
-  using System.Globalization;
   using System.IO;
   using System.Linq;
   using System.Text.RegularExpressions;
@@ -12,6 +12,7 @@ namespace Xi.BlazorApp.Services
   using SendGrid.Helpers.Mail;
   using Xi.BlazorApp.Config;
   using Xi.BlazorApp.Models;
+  using Xi.Models.Extensions;
   using Xi.Models.Game;
 
   public class EmailService : IEmailService
@@ -60,7 +61,7 @@ namespace Xi.BlazorApp.Services
       model.playerName = player.Name;
       model.opponenName = gameModel.OpponentOf(player).Name;
       model.gameUrl = $"{this.config.BaseUri}/games/{gameModel.Game.Id}";
-      model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt?.ToString(new CultureInfo("nl-NL")) ?? string.Empty;
+      model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt.ToStringNL("dddd dd MMMM HH:mm");
 
       return model;
     }
