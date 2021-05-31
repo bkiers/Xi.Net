@@ -28,6 +28,8 @@ namespace Xi.BlazorApp.Shared.Board
     [Inject]
     private IState<GameState> GameState { get; set; } = default!;
 
+    private bool IsLastMoveToCell => this.Cell.Equals(this.GameState.Value.GameModel!.GetCurrentMoveCells().ToCell);
+
     private string ImageUrl => this.FlipBoard
       ? $"/images/board/{10 - this.Cell.RankIndex}_{9 - this.Cell.FileIndex}.png"
       : $"/images/board/{this.Cell.RankIndex + 1}_{this.Cell.FileIndex + 1}.png";

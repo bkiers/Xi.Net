@@ -2,7 +2,30 @@
 
 @using Xi.Models.Game
 
+@if (this.IsLastMovedPiece)
+{
+  <style>
+  @@keyframes move {
+    from {
+      margin-left: @PreviousPixelPosition(true)px;
+      margin-top: @PreviousPixelPosition(false)px;
+    }
+    to {
+      margin-left: 0;
+      margin-top: 0;
+    }
+  }
+  </style>
+}
+
 @if (this.Piece != null)
 {
-  <img class="piece" src="@this.PieceUrl" alt="" />
+  if (this.IsLastMovedPiece)
+  {
+    <img class="piece" src="@this.PieceUrl" alt="" style="animation-name: move; animation-fill-mode: forwards; animation-duration: 500ms;" />
+  }
+  else
+  {
+    <img class="piece" src="@this.PieceUrl" alt="" />
+  }
 }
