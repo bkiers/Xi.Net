@@ -7,5 +7,8 @@ namespace Xi.BlazorApp.Models
 
     [SubjectAttribute("Oops, time's up!")]
     TimeRanOut,
+
+    // [SubjectAttribute("Oops, time's up!")]
+    // TimeRanOut,
   }
 }

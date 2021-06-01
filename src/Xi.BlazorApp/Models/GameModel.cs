@@ -27,6 +27,11 @@ namespace Xi.BlazorApp.Models
 
     public Cell? FirstClick { get; private set; }
 
+    public bool IsGameOver()
+    {
+      return this.Game.GameResultType.HasValue;
+    }
+
     public bool CanBeConfirmed(int index)
     {
       var lastConfirmedMove = this.Game.Moves.FindLast(m => m.CreatedAt.HasValue);

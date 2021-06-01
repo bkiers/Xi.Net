@@ -15,6 +15,7 @@ namespace Xi.Models.Game
       Player initiatedPlayer,
       Player invitedPlayer,
       Player? winnerPlayer,
+      GameResultType? gameResultType,
       int secondsPerMove,
       DateTime? clockRunsOutAt,
       bool accepted,
@@ -28,6 +29,7 @@ namespace Xi.Models.Game
       this.InitiatedPlayer = initiatedPlayer;
       this.InvitedPlayer = invitedPlayer;
       this.WinnerPlayer = winnerPlayer;
+      this.GameResultType = gameResultType;
       this.SecondsPerMove = secondsPerMove;
       this.ClockRunsOutAt = clockRunsOutAt;
       this.Accepted = accepted;
@@ -48,6 +50,8 @@ namespace Xi.Models.Game
     public Player InvitedPlayer { get; }
 
     public Player? WinnerPlayer { get; }
+
+    public GameResultType? GameResultType { get; }
 
     public int SecondsPerMove { get; }
 
@@ -83,13 +87,14 @@ namespace Xi.Models.Game
 
     public Game RemoveMovesFrom(int index)
     {
-      return new Game(
+      return new(
         this.Id,
         this.RedPlayer,
         this.BlackPlayer,
         this.InitiatedPlayer,
         this.InvitedPlayer,
         this.WinnerPlayer,
+        this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,
         this.Accepted,

@@ -38,6 +38,7 @@ namespace Xi.BlazorApp.Services
       return this.Game(game.Id)!;
     }
 
+
     public bool Decline(int loggedInPlayerId, int gameId)
     {
       var game = this.db.Games
@@ -50,6 +51,17 @@ namespace Xi.BlazorApp.Services
       }
 
       this.db.Games.Remove(game);
+
+      return this.db.SaveChanges() == 1;
+    }
+
+    // TODO: calculate ELO change
+    public bool EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType)
+    {
+      var game = this.db.Games.Single(g => g.Id == gameId);
+
+      game.WinnerPlayerId = winnerPlayerId;
+      game.GameResultType = gameResultType;
 
       return this.db.SaveChanges() == 1;
     }
@@ -69,7 +81,7 @@ namespace Xi.BlazorApp.Services
     public List<GameModel> UnfinishedGames()
     {
       var games = this.db.Games
-        .Where(g => g.Accepted && !g.AcceptedDrawPlayerId.HasValue && !g.WinnerPlayerId.HasValue)
+        .Where(g => !g.GameResultType.HasValue)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.Reminders)

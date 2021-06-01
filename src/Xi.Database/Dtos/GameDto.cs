@@ -51,6 +51,8 @@ namespace Xi.Database.Dtos
 
     public PlayerDto? WinnerPlayer { get; set; } = null;
 
+    public GameResultType? GameResultType{ get; set; }
+
     public List<MoveDto> Moves { get; set; } = new();
 
     public List<ReminderDto> Reminders { get; set; } = new();
@@ -64,6 +66,7 @@ namespace Xi.Database.Dtos
         this.InitiatedPlayer.ToPlayer(),
         this.InvitedPlayer.ToPlayer(),
         this.WinnerPlayer?.ToPlayer(),
+        this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,
         this.Accepted,

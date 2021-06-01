@@ -10,6 +10,8 @@ namespace Xi.BlazorApp.Services
 
     bool Decline(int loggedInPlayerId, int gameId);
 
+    bool EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType);
+
     List<GameModel> Games();
 
     List<GameModel> UnfinishedGames();

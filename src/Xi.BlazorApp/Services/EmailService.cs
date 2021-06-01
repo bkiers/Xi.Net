@@ -61,6 +61,7 @@ namespace Xi.BlazorApp.Services
       model.playerName = player.Name;
       model.opponenName = gameModel.OpponentOf(player).Name;
       model.gameUrl = $"{this.config.BaseUri}/games/{gameModel.Game.Id}";
+      model.newGameUrl = $"{this.config.BaseUri}/games/new";
       model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt.ToStringNL("dddd dd MMMM HH:mm");
 
       return model;
