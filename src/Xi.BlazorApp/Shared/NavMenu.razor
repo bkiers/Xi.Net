@@ -1,6 +1,8 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorLayout
+
+<div class="top-row pl-4 navbar navbar-dark">
   <a class="navbar-brand" href="">Xi</a>
-  <button class="navbar-toggler" @onclick="ToggleNavMenu">
+  <button class="navbar-toggler" @onclick="@this.ToggleNavMenu">
     <span class="navbar-toggler-icon"></span>
   </button>
 </div>
@@ -24,14 +26,3 @@
     </li>
   </ul>
 </div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
