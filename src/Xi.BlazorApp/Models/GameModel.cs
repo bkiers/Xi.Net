@@ -114,8 +114,13 @@ namespace Xi.BlazorApp.Models
       this.FirstClick = null;
     }
 
-    public (Cell FromCell, Cell ToCell) GetCurrentMoveCells()
+    public (Cell? FromCell, Cell? ToCell) GetCurrentMoveCells()
     {
+      if (this.Game.Moves.Count == 0)
+      {
+        return (null, null);
+      }
+
       var currentMove = this.Game.Moves[this.CurrentMoveIndex];
 
       return (currentMove.FromCell, currentMove.ToCell);

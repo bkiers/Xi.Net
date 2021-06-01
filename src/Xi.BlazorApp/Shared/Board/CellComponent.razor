@@ -10,5 +10,8 @@
     <img class="highlight" src="/images/pieces/highlight.svg" alt="" />
   }
 
-  <PieceComponent Piece="@this.Cell.Piece" IsLastMovedPiece="@this.IsLastMoveToCell" />
+  <PieceComponent
+    Piece="@this.Cell.Piece"
+    FlipBoard="@this.FlipBoard"
+    IsLastMovedPiece="@this.IsLastMoveToCell" />
 </span>

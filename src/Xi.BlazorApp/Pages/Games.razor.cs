@@ -13,6 +13,9 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     public IState<GamesState> GamesState { get; set; } = default!;
 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
     protected override void OnInitialized()
     {
       if (this.GamesState.Value.GameViewModels == null)

@@ -17,22 +17,29 @@ else if (this.GamesState.Value.GameViewModels != null)
   <h2>Games</h2>
 
   <p>
-    <NavLink href="/games/new">New game</NavLink>
+    <a href="/games/new" class="btn btn-primary btn-sm" role="button" aria-disabled="true">
+      <i class="fa fa-plus"></i>
+      New game
+    </a>
   </p>
 
-  <table>
+  <table class="table table-hover">
+    <thead>
     <tr>
-      <th></th>
-      <th>Red</th>
-      <th>Black</th>
+      <th scope="col">#</th>
+      <th scope="col">Red</th>
+      <th scope="col">Black</th>
     </tr>
+    </thead>
+    <tbody>
     @foreach (var gameViewModel in GamesState.Value.GameViewModels)
     {
-      <tr>
-        <td><a href="/games/@gameViewModel.Game.Id">@gameViewModel.Game.Id</a></td>
+      <tr @onclick="@(() => this.NavigationManager.NavigateTo($"/games/{@gameViewModel.Game.Id}"))" class="game-row">
+        <th scope="row">@gameViewModel.Game.Id</th>
         <td>@gameViewModel.Game.RedPlayer.Name</td>
         <td>@gameViewModel.Game.BlackPlayer.Name</td>
       </tr>
     }
+    </tbody>
   </table>
 }

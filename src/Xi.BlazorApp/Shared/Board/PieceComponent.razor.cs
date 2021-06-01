@@ -13,6 +13,9 @@ namespace Xi.BlazorApp.Shared.Board
     public Piece? Piece { get; set; }
 
     [Parameter]
+    public bool FlipBoard { get; set; }
+
+    [Parameter]
     public bool IsLastMovedPiece { get; set; }
 
     [Inject]
@@ -26,11 +29,16 @@ namespace Xi.BlazorApp.Shared.Board
     {
       var (fromCell, toCell) = this.GameState.Value.GameModel!.GetCurrentMoveCells();
 
+      if (fromCell == null || toCell == null)
+      {
+        return 0;
+      }
+
       var delta = isFile ?
         fromCell.FileIndex - toCell.FileIndex :
         fromCell.RankIndex - toCell.RankIndex;
 
-      return delta * PieceSize;
+      return delta * PieceSize * (this.FlipBoard ? -1 : 1);
     }
   }
 }

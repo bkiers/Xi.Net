@@ -11,42 +11,56 @@ else
 {
   <h2>New game</h2>
 
-  <EditForm Model="@NewGameModel" OnValidSubmit="@HandleSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+  <div class="form-wrapper">
+    <EditForm Model="@NewGameModel" OnValidSubmit="@HandleSubmit">
+      <DataAnnotationsValidator />
+      <ValidationSummary />
 
-    <div class="form-group">
-      <label for="PlayingWithColor">Playing with</label>
-      <InputSelect class="form-control" id="PlayingWithColor" @bind-Value="@NewGameModel.PlayingWithColor">
-        <option value="@Xi.Models.Game.Color.Red">Red</option>
-        <option value="@Xi.Models.Game.Color.Black">Black</option>
-      </InputSelect>
-    </div>
+      <div class="form-group row">
+        <label for="PlayingWithColor" class="col-sm-4 col-form-label">Playing with</label>
+        <div class="col-sm-8">
+          <InputSelect class="form-control" id="PlayingWithColor" @bind-Value="@NewGameModel.PlayingWithColor">
+            <option value="@Xi.Models.Game.Color.Red">Red</option>
+            <option value="@Xi.Models.Game.Color.Black">Black</option>
+          </InputSelect>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="OpponentPlayerId">Against opponent</label>
-      <InputSelect class="form-control" id="OpponentPlayerId" @bind-Value="@NewGameModel.OpponentPlayerId">
-        @foreach (var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPlayerId()))
-        {
-          <option value="@player.Id">@player.Name</option>
-        }
-      </InputSelect>
-    </div>
+      <div class="form-group row">
+        <label for="OpponentPlayerId" class="col-sm-4 col-form-label">Against</label>
+        <div class="col-sm-8">
+          <InputSelect class="form-control" id="OpponentPlayerId" @bind-Value="@NewGameModel.OpponentPlayerId">
+            @foreach ( var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPlayerId()) )
+            {
+              <option value="@player.Id">@player.Name</option>
+            }
+          </InputSelect>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="DaysPerMove">With days per move</label>
-      <InputSelect class="form-control" id="DaysPerMove" @bind-Value="@NewGameModel.DaysPerMove">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-      </InputSelect>
-    </div>
+      <div class="form-group row">
+        <label for="DaysPerMove" class="col-sm-4 col-form-label">Days per move</label>
+        <div class="col-sm-8">
+          <InputSelect class="form-control" id="DaysPerMove" @bind-Value="@NewGameModel.DaysPerMove">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </InputSelect>
+        </div>
+      </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-  </EditForm>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label"></label>
+        <div class="col-sm-8">
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </div>
+
+    </EditForm>
+  </div>
 }
 
