@@ -126,6 +126,7 @@ namespace Xi.BlazorApp.Services
       return this.Game(game.Id);
     }
 
+    // TODO fire event when game is over
     public GameModel Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
     {
       var game = this.db.Games
@@ -135,6 +136,11 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
         .AsSplitQuery()
         .Single(g => g.Id == gameId);
+
+      if (game.GameResultType.HasValue)
+      {
+        throw new Exception($"Game {game.Id} is already over.");
+      }
 
       if (!game.Accepted)
       {
@@ -162,10 +168,14 @@ namespace Xi.BlazorApp.Services
       var gameModel = this.Game(gameId)!;
       var colorMoved = loggedInPlayerId == game.RedPlayerId ? Color.Red : Color.Black;
 
-      if (gameModel.Game.CurrentBoard().IsCheckmate(colorMoved.Opposite()) || gameModel.Game.CurrentBoard().IsStalemate(colorMoved.Opposite()))
+      var checkmate = gameModel.Game.CurrentBoard().IsCheckmate(colorMoved.Opposite());
+      var stalemate = gameModel.Game.CurrentBoard().IsStalemate(colorMoved.Opposite());
+
+      if (checkmate || stalemate)
       {
         game.WinnerPlayerId = loggedInPlayerId;
         game.ClockRunsOutAt = null;
+        game.GameResultType = checkmate ? GameResultType.Checkmate : GameResultType.Stalemate;
       }
       else
       {
