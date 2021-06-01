@@ -7,7 +7,7 @@ namespace Xi.BlazorApp.Shared.Board
 
   public partial class PieceComponent
   {
-    private const int PieceSize = 50;
+    private const int PieceSize = 46;
 
     [Parameter]
     public Piece? Piece { get; set; }
