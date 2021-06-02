@@ -29,5 +29,10 @@ namespace Xi.BlazorApp.Shared.Board
     {
       this.Dispatcher.Dispatch(new ConfirmMoveAction(this.Current.LoggedInPlayerId(), this.GameModel, this.Index));
     }
+
+    private void JumpToThisMove()
+    {
+      this.Dispatcher.Dispatch(new JumpToMoveAction(this.GameModel, this.Index));
+    }
   }
 }

@@ -23,3 +23,7 @@ td {
   vertical-align: middle;
   float: right;
 }
+
+.move {
+  cursor: pointer;
+}
