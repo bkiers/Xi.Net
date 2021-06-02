@@ -5,6 +5,7 @@ namespace Xi.BlazorApp.Pages
   using Microsoft.AspNetCore.Components;
   using Microsoft.AspNetCore.SignalR.Client;
   using Xi.BlazorApp.Services;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
@@ -57,6 +58,15 @@ namespace Xi.BlazorApp.Pages
     private void DeclineGame()
     {
       this.Dispatcher.Dispatch(new DeclineGameAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
+    }
+
+    private void Forfeit()
+    {
+    }
+
+    private void ProposeDraw()
+    {
+      this.Dispatcher.Dispatch(new ProposeDrawAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
 
     private void Refresh(int gameId)

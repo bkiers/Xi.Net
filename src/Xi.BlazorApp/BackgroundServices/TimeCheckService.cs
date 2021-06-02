@@ -7,7 +7,7 @@ namespace Xi.BlazorApp.BackgroundServices
   using JKang.EventBus;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Logging;
-  using Xi.BlazorApp.EventHandlers;
+  using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Services;
 
   public class TimeCheckService : BackgroundService
@@ -41,10 +41,10 @@ namespace Xi.BlazorApp.BackgroundServices
             switch (hoursThinkingTime)
             {
               case < 0:
-                await eventPublisher.PublishEventAsync(new TimeRanOutEventHandler.Event(game));
+                await eventPublisher.PublishEventAsync(new GameEvent(game));
                 break;
               case < 12 when game.Game.Reminders.SingleOrDefault(r => r.MoveNumber == game.Game.Moves.Count) == null:
-                await eventPublisher.PublishEventAsync(new EmailReminderEventHandler.Event(game));
+                await eventPublisher.PublishEventAsync(new GameEvent(game));
                 break;
             }
           }

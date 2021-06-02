@@ -5,7 +5,13 @@
 
 @if (this.NewGameState.Value.GameViewModel != null)
 {
-  <span>Sucess!</span>
+  <h2>Inivitation sent!</h2>
+
+  <p>
+    @this.NewGameState.Value.GameViewModel.Game.InvitedPlayer.Name has been notified
+    by email. When @this.NewGameState.Value.GameViewModel.Game.InvitedPlayer.Name accepts
+    (or declines) your invitation, you'll also be notified.
+  </p>
 }
 else
 {

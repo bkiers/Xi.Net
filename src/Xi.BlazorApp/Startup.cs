@@ -33,12 +33,12 @@ namespace Xi.BlazorApp
       services.AddRazorPages();
       services.AddServerSideBlazor();
 
+      services.AddDbContext<XiContext>(options =>
+        options.UseNpgsql(this.Configuration.GetConnectionString("DefaultConnection")));
+
       services.AddFluxor(o => o
         .ScanAssemblies(typeof(Program).Assembly)
         .UseReduxDevTools());
-
-      services.AddDbContext<XiContext>(options =>
-        options.UseNpgsql(this.Configuration.GetConnectionString("DefaultConnection")));
 
       services.AddScoped<IGameService, GameService>();
       services.AddScoped<IPlayerService, PlayerService>();
@@ -71,6 +71,11 @@ namespace Xi.BlazorApp
         {
           subscriber.Subscribe<EmailReminderEventHandler.Event, EmailReminderEventHandler>();
           subscriber.Subscribe<TimeRanOutEventHandler.Event, TimeRanOutEventHandler>();
+          subscriber.Subscribe<NewGameEventHandler.Event, NewGameEventHandler>();
+          subscriber.Subscribe<AcceptNewGameEventHandler.Event, AcceptNewGameEventHandler>();
+          subscriber.Subscribe<DeclineNewGameEventHandler.Event, DeclineNewGameEventHandler>();
+          subscriber.Subscribe<GameOverEventHandler.Event, GameOverEventHandler>();
+          subscriber.Subscribe<MoveMadeEventHandler.Event, MoveMadeEventHandler>();
         });
       });
     }

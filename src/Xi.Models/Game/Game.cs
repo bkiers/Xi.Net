@@ -15,6 +15,8 @@ namespace Xi.Models.Game
       Player initiatedPlayer,
       Player invitedPlayer,
       Player? winnerPlayer,
+      Player? proposedDrawPlayer,
+      Player? acceptedDrawPlayer,
       GameResultType? gameResultType,
       int secondsPerMove,
       DateTime? clockRunsOutAt,
@@ -29,6 +31,8 @@ namespace Xi.Models.Game
       this.InitiatedPlayer = initiatedPlayer;
       this.InvitedPlayer = invitedPlayer;
       this.WinnerPlayer = winnerPlayer;
+      this.ProposedDrawPlayer = proposedDrawPlayer;
+      this.AcceptedDrawPlayer = acceptedDrawPlayer;
       this.GameResultType = gameResultType;
       this.SecondsPerMove = secondsPerMove;
       this.ClockRunsOutAt = clockRunsOutAt;
@@ -50,6 +54,10 @@ namespace Xi.Models.Game
     public Player InvitedPlayer { get; }
 
     public Player? WinnerPlayer { get; }
+
+    public Player? ProposedDrawPlayer { get; }
+
+    public Player? AcceptedDrawPlayer { get; }
 
     public GameResultType? GameResultType { get; }
 
@@ -99,6 +107,8 @@ namespace Xi.Models.Game
         this.InitiatedPlayer,
         this.InvitedPlayer,
         this.WinnerPlayer,
+        this.ProposedDrawPlayer,
+        this.AcceptedDrawPlayer,
         this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,

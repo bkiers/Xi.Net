@@ -23,7 +23,7 @@ namespace Xi.BlazorApp.Shared.Board
       while ((this.ClockRunsOutAt - DateTime.UtcNow).TotalSeconds >= 0)
       {
         this.FormattedCounter = this.GetFormattedCounter();
-        StateHasChanged();
+        this.StateHasChanged();
 
         await Task.Delay(1000);
       }

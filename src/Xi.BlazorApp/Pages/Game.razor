@@ -32,29 +32,41 @@
   }
   else
   {
-    <div class="container">
-      <div class="left-element">
-        <h3>Game @game.Id</h3>
+    @if (game.ProposedDrawPlayer != null)
+    {
+      <span>TODO draw</span>
+    }
+    else
+    {
+      <div class="container">
+        <div class="left-element">
+          <h3>Game @game.Id</h3>
 
-        <PlayerComponent
-          IsTop="@true"
-          FlipBoard="@this.FlipBoard()"
-          GameModel="@model" />
+          <PlayerComponent
+            IsTop="@true"
+            FlipBoard="@this.FlipBoard()"
+            GameModel="@model"/>
 
-        <BoardComponent
-          Board="@model.CurrentBoard()"
-          HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
-          FlipBoard="@this.FlipBoard()" />
+          <BoardComponent
+            Board="@model.CurrentBoard()"
+            HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
+            FlipBoard="@this.FlipBoard()"/>
 
-        <PlayerComponent
-          IsTop="@false"
-          FlipBoard="@this.FlipBoard()"
-          GameModel="@model" />
+          <PlayerComponent
+            IsTop="@false"
+            FlipBoard="@this.FlipBoard()"
+            GameModel="@model"/>
+
+          <div class="game-actions">
+            <button @onclick="@Forfeit" type="button" class="btn btn-sm btn-danger">Forfeit</button>
+            <button @onclick="@ProposeDraw" type="button" class="btn btn-sm btn-warning">Draw</button>
+          </div>
+        </div>
+        <div class="right-element">
+          <MovesComponent GameModel="@model"/>
+        </div>
       </div>
-      <div class="right-element">
-        <MovesComponent GameModel="@model" />
-      </div>
-    </div>
+    }
   }
 }
 

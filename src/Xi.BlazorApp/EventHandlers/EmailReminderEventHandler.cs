@@ -36,14 +36,12 @@ namespace Xi.BlazorApp.EventHandlers
       }
     }
 
-    public class Event
+    public class Event : GameEvent
     {
       public Event(GameModel gameModel)
+        : base(gameModel)
       {
-        this.GameModel = gameModel;
       }
-
-      public GameModel GameModel { get; }
     }
   }
 }

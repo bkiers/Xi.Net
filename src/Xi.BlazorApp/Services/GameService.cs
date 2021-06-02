@@ -3,7 +3,9 @@ namespace Xi.BlazorApp.Services
   using System;
   using System.Collections.Generic;
   using System.Linq;
+  using JKang.EventBus;
   using Microsoft.EntityFrameworkCore;
+  using Xi.BlazorApp.EventHandlers;
   using Xi.BlazorApp.Models;
   using Xi.Database;
   using Xi.Database.Dtos;
@@ -13,10 +15,12 @@ namespace Xi.BlazorApp.Services
   public class GameService : IGameService
   {
     private readonly XiContext db;
+    private readonly IEventPublisher eventPublisher;
 
-    public GameService(XiContext db)
+    public GameService(XiContext db, IEventPublisher eventPublisher)
     {
       this.db = db;
+      this.eventPublisher = eventPublisher;
     }
 
     public GameModel Accept(int loggedInPlayerId, int gameId)
@@ -35,9 +39,35 @@ namespace Xi.BlazorApp.Services
 
       this.db.SaveChanges();
 
-      return this.Game(game.Id)!;
+      var gameModel = this.Game(game.Id)!;
+
+      this.eventPublisher.PublishEventAsync(new AcceptNewGameEventHandler.Event(gameModel));
+
+      return gameModel;
     }
 
+    public GameModel ProposeDraw(int loggedInPlayerId, int gameId)
+    {
+      var game = this.db.Games
+        .Include(g => g.Moves.OrderBy(m => m.CreatedAt))
+        .AsSplitQuery()
+        .Single(g => g.Id == gameId);
+
+      if (game.ProposedDrawPlayerId != null)
+      {
+        throw new Exception("There is already a pending draw proposal.");
+      }
+
+      if (game.TurnPlayerId() != loggedInPlayerId)
+      {
+        throw new Exception("You can only propose a draw when it's your turn.");
+      }
+
+      game.ProposedDrawPlayerId = loggedInPlayerId;
+      this.db.SaveChanges();
+
+      return this.Game(game.Id)!;
+    }
 
     public bool Decline(int loggedInPlayerId, int gameId)
     {
@@ -50,7 +80,10 @@ namespace Xi.BlazorApp.Services
         throw new Exception($"Only {game.InvitedPlayer.Name} can decline this game.");
       }
 
+      var gameModel = this.Game(game.Id)!;
       this.db.Games.Remove(game);
+
+      this.eventPublisher.PublishEventAsync(new DeclineNewGameEventHandler.Event(gameModel));
 
       return this.db.SaveChanges() == 1;
     }
@@ -62,6 +95,10 @@ namespace Xi.BlazorApp.Services
 
       game.WinnerPlayerId = winnerPlayerId;
       game.GameResultType = gameResultType;
+
+      var gameModel = this.Game(game.Id)!;
+
+      this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(gameModel));
 
       return this.db.SaveChanges() == 1;
     }
@@ -81,7 +118,7 @@ namespace Xi.BlazorApp.Services
     public List<GameModel> UnfinishedGames()
     {
       var games = this.db.Games
-        .Where(g => !g.GameResultType.HasValue)
+        .Where(g => !g.GameResultType.HasValue && g.Accepted)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.Reminders)
@@ -109,7 +146,7 @@ namespace Xi.BlazorApp.Services
       return game == null ? null : new GameModel(game);
     }
 
-    public GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
+    public GameModel NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
     {
       var game = new GameDto
       {
@@ -123,10 +160,13 @@ namespace Xi.BlazorApp.Services
       this.db.Games.Add(game);
       this.db.SaveChanges();
 
-      return this.Game(game.Id);
+      var gameModel = this.Game(game.Id)!;
+
+      this.eventPublisher.PublishEventAsync(new NewGameEventHandler.Event(gameModel));
+
+      return gameModel;
     }
 
-    // TODO fire event when game is over
     public GameModel Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell)
     {
       var game = this.db.Games
@@ -185,6 +225,15 @@ namespace Xi.BlazorApp.Services
       this.db.SaveChanges();
 
       transaction.Commit();
+
+      if (checkmate || stalemate)
+      {
+        this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(this.Game(game.Id)!));
+      }
+      else
+      {
+        this.eventPublisher.PublishEventAsync(new MoveMadeEventHandler.Event(this.Game(game.Id)!));
+      }
 
       return gameModel;
     }

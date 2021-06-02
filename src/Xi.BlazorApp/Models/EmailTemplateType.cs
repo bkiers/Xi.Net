@@ -2,13 +2,31 @@ namespace Xi.BlazorApp.Models
 {
   public enum EmailTemplateType
   {
-    [SubjectAttribute("Time's almost up!")]
+    [SubjectAttribute("Xi - A new challenge!")]
+    NewGame,
+
+    [SubjectAttribute("Xi - Challenge accepted!")]
+    AcceptNewGame,
+
+    [SubjectAttribute("Xi - Challenge declined...")]
+    DeclineNewGame,
+
+    [SubjectAttribute("Xi - draw proposal declined")]
+    DeclineDraw,
+
+    [SubjectAttribute("Xi - Time's almost up!")]
     MoveReminder,
 
-    [SubjectAttribute("Oops, time's up!")]
-    TimeRanOut,
+    [SubjectAttribute("Xi - you lost the game :(")]
+    GameOver,
 
-    // [SubjectAttribute("Oops, time's up!")]
-    // TimeRanOut,
+    [SubjectAttribute("Xi - draw proposal accepted")]
+    GameOverDraw,
+
+    [SubjectAttribute("Xi - Oops, time's up!")]
+    GameOverTimeUp,
+
+    [SubjectAttribute("Xi - Your turn!")]
+    MoveMade,
   }
 }

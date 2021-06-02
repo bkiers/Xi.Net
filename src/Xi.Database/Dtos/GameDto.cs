@@ -23,6 +23,10 @@ namespace Xi.Database.Dtos
 
     public DateTime? ClockRunsOutAt { get; set; }
 
+    public int? ProposedDrawPlayerId { get; set; }
+
+    public PlayerDto? ProposedDrawPlayer { get; set; } = null;
+
     public int? AcceptedDrawPlayerId { get; set; }
 
     public PlayerDto? AcceptedDrawPlayer { get; set; } = null;
@@ -66,6 +70,8 @@ namespace Xi.Database.Dtos
         this.InitiatedPlayer.ToPlayer(),
         this.InvitedPlayer.ToPlayer(),
         this.WinnerPlayer?.ToPlayer(),
+        this.ProposedDrawPlayer?.ToPlayer(),
+        this.AcceptedDrawPlayer?.ToPlayer(),
         this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,

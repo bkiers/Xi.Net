@@ -41,9 +41,9 @@ namespace Xi.BlazorApp.Services
       var htmlContent = template(model);
       var plainTextContent = Regex.Replace(htmlContent, @"<[\s\S]*?>[ \t]*[\r\n]?", string.Empty);
 
-      this.logger.LogDebug($"subject     --> {subject}");
+      this.logger.LogDebug($"subject --> {subject}");
       this.logger.LogDebug($"htmlContent --> {htmlContent}");
-      this.logger.LogDebug($"htmlContent --> {plainTextContent}");
+      this.logger.LogDebug($"plainTextContent --> {plainTextContent}");
 
       if (this.config.EmailEnabled)
       {
@@ -59,10 +59,12 @@ namespace Xi.BlazorApp.Services
 
       model.gameId = gameModel.Game.Id;
       model.playerName = player.Name;
-      model.opponenName = gameModel.OpponentOf(player).Name;
+      model.opponentName = gameModel.OpponentOf(player).Name;
       model.gameUrl = $"{this.config.BaseUri}/games/{gameModel.Game.Id}";
       model.newGameUrl = $"{this.config.BaseUri}/games/new";
       model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt.ToStringNL("dddd dd MMMM HH:mm");
+      model.winnerName = gameModel.Game.WinnerPlayer?.Name ?? string.Empty;
+      model.loserPlayer = string.IsNullOrEmpty(model.winnerName) ? string.Empty : gameModel.OpponentOf(gameModel.Game.WinnerPlayer!).Name;
 
       return model;
     }

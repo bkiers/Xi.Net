@@ -3,7 +3,7 @@ Hi {{playerName}},
 </p>
 
 <p>
-Alas, your clock ran out in in game {{gameId}}: {{gameUrl}}
+Your draw-proposal from game {{gameId}} was accepted by {{opponentName}}: {{gameUrl}}
 </p>
 
 <p>
@@ -13,3 +13,4 @@ If you're up for it, start a new game here: {{newGameUrl}}
 <p>
 Good luck!
 </p>
+
