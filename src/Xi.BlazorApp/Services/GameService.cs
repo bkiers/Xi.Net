@@ -58,15 +58,44 @@ namespace Xi.BlazorApp.Services
         throw new Exception("There is already a pending draw proposal.");
       }
 
-      if (game.TurnPlayerId() != loggedInPlayerId)
-      {
-        throw new Exception("You can only propose a draw when it's your turn.");
-      }
-
       game.ProposedDrawPlayerId = loggedInPlayerId;
       this.db.SaveChanges();
 
-      return this.Game(game.Id)!;
+      var gameModel = this.Game(game.Id)!;
+
+      this.eventPublisher.PublishEventAsync(new DrawProposalEventHandler.Event(gameModel));
+
+      return gameModel;
+    }
+
+    public GameModel HandleDrawProposal(int loggedInPlayerId, int gameId, bool accept)
+    {
+      var game = this.db.Games.Single(g => g.Id == gameId);
+
+      if (game.ProposedDrawPlayerId == null)
+      {
+        throw new Exception("There is no pending draw proposal.");
+      }
+
+      if (game.ProposedDrawPlayerId == loggedInPlayerId)
+      {
+        throw new Exception("You cannot accept your own draw proposal.");
+      }
+
+      game.ProposedDrawPlayerId = null;
+
+      if (accept)
+      {
+        game.AcceptedDrawPlayerId = loggedInPlayerId;
+      }
+      else
+      {
+        this.eventPublisher.PublishEventAsync(new DeclineDrawProposalEventHandler.Event(this.Game(gameId)!));
+      }
+
+      this.db.SaveChanges();
+
+      return accept ? this.EndGame(gameId, null, GameResultType.Draw) : this.Game(game.Id)!;
     }
 
     public bool Decline(int loggedInPlayerId, int gameId)
@@ -89,7 +118,7 @@ namespace Xi.BlazorApp.Services
     }
 
     // TODO: calculate ELO change
-    public bool EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType)
+    public GameModel EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType)
     {
       var game = this.db.Games.Single(g => g.Id == gameId);
 
@@ -100,7 +129,9 @@ namespace Xi.BlazorApp.Services
 
       this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(gameModel));
 
-      return this.db.SaveChanges() == 1;
+      this.db.SaveChanges();
+
+      return this.Game(game.Id)!;
     }
 
     public List<GameModel> Games()
@@ -222,20 +253,25 @@ namespace Xi.BlazorApp.Services
         game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
       }
 
+      // In case there was a draw-proposal, revoke it.
+      game.ProposedDrawPlayerId = null;
+
       this.db.SaveChanges();
 
       transaction.Commit();
 
+      var reloadedGameModel = new GameModel(game.ToGame());
+
       if (checkmate || stalemate)
       {
-        this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(this.Game(game.Id)!));
+        this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(reloadedGameModel));
       }
       else
       {
-        this.eventPublisher.PublishEventAsync(new MoveMadeEventHandler.Event(this.Game(game.Id)!));
+        this.eventPublisher.PublishEventAsync(new MoveMadeEventHandler.Event(reloadedGameModel));
       }
 
-      return gameModel;
+      return reloadedGameModel;
     }
   }
 }

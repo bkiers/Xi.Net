@@ -3,7 +3,6 @@ namespace Xi.BlazorApp.Pages
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
-  using Microsoft.AspNetCore.SignalR.Client;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
@@ -24,9 +23,6 @@ namespace Xi.BlazorApp.Pages
 
     [Inject]
     private Current Current { get; set; } = default!;
-
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,12 +65,9 @@ namespace Xi.BlazorApp.Pages
       this.Dispatcher.Dispatch(new ProposeDrawAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
 
-    private void Refresh(int gameId)
+    private void HandleDrawProposal(bool accept)
     {
-      if (this.GameId!.Value == gameId)
-      {
-        this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
-      }
+      this.Dispatcher.Dispatch(new HandleDrawProposalAction(accept, this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
   }
 }

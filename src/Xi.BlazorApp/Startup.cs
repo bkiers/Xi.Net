@@ -76,6 +76,8 @@ namespace Xi.BlazorApp
           subscriber.Subscribe<DeclineNewGameEventHandler.Event, DeclineNewGameEventHandler>();
           subscriber.Subscribe<GameOverEventHandler.Event, GameOverEventHandler>();
           subscriber.Subscribe<MoveMadeEventHandler.Event, MoveMadeEventHandler>();
+          subscriber.Subscribe<DrawProposalEventHandler.Event, DrawProposalEventHandler>();
+          subscriber.Subscribe<DeclineDrawProposalEventHandler.Event, DeclineDrawProposalEventHandler>();
         });
       });
     }

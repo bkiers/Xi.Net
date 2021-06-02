@@ -29,6 +29,7 @@ else if (this.GamesState.Value.GameViewModels != null)
       <th scope="col">#</th>
       <th scope="col">Red</th>
       <th scope="col">Black</th>
+      <th scope="col">Status</th>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@ else if (this.GamesState.Value.GameViewModels != null)
         <th scope="row">@gameViewModel.Game.Id</th>
         <td>@gameViewModel.Game.RedPlayer.Name</td>
         <td>@gameViewModel.Game.BlackPlayer.Name</td>
+        <td>@gameViewModel.Game.Result()</td>
       </tr>
     }
     </tbody>

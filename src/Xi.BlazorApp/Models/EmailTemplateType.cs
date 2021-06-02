@@ -11,9 +11,6 @@ namespace Xi.BlazorApp.Models
     [SubjectAttribute("Xi - Challenge declined...")]
     DeclineNewGame,
 
-    [SubjectAttribute("Xi - draw proposal declined")]
-    DeclineDraw,
-
     [SubjectAttribute("Xi - Time's almost up!")]
     MoveReminder,
 
@@ -28,5 +25,11 @@ namespace Xi.BlazorApp.Models
 
     [SubjectAttribute("Xi - Your turn!")]
     MoveMade,
+
+    [SubjectAttribute("Xi - Draw proposal")]
+    DrawProposal,
+
+    [SubjectAttribute("Xi - Draw proposal declined...")]
+    DeclineDrawProposal,
   }
 }

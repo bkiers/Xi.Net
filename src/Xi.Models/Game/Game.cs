@@ -3,6 +3,7 @@ namespace Xi.Models.Game
   using System;
   using System.Collections.Generic;
   using System.Linq;
+  using Xi.Models.Extensions;
 
   public class Game
   {
@@ -168,6 +169,27 @@ namespace Xi.Models.Game
     public Color PlayingWithColor(int playerId)
     {
       return this.RedPlayer.Id == playerId ? Color.Red : Color.Black;
+    }
+
+    public string Result()
+    {
+      if (!this.Accepted)
+      {
+        return $"{this.InvitedPlayer.Name} has to accept this game first";
+      }
+      else if (!this.GameResultType.HasValue)
+      {
+        return $"In progress, {this.TurnPlayer().Name} has until {this.ClockRunsOutAt.ToStringNL("MMM' 'dd', 'HH:mm")}";
+      }
+
+      return this.GameResultType.Value switch
+      {
+        Models.Game.GameResultType.Draw => "This game ended in a draw",
+        Models.Game.GameResultType.TimeUp => $"{this.WinnerPlayer!.Name} won because {this.TurnPlayer().Name}'s clock ran out",
+        Models.Game.GameResultType.Checkmate => $"{this.WinnerPlayer!.Name} won by checkmate",
+        Models.Game.GameResultType.Stalemate => $"{this.WinnerPlayer!.Name} won by stalemate",
+        _ => throw new Exception($"Unknown type: {this.GameResultType}"),
+      };
     }
 
     private void ReplayMoves()

@@ -10,9 +10,11 @@ namespace Xi.BlazorApp.Services
 
     GameModel ProposeDraw(int loggedInPlayerId, int gameId);
 
+    GameModel HandleDrawProposal(int loggedInPlayerId, int gameId, bool accept);
+
     bool Decline(int loggedInPlayerId, int gameId);
 
-    bool EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType);
+    GameModel EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType);
 
     List<GameModel> Games();
 

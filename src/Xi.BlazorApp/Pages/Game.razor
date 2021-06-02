@@ -19,7 +19,7 @@
 
     if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
     {
-      <p>Accept this game with @(game.SecondsPerMove / (24  * 60 * 60)) days per move?</p>
+      <p>Accept this game with @(TimeSpan.FromSeconds(game.SecondsPerMove).TotalDays) days per move?</p>
       <p>
         <button @onclick="@DeclineGame" type="button" class="btn btn-danger">Decline</button>
         <button @onclick="@AcceptGame" type="button" class="btn btn-success">Accept</button>
@@ -32,41 +32,56 @@
   }
   else
   {
-    @if (game.ProposedDrawPlayer != null)
-    {
-      <span>TODO draw</span>
-    }
-    else
-    {
-      <div class="container">
-        <div class="left-element">
-          <h3>Game @game.Id</h3>
+    <div class="container">
+      <div class="left-element">
+        <h3>Game @game.Id</h3>
 
-          <PlayerComponent
-            IsTop="@true"
-            FlipBoard="@this.FlipBoard()"
-            GameModel="@model"/>
+        <PlayerComponent
+          IsTop="@true"
+          FlipBoard="@this.FlipBoard()"
+          GameModel="@model"/>
 
-          <BoardComponent
-            Board="@model.CurrentBoard()"
-            HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
-            FlipBoard="@this.FlipBoard()"/>
+        <BoardComponent
+          Board="@model.CurrentBoard()"
+          HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
+          FlipBoard="@this.FlipBoard()"/>
 
-          <PlayerComponent
-            IsTop="@false"
-            FlipBoard="@this.FlipBoard()"
-            GameModel="@model"/>
+        <PlayerComponent
+          IsTop="@false"
+          FlipBoard="@this.FlipBoard()"
+          GameModel="@model"/>
 
-          <div class="game-actions">
-            <button @onclick="@Forfeit" type="button" class="btn btn-sm btn-danger">Forfeit</button>
-            <button @onclick="@ProposeDraw" type="button" class="btn btn-sm btn-warning">Draw</button>
-          </div>
-        </div>
-        <div class="right-element">
-          <MovesComponent GameModel="@model"/>
+        <div class="game-actions">
+          @if (game.IsOver())
+          {
+            <p>@game.Result()</p>
+          }
+          else if (game.ProposedDrawPlayer != null)
+          {
+            @if (game.ProposedDrawPlayer.Id == this.Current.LoggedInPlayerId())
+            {
+              <p>You made a draw proposal. If you decide to make a move, the draw proposal will be revoked.</p>
+            }
+            else
+            {
+              <p>
+                @game.ProposedDrawPlayer.Name propesed a draw. Accept it?
+              </p>
+              <button @onclick="@(() => this.HandleDrawProposal(true))" type="button" class="btn btn btn-success">Yes</button>
+              <button @onclick="@(() => this.HandleDrawProposal(false))" type="button" class="btn btn btn-danger">No</button>
+            }
+          }
+          else
+          {
+            <button @onclick="@this.Forfeit" type="button" class="btn btn-sm btn-danger">Forfeit</button>
+            <button @onclick="@this.ProposeDraw" type="button" class="btn btn-sm btn-warning">Draw</button>
+          }
         </div>
       </div>
-    }
+      <div class="right-element">
+        <MovesComponent GameModel="@model"/>
+      </div>
+    </div>
   }
 }
 

@@ -23,5 +23,23 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       return new(false, action.ErrorMessage, action.GameModel);
     }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, HandleDrawProposalAction action)
+    {
+      return new(true, null, action.GameModel);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, HandleDrawProposalSuccessAction action)
+    {
+      return new(false, null, action.GameModel);
+    }
+
+    [ReducerMethod]
+    public static GameState Reduce(GameState state, HandleDrawProposalFailureAction action)
+    {
+      return new(false, action.ErrorMessage, action.GameModel);
+    }
   }
 }
