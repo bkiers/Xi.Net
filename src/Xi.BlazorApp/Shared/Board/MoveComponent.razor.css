@@ -8,17 +8,18 @@ td {
 }
 
 .remove-move {
-  padding-left: 5px;
   padding-right: 5px;
   color: #7f0032;
-  float: right;
   cursor: pointer;
 }
 
 .confirm-move {
-  padding-left: 5px;
   padding-right: 5px;
   color: #1f5700;
-  float: right;
   cursor: pointer;
+}
+
+.move-actions {
+  vertical-align: middle;
+  float: right;
 }

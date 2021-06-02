@@ -36,14 +36,20 @@
       <div class="left-element">
         <h3>Game @game.Id</h3>
 
-        <PlayerComponent Player="@(this.FlipBoard() ? game.RedPlayer : game.BlackPlayer)"/>
+        <PlayerComponent
+          IsTop="@true"
+          FlipBoard="@this.FlipBoard()"
+          GameModel="@model" />
 
         <BoardComponent
           Board="@model.CurrentBoard()"
           HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
           FlipBoard="@this.FlipBoard()" />
 
-        <PlayerComponent Player="@(this.FlipBoard() ? game.BlackPlayer : game.RedPlayer)"/>
+        <PlayerComponent
+          IsTop="@false"
+          FlipBoard="@this.FlipBoard()"
+          GameModel="@model" />
       </div>
       <div class="right-element">
         <MovesComponent GameModel="@model" />

@@ -1,5 +1,12 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<div>
-  <p>@this.Player.Name</p>
+<div class="wrapper">
+  <span class="name">@this.Player.Name</span>
+
+  @if (this.ShowClock)
+  {
+    <span class="clock">
+      <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value" />
+    </span>
+  }
 </div>

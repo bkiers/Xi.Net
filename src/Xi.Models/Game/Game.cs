@@ -68,6 +68,11 @@ namespace Xi.Models.Game
       return this.boards[boardIndex];
     }
 
+    public bool IsOver()
+    {
+      return this.GameResultType.HasValue;
+    }
+
     public Board CurrentBoard()
     {
       return this.boards.Last();
@@ -148,6 +153,11 @@ namespace Xi.Models.Game
       }
 
       return this.CurrentBoard().IsStalemate(Color.Black) ? this.BlackPlayer : null;
+    }
+
+    public Color PlayingWithColor(int playerId)
+    {
+      return this.RedPlayer.Id == playerId ? Color.Red : Color.Black;
     }
 
     private void ReplayMoves()

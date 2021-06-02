@@ -10,30 +10,34 @@ namespace Xi.BlazorApp.Models
     public GameModel(Game game)
     {
       this.Game = game;
+      this.ActualTurnPlayerColor = game.TurnPlayerColor();
       this.CurrentMoveIndex = this.Game.Moves.Any() ? this.Game.Moves.Count - 1 : -1;
       this.FirstClick = null;
     }
 
-    public GameModel(Game game, int currentMoveIndex, Cell? firstClick)
+    public GameModel(Game game, Color actualTurnPlayerColor, int currentMoveIndex, Cell? firstClick)
     {
       this.Game = game;
+      this.ActualTurnPlayerColor = actualTurnPlayerColor;
       this.CurrentMoveIndex = currentMoveIndex;
       this.FirstClick = firstClick;
     }
 
     public Game Game { get; }
 
+    public Color ActualTurnPlayerColor { get; }
+
     public int CurrentMoveIndex { get; private set; }
 
     public Cell? FirstClick { get; private set; }
 
-    public bool IsGameOver()
+    public bool CanBeConfirmed(int index, int loggedInPlayerId)
     {
-      return this.Game.GameResultType.HasValue;
-    }
+      if (this.ActualTurnPlayerColor != this.Game.PlayingWithColor(loggedInPlayerId))
+      {
+        return false;
+      }
 
-    public bool CanBeConfirmed(int index)
-    {
       var lastConfirmedMove = this.Game.Moves.FindLast(m => m.CreatedAt.HasValue);
       var indexLastConfirmedMove = lastConfirmedMove == null ? -1 : this.Game.Moves.IndexOf(lastConfirmedMove);
 

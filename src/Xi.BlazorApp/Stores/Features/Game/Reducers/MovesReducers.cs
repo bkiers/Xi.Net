@@ -14,6 +14,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       var model = new GameModel(
         action.GameModel.Game,
+        action.GameModel.ActualTurnPlayerColor,
         Math.Max(0, action.GameModel.CurrentMoveIndex - 1),
         action.GameModel.FirstClick);
 
@@ -25,6 +26,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       var model = new GameModel(
         action.GameModel.Game,
+        action.GameModel.ActualTurnPlayerColor,
         Math.Min(action.GameModel.Game.Moves.Count - 1, action.GameModel.CurrentMoveIndex + 1),
         action.GameModel.FirstClick);
 
@@ -36,6 +38,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       var model = new GameModel(
         action.GameModel.Game,
+        action.GameModel.ActualTurnPlayerColor,
         action.GameModel.Game.Moves.Any() ? 0 : -1,
         action.GameModel.FirstClick);
 
@@ -47,6 +50,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       var model = new GameModel(
         action.GameModel.Game,
+        action.GameModel.ActualTurnPlayerColor,
         action.GameModel.Game.Moves.Any() ? action.GameModel.Game.Moves.Count - 1 : -1,
         action.GameModel.FirstClick);
 
@@ -58,6 +62,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     {
       var model = new GameModel(
         action.GameModel.Game.RemoveMovesFrom(action.FromIndex),
+        action.GameModel.ActualTurnPlayerColor,
         action.FromIndex - 1,
         null);
 

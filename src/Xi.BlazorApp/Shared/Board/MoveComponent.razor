@@ -11,15 +11,26 @@
 
     <text>@move.DisplayFor(colorMove)&nbsp;</text>
 
+    <div class="move-actions">
+      @if (this.GameModel.CanBeConfirmed(this.Index, this.Current.LoggedInPlayerId()))
+      {
+        <i
+          class="fas fa-check confirm-move"
+          @onclick="@ConfirmMove"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Confirm this move."></i>
+      }
 
-    @if (!move.CreatedAt.HasValue)
-    {
-      <i class="fas fa-times remove-move" @onclick="@RemoveMove" data-toggle="tooltip" data-placement="top" title="Remove this move and all moves after it."></i>
-    }
-
-    @if (this.GameModel.CanBeConfirmed(this.Index))
-    {
-      <i class="fas fa-check confirm-move" @onclick="@ConfirmMove" data-toggle="tooltip" data-placement="top" title="Confirm this move."></i>
-    }
+      @if (!move.CreatedAt.HasValue)
+      {
+        <i
+          class="fas fa-times remove-move"
+          @onclick="@RemoveMove"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Remove this move and all moves after it."></i>
+      }
+    </div>
   }
 </td>
