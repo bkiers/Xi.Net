@@ -58,19 +58,22 @@
   }
 }
 
-@if (this.GameState.Value.GameModel?.Game.CheckmatePlayer() != null)
-{
-  <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
-}
-else if (this.GameState.Value.GameModel?.Game.StalematePlayer() != null)
-{
-  <Alert Message="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
-}
-else if (this.GameState.Value.GameModel?.Game.CheckPlayer() != null)
-{
-  <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" Type="@Alert.AlertType.Warning" Dismissible="@false" />
-}
-else if (this.GameState.Value.HasErrors)
-{
-  <Alert Message="@this.GameState.Value.ErrorMessage" Type="@Alert.AlertType.Info" />
-}
+<div class="alerts-wrapper">
+  @if (this.GameState.Value.GameModel?.Game.CheckmatePlayer() != null)
+  {
+    <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
+  }
+  else if (this.GameState.Value.GameModel?.Game.StalematePlayer() != null)
+  {
+    <Alert Message="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
+  }
+  else if (this.GameState.Value.GameModel?.Game.CheckPlayer() != null)
+  {
+    <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
+  }
+
+  @if (this.GameState.Value.HasErrors)
+  {
+    <Alert Message="@this.GameState.Value.ErrorMessage" Type="@Alert.AlertType.Warning" />
+  }
+</div>
