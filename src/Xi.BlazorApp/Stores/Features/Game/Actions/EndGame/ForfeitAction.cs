@@ -1,11 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.EndGame
 {
   using Xi.BlazorApp.Models;
   using Xi.Models.Game;
 
-  public class ProposeDrawAction
+  public class ForfeitAction
   {
-    public ProposeDrawAction(GameModel gameModel, Player player)
+    public ForfeitAction(GameModel gameModel, Player player)
     {
       this.GameModel = gameModel;
       this.Player = player;

@@ -28,7 +28,9 @@ else if (this.GamesState.Value.GameViewModels != null)
     <tr>
       <th scope="col">#</th>
       <th scope="col">Red</th>
+      <th scope="col"></th>
       <th scope="col">Black</th>
+      <th scope="col"></th>
       <th scope="col">Status</th>
     </tr>
     </thead>
@@ -38,7 +40,9 @@ else if (this.GamesState.Value.GameViewModels != null)
       <tr @onclick="@(() => this.NavigationManager.NavigateTo($"/games/{@gameViewModel.Game.Id}"))" class="game-row">
         <th scope="row">@gameViewModel.Game.Id</th>
         <td>@gameViewModel.Game.RedPlayer.Name</td>
+        <td>@(gameViewModel.Game.EloRatingChangeRed.HasValue ? gameViewModel.Game.EloRatingChangeRed.Value.ToString() : string.Empty)</td>
         <td>@gameViewModel.Game.BlackPlayer.Name</td>
+        <td>@(gameViewModel.Game.EloRatingChangeBlack.HasValue ? gameViewModel.Game.EloRatingChangeBlack.Value.ToString() : string.Empty)</td>
         <td>@gameViewModel.Game.Result()</td>
       </tr>
     }

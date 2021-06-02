@@ -4,7 +4,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
   using System.Threading.Tasks;
   using Fluxor;
   using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.EndGame;
 
   public class ProposeDrawEffect : Effect<ProposeDrawAction>
   {

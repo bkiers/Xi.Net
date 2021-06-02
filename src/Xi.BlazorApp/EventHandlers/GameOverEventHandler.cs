@@ -41,6 +41,9 @@ namespace Xi.BlazorApp.EventHandlers
           await this.emailService.Send(EmailTemplateType.GameOverTimeUp, loser!, @event.GameModel);
           await this.emailService.Send(EmailTemplateType.GameOverTimeUp, winner!, @event.GameModel);
           break;
+        case GameResultType.Forfeit:
+          await this.emailService.Send(EmailTemplateType.Forfeited, winner!, @event.GameModel);
+          break;
         default:
           throw new Exception($"Unhandled type: {@event.GameModel.Game.GameResultType}");
       }

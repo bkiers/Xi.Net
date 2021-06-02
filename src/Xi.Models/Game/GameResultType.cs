@@ -6,5 +6,6 @@ namespace Xi.Models.Game
     Stalemate,
     Draw,
     TimeUp,
+    Forfeit,
   }
 }

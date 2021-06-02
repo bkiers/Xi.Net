@@ -46,6 +46,15 @@ namespace Xi.BlazorApp.Services
       return gameModel;
     }
 
+    public GameModel Forfeit(int loggedInPlayerId, int gameId)
+    {
+      var game = this.db.Games.Single(g => g.Id == gameId);
+
+      var winnerId = game.RedPlayerId == loggedInPlayerId ? game.BlackPlayerId : game.RedPlayerId;
+
+      return this.EndGame(gameId, winnerId, GameResultType.Forfeit);
+    }
+
     public GameModel ProposeDraw(int loggedInPlayerId, int gameId)
     {
       var game = this.db.Games
@@ -117,19 +126,34 @@ namespace Xi.BlazorApp.Services
       return this.db.SaveChanges() == 1;
     }
 
-    // TODO: calculate ELO change
     public GameModel EndGame(int gameId, int? winnerPlayerId, GameResultType gameResultType)
     {
-      var game = this.db.Games.Single(g => g.Id == gameId);
+      var game = this.db.Games
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
+        .Single(g => g.Id == gameId);
+
+      var redWins = winnerPlayerId == game.RedPlayerId;
+      var winner = (redWins ? game.RedPlayer : game.BlackPlayer).ToPlayer();
+      var loser = (redWins ? game.BlackPlayer : game.RedPlayer).ToPlayer();
+
+      var change = winner.ProcessEloPoints(loser, gameResultType == GameResultType.Draw);
+
+      game.EloRatingChangeRed = redWins ? change : -change;
+      game.EloRatingChangeBlack = redWins ? -change : change;
+
+      game.RedPlayer.EloRating += game.EloRatingChangeRed.Value;
+      game.BlackPlayer.EloRating += game.EloRatingChangeBlack.Value;
 
       game.WinnerPlayerId = winnerPlayerId;
       game.GameResultType = gameResultType;
-
-      var gameModel = this.Game(game.Id)!;
-
-      this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(gameModel));
+      game.ClockRunsOutAt = null;
 
       this.db.SaveChanges();
+
+      var gameModel = new GameModel(game.ToGame());
+
+      this.eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(gameModel));
 
       return this.Game(game.Id)!;
     }
@@ -244,9 +268,7 @@ namespace Xi.BlazorApp.Services
 
       if (checkmate || stalemate)
       {
-        game.WinnerPlayerId = loggedInPlayerId;
-        game.ClockRunsOutAt = null;
-        game.GameResultType = checkmate ? GameResultType.Checkmate : GameResultType.Stalemate;
+        this.EndGame(gameId, loggedInPlayerId, checkmate ? GameResultType.Checkmate : GameResultType.Stalemate);
       }
       else
       {
@@ -257,7 +279,6 @@ namespace Xi.BlazorApp.Services
       game.ProposedDrawPlayerId = null;
 
       this.db.SaveChanges();
-
       transaction.Commit();
 
       var reloadedGameModel = new GameModel(game.ToGame());

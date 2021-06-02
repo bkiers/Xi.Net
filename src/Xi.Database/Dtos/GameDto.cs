@@ -19,7 +19,9 @@ namespace Xi.Database.Dtos
     [Required]
     public int SecondsPerMove { get; set; } = (int)TimeSpan.FromDays(3).TotalSeconds;
 
-    public int? EloRatingChange { get; set; }
+    public int? EloRatingChangeRed { get; set; }
+
+    public int? EloRatingChangeBlack { get; set; }
 
     public DateTime? ClockRunsOutAt { get; set; }
 
@@ -55,7 +57,7 @@ namespace Xi.Database.Dtos
 
     public PlayerDto? WinnerPlayer { get; set; } = null;
 
-    public GameResultType? GameResultType{ get; set; }
+    public GameResultType? GameResultType { get; set; }
 
     public List<MoveDto> Moves { get; set; } = new();
 
@@ -72,6 +74,8 @@ namespace Xi.Database.Dtos
         this.WinnerPlayer?.ToPlayer(),
         this.ProposedDrawPlayer?.ToPlayer(),
         this.AcceptedDrawPlayer?.ToPlayer(),
+        this.EloRatingChangeRed,
+        this.EloRatingChangeBlack,
         this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,

@@ -6,7 +6,7 @@ namespace Xi.BlazorApp.Shared
   public partial class ToggleComponent
   {
     [Parameter]
-    public string Text { get; set; } = default!;
+    public string Text { get; set; } = string.Empty;
 
     [Parameter]
     public string? ToolTip { get; set; }

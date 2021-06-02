@@ -13,9 +13,21 @@ else if (this.AccountState.Value.Player != null)
 
   <h1>@player.Name</h1>
 
-  <ToggleComponent
-    Text="Show possible moves?"
-    ToolTip="When checked, all possible moves will be highlighted when you select a piece in a game."
-    Value="@player.ShowPossibleMoves"
-    OnToggled="@this.OnShowPossibleMovesToggled" />
+  <table class="table table-borderless">
+    <tbody>
+      <tr>
+        <td>Show possible moves?</td>
+        <td>
+          <ToggleComponent
+            ToolTip="When checked, all possible moves will be highlighted when you select a piece in a game."
+            Value="@player.ShowPossibleMoves"
+            OnToggled="@this.OnShowPossibleMovesToggled"/>
+        </td>
+      </tr>
+      <tr>
+        <td>ELO rating</td>
+        <td>@player.EloRating</td>
+      </tr>
+    </tbody>
+  </table>
 }

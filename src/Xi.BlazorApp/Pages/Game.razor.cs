@@ -4,7 +4,7 @@ namespace Xi.BlazorApp.Pages
   using Fluxor;
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame;
+  using Xi.BlazorApp.Stores.Features.Game.Actions.EndGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
@@ -58,6 +58,7 @@ namespace Xi.BlazorApp.Pages
 
     private void Forfeit()
     {
+      this.Dispatcher.Dispatch(new ForfeitAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
     }
 
     private void ProposeDraw()

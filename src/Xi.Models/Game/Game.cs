@@ -18,6 +18,8 @@ namespace Xi.Models.Game
       Player? winnerPlayer,
       Player? proposedDrawPlayer,
       Player? acceptedDrawPlayer,
+      int? eloRatingChangeRed,
+      int? eloRatingChangeBlack,
       GameResultType? gameResultType,
       int secondsPerMove,
       DateTime? clockRunsOutAt,
@@ -34,6 +36,8 @@ namespace Xi.Models.Game
       this.WinnerPlayer = winnerPlayer;
       this.ProposedDrawPlayer = proposedDrawPlayer;
       this.AcceptedDrawPlayer = acceptedDrawPlayer;
+      this.EloRatingChangeRed = eloRatingChangeRed;
+      this.EloRatingChangeBlack = eloRatingChangeBlack;
       this.GameResultType = gameResultType;
       this.SecondsPerMove = secondsPerMove;
       this.ClockRunsOutAt = clockRunsOutAt;
@@ -59,6 +63,10 @@ namespace Xi.Models.Game
     public Player? ProposedDrawPlayer { get; }
 
     public Player? AcceptedDrawPlayer { get; }
+
+    public int? EloRatingChangeRed { get; }
+
+    public int? EloRatingChangeBlack { get; }
 
     public GameResultType? GameResultType { get; }
 
@@ -110,6 +118,8 @@ namespace Xi.Models.Game
         this.WinnerPlayer,
         this.ProposedDrawPlayer,
         this.AcceptedDrawPlayer,
+        this.EloRatingChangeRed,
+        this.EloRatingChangeBlack,
         this.GameResultType,
         this.SecondsPerMove,
         this.ClockRunsOutAt,
@@ -177,18 +187,26 @@ namespace Xi.Models.Game
       {
         return $"{this.InvitedPlayer.Name} has to accept this game first";
       }
-      else if (!this.GameResultType.HasValue)
+
+      if (!this.GameResultType.HasValue)
       {
         return $"In progress, {this.TurnPlayer().Name} has until {this.ClockRunsOutAt.ToStringNL("MMM' 'dd', 'HH:mm")}";
       }
 
       return this.GameResultType.Value switch
       {
-        Models.Game.GameResultType.Draw => "This game ended in a draw",
-        Models.Game.GameResultType.TimeUp => $"{this.WinnerPlayer!.Name} won because {this.TurnPlayer().Name}'s clock ran out",
-        Models.Game.GameResultType.Checkmate => $"{this.WinnerPlayer!.Name} won by checkmate",
-        Models.Game.GameResultType.Stalemate => $"{this.WinnerPlayer!.Name} won by stalemate",
-        _ => throw new Exception($"Unknown type: {this.GameResultType}"),
+        Models.Game.GameResultType.Draw =>
+          "This game ended in a draw",
+        Models.Game.GameResultType.TimeUp =>
+          $"{this.WinnerPlayer!.Name} won because {this.TurnPlayer().Name}'s clock ran out",
+        Models.Game.GameResultType.Checkmate =>
+          $"{this.WinnerPlayer!.Name} won by checkmate",
+        Models.Game.GameResultType.Stalemate =>
+          $"{this.WinnerPlayer!.Name} won by stalemate",
+        Models.Game.GameResultType.Forfeit =>
+          $"{this.WinnerPlayer!.Name} won because {(this.WinnerPlayer.Id == this.RedPlayer.Id ? this.BlackPlayer.Name : this.RedPlayer.Name)} forfeited",
+        _ =>
+          throw new Exception($"Unknown type: {this.GameResultType}"),
       };
     }
 

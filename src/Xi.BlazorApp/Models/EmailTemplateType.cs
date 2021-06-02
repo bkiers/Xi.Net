@@ -31,5 +31,8 @@ namespace Xi.BlazorApp.Models
 
     [SubjectAttribute("Xi - Draw proposal declined...")]
     DeclineDrawProposal,
+
+    [SubjectAttribute("Xi - You won!")]
+    Forfeited,
   }
 }

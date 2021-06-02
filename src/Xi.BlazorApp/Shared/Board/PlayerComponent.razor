@@ -1,7 +1,7 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div class="wrapper">
-  <span class="name">@this.Player.Name</span>
+  <span class="name">@this.Player.Name</span><span class="elo-points">@this.PotentialPoints()</span>
 
   @if (this.ShowClock)
   {

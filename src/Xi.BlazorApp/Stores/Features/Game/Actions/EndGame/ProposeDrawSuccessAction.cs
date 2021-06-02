@@ -1,4 +1,4 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.DrawGame
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.EndGame
 {
   using Xi.BlazorApp.Models;
 

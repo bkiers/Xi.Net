@@ -33,7 +33,7 @@ namespace Xi.BlazorApp.Models
 
     public bool CanBeConfirmed(int index, int loggedInPlayerId)
     {
-      if (this.ActualTurnPlayerColor != this.Game.PlayingWithColor(loggedInPlayerId))
+      if (this.Game.IsOver() || this.ActualTurnPlayerColor != this.Game.PlayingWithColor(loggedInPlayerId))
       {
         return false;
       }

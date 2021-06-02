@@ -8,6 +8,8 @@ namespace Xi.BlazorApp.Services
   {
     GameModel Accept(int loggedInPlayerId, int gameId);
 
+    GameModel Forfeit(int loggedInPlayerId, int gameId);
+
     GameModel ProposeDraw(int loggedInPlayerId, int gameId);
 
     GameModel HandleDrawProposal(int loggedInPlayerId, int gameId, bool accept);

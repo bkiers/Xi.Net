@@ -27,5 +27,21 @@ namespace Xi.BlazorApp.Shared.Board
     private Color CurrentColor => this.IsTop ?
       (this.FlipBoard ? Color.Red : Color.Black) :
       (this.FlipBoard ? Color.Black : Color.Red);
+
+    private string PotentialPoints()
+    {
+      var game = this.GameModel.Game;
+
+      if (!game.IsOver())
+      {
+        return string.Empty;
+      }
+
+      var change = this.CurrentColor == Color.Red
+        ? game.EloRatingChangeRed!.Value
+        : game.EloRatingChangeBlack!.Value;
+
+      return change > 0 ? $"+{change}" : $"{change}";
+    }
   }
 }
