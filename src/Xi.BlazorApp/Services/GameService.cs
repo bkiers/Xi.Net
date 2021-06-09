@@ -41,7 +41,7 @@ namespace Xi.BlazorApp.Services
 
       var gameModel = this.Game(game.Id)!;
 
-      this.eventPublisher.PublishEventAsync(new AcceptNewGameEventHandler.Event(gameModel));
+      this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(EmailTemplateType.AcceptNewGame, gameModel.Game.InitiatedPlayer, gameModel));
 
       return gameModel;
     }
@@ -72,7 +72,8 @@ namespace Xi.BlazorApp.Services
 
       var gameModel = this.Game(game.Id)!;
 
-      this.eventPublisher.PublishEventAsync(new DrawProposalEventHandler.Event(gameModel));
+      this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(
+        EmailTemplateType.DrawProposal, gameModel.OpponentOf(gameModel.Game.ProposedDrawPlayer!), gameModel));
 
       return gameModel;
     }
@@ -99,7 +100,10 @@ namespace Xi.BlazorApp.Services
       }
       else
       {
-        this.eventPublisher.PublishEventAsync(new DeclineDrawProposalEventHandler.Event(this.Game(gameId)!));
+        var gameModel = this.Game(gameId)!;
+
+        this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(
+          EmailTemplateType.DeclineDrawProposal, gameModel.Game.ProposedDrawPlayer!, gameModel));
       }
 
       this.db.SaveChanges();
@@ -121,7 +125,7 @@ namespace Xi.BlazorApp.Services
       var gameModel = this.Game(game.Id)!;
       this.db.Games.Remove(game);
 
-      this.eventPublisher.PublishEventAsync(new DeclineNewGameEventHandler.Event(gameModel));
+      this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(EmailTemplateType.DeclineNewGame, gameModel.Game.InitiatedPlayer, gameModel));
 
       return this.db.SaveChanges() == 1;
     }
@@ -217,7 +221,7 @@ namespace Xi.BlazorApp.Services
 
       var gameModel = this.Game(game.Id)!;
 
-      this.eventPublisher.PublishEventAsync(new NewGameEventHandler.Event(gameModel));
+      this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(EmailTemplateType.NewGame, gameModel.Game.InvitedPlayer, gameModel));
 
       return gameModel;
     }
@@ -289,7 +293,7 @@ namespace Xi.BlazorApp.Services
       }
       else
       {
-        this.eventPublisher.PublishEventAsync(new MoveMadeEventHandler.Event(reloadedGameModel));
+        this.eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(EmailTemplateType.MoveMade, gameModel.Game.TurnPlayer(), gameModel));
       }
 
       return reloadedGameModel;
