@@ -10,6 +10,18 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
   public class MovesReducers
   {
     [ReducerMethod]
+    public static GameState Reduce(GameState state, JumpToMoveAction action)
+    {
+      var model = new GameModel(
+        action.GameModel.Game,
+        action.GameModel.ActualTurnPlayerColor,
+        action.Index,
+        action.GameModel.FirstClick);
+
+      return new GameState(false, null, model);
+    }
+
+    [ReducerMethod]
     public static GameState Reduce(GameState state, PreviousMoveAction action)
     {
       var model = new GameModel(

@@ -2,14 +2,22 @@
 
 @{
   var colorMove = Index % 2 == 1 ? Xi.Models.Game.Color.Black : Xi.Models.Game.Color.Red;
+  var selected = this.Index == this.GameModel.CurrentMoveIndex;
 }
 
-<td class="@(this.Index == this.GameModel.CurrentMoveIndex ? "selected" : "")">
+<td class="@(selected ? "selected" : "")">
   @if (this.Index < this.GameModel.Game.Moves.Count)
   {
     var move = this.GameModel.Game.Moves[this.Index];
 
-    <text>@move.DisplayFor(colorMove)&nbsp;</text>
+    @if (selected)
+    {
+      <span>@move.DisplayFor(colorMove)</span>
+    }
+    else
+    {
+      <span @onclick="@this.JumpToThisMove" class="move">@move.DisplayFor(colorMove)</span>
+    }
 
     <div class="move-actions">
       @if (this.GameModel.CanBeConfirmed(this.Index, this.Current.LoggedInPlayerId()))
