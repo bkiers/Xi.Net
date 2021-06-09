@@ -5,29 +5,57 @@
 
 @if (this.AccountState.Value.IsLoading)
 {
-  <h1>Loading...</h1>
+  <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
 else if (this.AccountState.Value.Player != null)
 {
   var player = this.AccountState.Value.Player!;
 
-  <h1>@player.Name</h1>
+  <MudGrid>
 
-  <table class="table table-borderless">
-    <tbody>
-      <tr>
-        <td>Show possible moves?</td>
-        <td>
-          <ToggleComponent
-            ToolTip="When checked, all possible moves will be highlighted when you select a piece in a game."
-            Value="@player.ShowPossibleMoves"
-            OnToggled="@this.OnShowPossibleMovesToggled"/>
-        </td>
-      </tr>
-      <tr>
-        <td>ELO rating</td>
-        <td>@player.EloRating</td>
-      </tr>
-    </tbody>
-  </table>
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Style="font-weight: bold;" Typo="Typo.body1">Name</MudText>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Typo="Typo.body1">@player.Name</MudText>
+      </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Style="font-weight: bold;" Typo="Typo.body1">Email</MudText>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Typo="Typo.body1">@player.Email</MudText>
+      </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Style="font-weight: bold;" Typo="Typo.body1">ELO rating</MudText>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Typo="Typo.body1">@player.EloRating</MudText>
+      </MudPaper>
+    </MudItem>
+
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudText Style="font-weight: bold;" Typo="Typo.body1">Show possible moves during the game?</MudText>
+      </MudPaper>
+    </MudItem>
+    <MudItem xs="6">
+      <MudPaper Class="d-flex mud-width-full" Elevation="0">
+        <MudSwitch T="bool" Color="Color.Primary" Checked="@player.ShowPossibleMoves" CheckedChanged="@this.OnShowPossibleMovesToggled"/>
+      </MudPaper>
+    </MudItem>
+
+  </MudGrid>
 }

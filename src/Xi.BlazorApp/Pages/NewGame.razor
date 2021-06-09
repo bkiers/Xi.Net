@@ -3,69 +3,43 @@
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@if (this.NewGameState.Value.GameViewModel != null)
+@if (this.NewGameState.Value?.GameViewModel == null)
 {
-  <h2>Inivitation sent!</h2>
+  <div style="max-width: 400px;">
+    <EditForm Model="@this.NewGameModel" OnSubmit="@this.CreateGame">
 
-  <p>
-    @this.NewGameState.Value.GameViewModel.Game.InvitedPlayer.Name has been notified
-    by email. When @this.NewGameState.Value.GameViewModel.Game.InvitedPlayer.Name accepts
-    (or declines) your invitation, you'll also be notified.
-  </p>
-}
-else
-{
-  <h2>New game</h2>
+      <MudCard>
+        <MudCardContent>
 
-  <div class="form-wrapper">
-    <EditForm Model="@NewGameModel" OnValidSubmit="@HandleSubmit">
-      <DataAnnotationsValidator />
-      <ValidationSummary />
+          <MudSelect T="@Xi.Models.Game.Color" Label="You'll play with" @bind-Value="@this.NewGameModel.PlayingWithColor" For="@(() => this.NewGameModel.PlayingWithColor)">
+            <MudSelectItem Value="@Xi.Models.Game.Color.Red"/>
+            <MudSelectItem Value="@Xi.Models.Game.Color.Black"/>
+          </MudSelect>
 
-      <div class="form-group row">
-        <label for="PlayingWithColor" class="col-sm-4 col-form-label">Playing with</label>
-        <div class="col-sm-8">
-          <InputSelect class="form-control" id="PlayingWithColor" @bind-Value="@NewGameModel.PlayingWithColor">
-            <option value="@Xi.Models.Game.Color.Red">Red</option>
-            <option value="@Xi.Models.Game.Color.Black">Black</option>
-          </InputSelect>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="OpponentPlayerId" class="col-sm-4 col-form-label">Against</label>
-        <div class="col-sm-8">
-          <InputSelect class="form-control" id="OpponentPlayerId" @bind-Value="@NewGameModel.OpponentPlayerId">
-            @foreach ( var player in PlayerService.AllPlayersExcept(this.Current.LoggedInPlayerId()) )
+          <MudSelect T="int" Label="against" @bind-Value="@this.NewGameModel.OpponentPlayerId" For="@(() => this.NewGameModel.OpponentPlayerId)">
+            @foreach ( var player in this.PossibleOpponents )
             {
-              <option value="@player.Id">@player.Name</option>
+              <MudSelectItem Value="@player.Id">@player.Name</MudSelectItem>
             }
-          </InputSelect>
-        </div>
-      </div>
+          </MudSelect>
 
-      <div class="form-group row">
-        <label for="DaysPerMove" class="col-sm-4 col-form-label">Days per move</label>
-        <div class="col-sm-8">
-          <InputSelect class="form-control" id="DaysPerMove" @bind-Value="@NewGameModel.DaysPerMove">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-          </InputSelect>
-        </div>
-      </div>
+          <MudSelect T="int" Label="with # days per move" @bind-Value="@this.NewGameModel.DaysPerMove" For="@(() => this.NewGameModel.DaysPerMove)">
+            <MudSelectItem Value="1"/>
+            <MudSelectItem Value="2"/>
+            <MudSelectItem Value="3"/>
+            <MudSelectItem Value="4"/>
+            <MudSelectItem Value="5"/>
+            <MudSelectItem Value="6"/>
+            <MudSelectItem Value="7"/>
+          </MudSelect>
 
-      <div class="form-group row">
-        <label class="col-sm-4 col-form-label"></label>
-        <div class="col-sm-8">
-          <button type="submit" class="btn btn-primary">Create</button>
-        </div>
-      </div>
+        </MudCardContent>
 
+        <MudCardActions>
+          <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create</MudButton>
+        </MudCardActions>
+
+      </MudCard>
     </EditForm>
   </div>
 }

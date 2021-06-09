@@ -1,18 +1,12 @@
 <AuthorizeView>
   <Authorized>
-    <a
-      class="ml-md-auto btn btn-light btn-sm"
-      href="/Logout"
-      target="_top">
-      Logout @this.Current.LoggedInPlayer().Name
-    </a>
+    <MudTooltip Text="@this.LoggedInToolTip">
+      <MudIconButton Icon="fas fa-sign-out-alt" Color="Color.Inherit" Edge="Edge.Start" Link="/Logout"/>
+    </MudTooltip>
   </Authorized>
   <NotAuthorized>
-    <a
-      class="ml-md-auto btn btn-light btn-sm"
-      href="/Login?redirectUrl=/@this.ReturnUrl"
-      target="_top">
-      Login
-    </a>
+    <MudTooltip Text="Log in with Google">
+      <MudIconButton Icon="fab fa-google" Color="Color.Inherit" Edge="Edge.Start" Link="@this.LoginUrl" Target="_top"/>
+    </MudTooltip>
   </NotAuthorized>
 </AuthorizeView>

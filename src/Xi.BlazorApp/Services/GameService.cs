@@ -205,6 +205,17 @@ namespace Xi.BlazorApp.Services
       return game == null ? null : new GameModel(game);
     }
 
+    public IQueryable<GameModel> AllGames()
+    {
+      var games = this.db.Games
+        .OrderByDescending(g => g.Id)
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
+        .Select(g => new GameModel(g.ToGame()));
+
+      return games;
+    }
+
     public GameModel NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
     {
       var game = new GameDto

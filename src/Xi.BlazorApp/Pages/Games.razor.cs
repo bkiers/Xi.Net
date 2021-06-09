@@ -1,29 +1,40 @@
 namespace Xi.BlazorApp.Pages
 {
-  using Fluxor;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Threading.Tasks;
   using Microsoft.AspNetCore.Components;
-  using Xi.BlazorApp.Stores.Features.Games.Actions.LoadGames;
-  using Xi.BlazorApp.Stores.States;
+  using MudBlazor;
+  using Xi.BlazorApp.Models;
+  using Xi.BlazorApp.Services;
 
   public partial class Games
   {
     [Inject]
-    public IDispatcher Dispatcher { get; set; } = default!;
-
-    [Inject]
-    public IState<GamesState> GamesState { get; set; } = default!;
+    public IGameService GameService { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
-    protected override void OnInitialized()
-    {
-      if (this.GamesState.Value.GameViewModels == null)
-      {
-        this.Dispatcher.Dispatch(new LoadGamesAction());
-      }
+    private MudTable<GameModel> Table { get; set; } = default!;
 
-      base.OnInitialized();
+    private async Task<TableData<GameModel>> ReloadGames(TableState state)
+    {
+      IEnumerable<GameModel> data = this.GameService.AllGames();
+
+      var totalGames = data.Count();
+
+      var pagedGames = data
+        .Skip(state.Page * state.PageSize)
+        .Take(state.PageSize)
+        .ToArray();
+
+      return await Task.FromResult(new TableData<GameModel> { TotalItems = totalGames, Items = pagedGames });
+    }
+
+    private void OpenGame()
+    {
+      this.NavigationManager.NavigateTo($"/games/{this.Table.SelectedItem.Game.Id}");
     }
   }
 }

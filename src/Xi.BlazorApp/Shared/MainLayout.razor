@@ -1,15 +1,24 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorLayout
 
-<div class="page">
-  <div class="sidebar">
-    <NavMenu />
-  </div>
-  <div class="main">
-    <div class="top-row px-4">
-      <LoginControl />
+<MudLayout>
+  <MudAppBar Elevation="1">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => ToggleDrawer())"/>
+    <MudAppBarSpacer/>
+    <LoginControl />
+  </MudAppBar>
+  <MudDrawer @bind-Open="@this.drawerOpen" Elevation="2">
+    <MudDrawerHeader>
+      <MudText Typo="Typo.h5" Class="mt-1">Xi</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+      <MudNavLink Href="/home" Icon="fas fa-home">Home</MudNavLink>
+      <MudNavLink Href="/games" Icon="fas fa-bars">Games</MudNavLink>
+      <MudNavLink Href="/account" Icon="fas fa-user-cog">Account</MudNavLink>
+    </MudNavMenu>
+  </MudDrawer>
+  <MudMainContent>
+    <div id="main">
+      @base.Body
     </div>
-    <div class="content px-4">
-      @Body
-    </div>
-  </div>
-</div>
+  </MudMainContent>
+</MudLayout>

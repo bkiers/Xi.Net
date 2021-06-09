@@ -29,9 +29,11 @@ namespace Xi.BlazorApp.Pages
       await base.OnInitializedAsync();
     }
 
-    private void OnShowPossibleMovesToggled(bool showPossibleMoves)
+    private void OnShowPossibleMovesToggled(bool enabled)
     {
-      this.Dispatcher.Dispatch(new UpdateAccountAction(this.Current.LoggedInPlayerId(), showPossibleMoves));
+      var player = this.Current.LoggedInPlayer();
+
+      this.Dispatcher.Dispatch(new UpdateAccountAction(player.Id, enabled));
     }
   }
 }

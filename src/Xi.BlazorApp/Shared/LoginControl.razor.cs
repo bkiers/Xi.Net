@@ -11,6 +11,10 @@ namespace Xi.BlazorApp.Shared
     [Inject]
     private Current Current { get; set; } = default!;
 
+    private string LoginUrl => $"/Login?redirectUrl=/{this.ReturnUrl}";
+
     private string ReturnUrl => this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri);
+
+    private string LoggedInToolTip => $"Sign out {this.Current.LoggedInPlayer().Name}";
   }
 }

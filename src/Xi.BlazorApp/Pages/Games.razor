@@ -1,51 +1,42 @@
 @page "/games"
 @attribute [Authorize]
 
+@using Xi.BlazorApp.Models
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@if (this.GamesState.Value.IsLoading)
-{
-  <p>Loading...</p>
-}
-else if (this.GamesState.Value.HasErrors)
-{
-  <p>Computer says no... :(</p>
-  <p>@this.GamesState.Value.ErrorMessage</p>
-}
-else if (this.GamesState.Value.GameViewModels != null)
-{
-  <h2>Games</h2>
+<MudTable
+  ServerData="@(new Func<TableState, Task<TableData<GameModel>>>(this.ReloadGames))"
+  Dense="false"
+  Hover="true"
+  @ref="@this.Table"
+  T="GameModel"
+  OnRowClick="@this.OpenGame">
 
-  <p>
-    <a href="/games/new" class="btn btn-primary btn-sm" role="button" aria-disabled="true">
-      <i class="fa fa-plus"></i>
-      New game
-    </a>
-  </p>
+  <ToolBarContent>
+    <MudText Typo="Typo.h6">Games</MudText>
+    <MudToolBarSpacer />
+  </ToolBarContent>
 
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Red</th>
-      <th scope="col"></th>
-      <th scope="col">Black</th>
-      <th scope="col"></th>
-      <th scope="col">Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var gameViewModel in GamesState.Value.GameViewModels)
-    {
-      <tr @onclick="@(() => this.NavigationManager.NavigateTo($"/games/{@gameViewModel.Game.Id}"))" class="game-row">
-        <th scope="row">@gameViewModel.Game.Id</th>
-        <td>@gameViewModel.Game.RedPlayer.Name</td>
-        <td>@(gameViewModel.Game.EloRatingChangeRed.HasValue ? gameViewModel.Game.EloRatingChangeRed.Value.ToString() : string.Empty)</td>
-        <td>@gameViewModel.Game.BlackPlayer.Name</td>
-        <td>@(gameViewModel.Game.EloRatingChangeBlack.HasValue ? gameViewModel.Game.EloRatingChangeBlack.Value.ToString() : string.Empty)</td>
-        <td>@gameViewModel.Game.Result()</td>
-      </tr>
-    }
-    </tbody>
-  </table>
-}
+  <HeaderContent>
+    <MudTh><MudTableSortLabel T="GameModel">#</MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel T="GameModel">Red</MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel T="GameModel"></MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel T="GameModel">Black</MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel T="GameModel"></MudTableSortLabel></MudTh>
+    <MudTh><MudTableSortLabel T="GameModel"></MudTableSortLabel></MudTh>
+  </HeaderContent>
+
+  <RowTemplate>
+    <MudTd DataLabel="#">@context.Game.Id</MudTd>
+    <MudTd DataLabel="Red">@context.Game.RedPlayer.Name</MudTd>
+    <MudTd DataLabel="">@context.Game.EloRatingChangeRed</MudTd>
+    <MudTd DataLabel="Black">@context.Game.BlackPlayer.Name</MudTd>
+    <MudTd DataLabel="">@context.Game.EloRatingChangeBlack</MudTd>
+    <MudTd DataLabel="">@context.Game.Result()</MudTd>
+  </RowTemplate>
+
+  <PagerContent>
+    <MudTablePager PageSizeOptions="@(new[]{ 5, 10, 20 })" />
+  </PagerContent>
+
+</MudTable>

@@ -1,6 +1,7 @@
 namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
+  using System.Linq;
   using Xi.BlazorApp.Models;
   using Xi.Models.Game;
 
@@ -23,6 +24,8 @@ namespace Xi.BlazorApp.Services
     List<GameModel> UnfinishedGames();
 
     GameModel? Game(int gameId);
+
+    IQueryable<GameModel> AllGames();
 
     GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
 
