@@ -12,8 +12,8 @@
         <MudCardContent>
 
           <MudSelect T="@Xi.Models.Game.Color" Label="You'll play with" @bind-Value="@this.NewGameModel.PlayingWithColor" For="@(() => this.NewGameModel.PlayingWithColor)">
-            <MudSelectItem Value="@Xi.Models.Game.Color.Red"/>
-            <MudSelectItem Value="@Xi.Models.Game.Color.Black"/>
+            <MudSelectItem Value="@Xi.Models.Game.Color.Red" />
+            <MudSelectItem Value="@Xi.Models.Game.Color.Black" />
           </MudSelect>
 
           <MudSelect T="int" Label="against" @bind-Value="@this.NewGameModel.OpponentPlayerId" For="@(() => this.NewGameModel.OpponentPlayerId)">

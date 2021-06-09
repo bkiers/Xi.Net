@@ -5,17 +5,19 @@
     <thead>
       <tr>
         <th scope="col"></th>
-        <th scope="col">red</th>
-        <th scope="col">black</th>
+        <th scope="col"><MudText Typo="Typo.overline" Style="font-size: medium">Red</MudText></th>
+        <th scope="col"><MudText Typo="Typo.overline" Style="font-size: medium">Black</MudText></th>
       </tr>
     </thead>
     <tbody>
-      @for (int i = 0, j = 1; i < this.GameModel.Game.Moves.Count; i += 2, j++)
+      @foreach (var (moveNumber, redIndex, blackIndex) in this.MoveNumbers())
       {
         <tr>
-          <td>@j</td>
-          <MoveComponent GameModel="@this.GameModel" Index="@(i)"/>
-          <MoveComponent GameModel="@this.GameModel" Index="@(i + 1)"/>
+          <td>
+            <MudText Typo="Typo.overline">@moveNumber</MudText>
+          </td>
+          <MoveComponent GameModel="@this.GameModel" Index="@redIndex"/>
+          <MoveComponent GameModel="@this.GameModel" Index="@blackIndex"/>
         </tr>
       }
     </tbody>

@@ -21,8 +21,12 @@
     {
       <MudText Typo="Typo.h6">
         Accept this game with @(TimeSpan.FromSeconds(game.SecondsPerMove).TotalDays) days per move?
-        <MudIconButton Color="Color.Secondary" Icon="fas fa-times" OnClick="@this.DeclineGame" />
-        <MudIconButton Color="Color.Tertiary" Icon="fas fa-check" OnClick="@this.AcceptGame" />
+        <MudTooltip Text="Decline this game..">
+          <MudIconButton Color="Color.Secondary" Icon="fas fa-times" OnClick="@this.DeclineGame" />
+        </MudTooltip>
+        <MudTooltip Text="Accept this game..">
+          <MudIconButton Color="Color.Tertiary" Icon="fas fa-check" OnClick="@this.AcceptGame" />
+        </MudTooltip>
       </MudText>
     }
     else
@@ -34,7 +38,7 @@
   {
     <div class="container">
       <div class="left-element">
-        <h3>Game @game.Id</h3>
+        <MudText Typo="Typo.h5">Game @game.Id</MudText>
 
         <PlayerComponent
           IsTop="@true"

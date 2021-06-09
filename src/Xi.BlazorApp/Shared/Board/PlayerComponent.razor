@@ -1,12 +1,14 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div class="wrapper">
-  <span class="name">@this.Player.Name</span><span class="elo-points">@this.PotentialPoints()</span>
+  <MudText Typo="Typo.overline" Style="font-size: large">
+    @this.Player.Name @this.PotentialPoints()
+  </MudText>
 
   @if (this.ShowClock)
   {
     <span class="clock">
-      <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value" />
+      <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value"/>
     </span>
   }
 </div>
