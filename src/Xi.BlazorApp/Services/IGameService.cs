@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Services
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Xi.BlazorApp.Models;
@@ -25,7 +26,7 @@ namespace Xi.BlazorApp.Services
 
     GameModel? Game(int gameId);
 
-    IQueryable<GameModel> AllGames();
+    Tuple<int, IQueryable<GameModel>> PagedGames(int page, int pageSize);
 
     GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
 

@@ -15,6 +15,8 @@ namespace Xi.BlazorApp.Pages
 
   public partial class Game
   {
+    private bool showedPendingGamePromt = false;
+
     [Parameter]
     public int? GameId { get; set; }
 
@@ -36,8 +38,6 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    private bool promptedAcceptGame = false;
-
     protected override void OnInitialized()
     {
       if (this.GameState.Value.GameModel == null || this.GameState.Value.GameModel.Game.Id != this.GameId)
@@ -52,14 +52,14 @@ namespace Xi.BlazorApp.Pages
     {
       var game = this.GameState.Value?.GameModel?.Game;
 
-      if (game == null)
+      if (game == null || this.showedPendingGamePromt)
       {
         return;
       }
 
-      if (!game.Accepted && !this.promptedAcceptGame)
+      if (!game.Accepted)
       {
-        this.promptedAcceptGame = true;
+        this.showedPendingGamePromt = true;
 
         if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
         {
@@ -71,7 +71,7 @@ namespace Xi.BlazorApp.Pages
         }
       }
 
-      await this.OnAfterRenderAsync(firstRender);
+      await base.OnAfterRenderAsync(firstRender);
     }
 
     private bool FlipBoard()

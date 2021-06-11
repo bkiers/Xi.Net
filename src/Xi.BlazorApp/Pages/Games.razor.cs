@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Pages
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using System.Threading.Tasks;
@@ -20,14 +21,7 @@ namespace Xi.BlazorApp.Pages
 
     private async Task<TableData<GameModel>> ReloadGames(TableState state)
     {
-      IEnumerable<GameModel> data = this.GameService.AllGames();
-
-      var totalGames = data.Count();
-
-      var pagedGames = data
-        .Skip(state.Page * state.PageSize)
-        .Take(state.PageSize)
-        .ToArray();
+      var (totalGames, pagedGames) = this.GameService.PagedGames(state.Page, state.PageSize);
 
       return await Task.FromResult(new TableData<GameModel> { TotalItems = totalGames, Items = pagedGames });
     }

@@ -178,6 +178,7 @@ namespace Xi.BlazorApp.Services
     {
       var games = this.db.Games
         .Where(g => !g.GameResultType.HasValue && g.Accepted)
+        .OrderByDescending(g => g.Id)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
         .Include(g => g.Reminders)
@@ -205,15 +206,17 @@ namespace Xi.BlazorApp.Services
       return game == null ? null : new GameModel(game);
     }
 
-    public IQueryable<GameModel> AllGames()
+    public Tuple<int, IQueryable<GameModel>> PagedGames(int page, int pageSize)
     {
       var games = this.db.Games
         .OrderByDescending(g => g.Id)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
+        .Skip(page * pageSize)
+        .Take(pageSize)
         .Select(g => new GameModel(g.ToGame()));
 
-      return games;
+      return new Tuple<int, IQueryable<GameModel>>(this.db.Games.Count(), games);
     }
 
     public GameModel NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove)
