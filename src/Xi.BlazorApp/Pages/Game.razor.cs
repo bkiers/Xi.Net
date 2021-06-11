@@ -1,6 +1,5 @@
 namespace Xi.BlazorApp.Pages
 {
-  using System;
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
@@ -11,11 +10,14 @@ namespace Xi.BlazorApp.Pages
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
   using Xi.BlazorApp.Stores.States;
+  using Xi.Models.Extensions;
+  using Xi.Models.Game;
   using Color = Xi.Models.Game.Color;
 
   public partial class Game
   {
-    private bool showedPendingGamePromt = false;
+    private bool showedPendingGamePrompt = false;
+    private bool showedPendingDrawPrompt = false;
 
     [Parameter]
     public int? GameId { get; set; }
@@ -40,10 +42,40 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
-      if (this.GameState.Value.GameModel == null || this.GameState.Value.GameModel.Game.Id != this.GameId)
+      var game = this.GameState.Value.GameModel?.Game;
+
+      if (game == null || game.Id != this.GameId)
       {
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
+
+      this.GameState.StateChanged += (sender, state) =>
+      {
+        var currentGame = state.GameModel?.Game;
+
+        if (currentGame == null)
+        {
+          return;
+        }
+
+        if (currentGame.CheckmatePlayer() != null)
+        {
+          this.Snackbar.Add($"{currentGame.CheckmatePlayer()!.Name} is checkmate.", Severity.Warning);
+        }
+        else if (currentGame.StalematePlayer() != null)
+        {
+          this.Snackbar.Add($"{currentGame.StalematePlayer()!.Name} is stalemate.", Severity.Warning);
+        }
+        else if (currentGame.CheckPlayer() != null)
+        {
+          this.Snackbar.Add($"{currentGame.CheckPlayer()!.Name} is check.", Severity.Warning);
+        }
+
+        if (state.HasErrors)
+        {
+          this.Snackbar.Add(state.ErrorMessage, Severity.Error);
+        }
+      };
 
       base.OnInitialized();
     }
@@ -52,22 +84,35 @@ namespace Xi.BlazorApp.Pages
     {
       var game = this.GameState.Value?.GameModel?.Game;
 
-      if (game == null || this.showedPendingGamePromt)
+      if (game == null)
       {
         return;
       }
 
-      if (!game.Accepted)
+      if (!game.Accepted && !this.showedPendingGamePrompt)
       {
-        this.showedPendingGamePromt = true;
+        this.showedPendingGamePrompt = true;
 
         if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
         {
-          await this.PromptAcceptGame((int)TimeSpan.FromSeconds(game.SecondsPerMove).TotalDays);
+          await this.PromptAcceptGame(game.SecondsPerMove.ToDays());
         }
         else
         {
           await this.PromptPendingInvite();
+        }
+      }
+      else if (game.ProposedDrawPlayer != null && !this.showedPendingDrawPrompt)
+      {
+        this.showedPendingDrawPrompt = true;
+
+        if (game.ProposedDrawPlayer.Id == this.Current.LoggedInPlayerId())
+        {
+          await this.PromptPendingDraw();
+        }
+        else
+        {
+          await this.PromptAcceptDraw(game.ProposedDrawPlayer);
         }
       }
 
@@ -96,6 +141,7 @@ namespace Xi.BlazorApp.Pages
 
       var options = new DialogOptions { CloseButton = false, DisableBackdropClick = true };
       var dialog = this.DialogService.Show<InfoDialog>(string.Empty, parameters, options);
+
       await dialog.Result;
     }
 
@@ -111,6 +157,7 @@ namespace Xi.BlazorApp.Pages
 
       var options = new DialogOptions { CloseButton = false, DisableBackdropClick = true };
       var dialog = this.DialogService.Show<YesNoDialog>(string.Empty, parameters, options);
+
       var result = await dialog.Result;
 
       if (result.Cancelled)
@@ -160,15 +207,44 @@ namespace Xi.BlazorApp.Pages
 
       if (!result.Cancelled)
       {
+        this.showedPendingDrawPrompt = true;
+
         this.Snackbar.Add("Draw proposal sent.", Severity.Success);
 
         this.Dispatcher.Dispatch(new ProposeDrawAction(this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
       }
     }
 
-    private void HandleDrawProposal(bool accept)
+    private async Task PromptPendingDraw()
     {
-      this.Dispatcher.Dispatch(new HandleDrawProposalAction(accept, this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
+      var parameters = new DialogParameters
+      {
+        [nameof(InfoDialog.Title)] = "Pending draw proposal",
+        [nameof(InfoDialog.Content)] = "Your opponent hasn't accepted (or declined) your draw proposal yet.",
+      };
+
+      var options = new DialogOptions { CloseButton = false, DisableBackdropClick = true };
+      var dialog = this.DialogService.Show<InfoDialog>(string.Empty, parameters, options);
+
+      await dialog.Result;
+    }
+
+    private async Task PromptAcceptDraw(Player proposedDrawPlayer)
+    {
+      var parameters = new DialogParameters
+      {
+        [nameof(YesNoDialog.Title)] = "Accept draw?",
+        [nameof(YesNoDialog.Content)] = $"{proposedDrawPlayer.Name} proposed a draw. Do you want to accept it?",
+      };
+
+      var options = new DialogOptions { CloseButton = false, DisableBackdropClick = true };
+
+      var dialog = this.DialogService.Show<YesNoDialog>(string.Empty, parameters, options);
+      var result = await dialog.Result;
+      var accepted = !result.Cancelled;
+
+      this.Dispatcher.Dispatch(new HandleDrawProposalAction(accepted, this.GameState.Value.GameModel!, this.Current.LoggedInPlayer()));
+      this.Snackbar.Add($"The draw proposal was {(accepted ? "accepted" : "rejected")}.", accepted ? Severity.Success : Severity.Normal);
     }
   }
 }

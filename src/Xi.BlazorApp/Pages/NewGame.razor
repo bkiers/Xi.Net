@@ -17,7 +17,7 @@
           </MudSelect>
 
           <MudSelect T="int" Label="against" @bind-Value="@this.NewGameModel.OpponentPlayerId" For="@(() => this.NewGameModel.OpponentPlayerId)">
-            @foreach ( var player in this.PossibleOpponents )
+            @foreach (var player in this.PossibleOpponents)
             {
               <MudSelectItem Value="@player.Id">@player.Name</MudSelectItem>
             }

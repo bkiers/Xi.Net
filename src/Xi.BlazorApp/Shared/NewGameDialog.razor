@@ -1,0 +1,45 @@
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<MudDialog>
+
+  <TitleContent>
+    <MudText Typo="Typo.h6">
+      <MudIcon Icon="fas fa-gamepad" Class="mr-3 mb-n1"/>
+      New game
+    </MudText>
+  </TitleContent>
+
+  <DialogContent>
+    <MudCardContent>
+
+      <MudSelect T="@Xi.Models.Game.Color" Label="You'll play with" @bind-Value="@this.NewGameModel.PlayingWithColor" For="@(() => this.NewGameModel.PlayingWithColor)">
+        <MudSelectItem Value="@Xi.Models.Game.Color.Red"/>
+        <MudSelectItem Value="@Xi.Models.Game.Color.Black"/>
+      </MudSelect>
+
+      <MudSelect T="int" Label="against" @bind-Value="@this.NewGameModel.OpponentPlayerId" For="@(() => this.NewGameModel.OpponentPlayerId)">
+        @foreach ( var player in this.PossibleOpponents )
+        {
+          <MudSelectItem Value="@player.Id">@player.Name</MudSelectItem>
+        }
+      </MudSelect>
+
+      <MudSelect T="int" Label="with # days per move" @bind-Value="@this.NewGameModel.DaysPerMove" For="@(() => this.NewGameModel.DaysPerMove)">
+        <MudSelectItem Value="1"/>
+        <MudSelectItem Value="2"/>
+        <MudSelectItem Value="3"/>
+        <MudSelectItem Value="4"/>
+        <MudSelectItem Value="5"/>
+        <MudSelectItem Value="6"/>
+        <MudSelectItem Value="7"/>
+      </MudSelect>
+
+    </MudCardContent>
+  </DialogContent>
+
+  <DialogActions>
+    <MudButton OnClick="@this.Cancel">Cancel</MudButton>
+    <MudButton Color="Color.Success" OnClick="@this.CreateGame">Create</MudButton>
+  </DialogActions>
+
+</MudDialog>

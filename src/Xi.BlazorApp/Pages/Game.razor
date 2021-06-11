@@ -12,30 +12,6 @@ else if (this.GameState.Value.GameModel != null)
   var model = GameState.Value.GameModel;
   var game = model.Game!;
 
-  @*
-  if (!game.Accepted)
-  {
-
-    <MudText Typo="Typo.h5">@game.Id - @game.RedPlayer.Name (red) - @game.BlackPlayer.Name (black)</MudText>
-
-    if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
-    {
-      <MudText Typo="Typo.h6">
-        Accept this game with @(TimeSpan.FromSeconds(game.SecondsPerMove).TotalDays) days per move?
-        <MudTooltip Text="Decline this game..">
-          <MudIconButton Color="Color.Secondary" Icon="fas fa-times" OnClick="@this.DeclineGame" />
-        </MudTooltip>
-        <MudTooltip Text="Accept this game..">
-          <MudIconButton Color="Color.Tertiary" Icon="fas fa-check" OnClick="@this.AcceptGame" />
-        </MudTooltip>
-      </MudText>
-    }
-    else
-    {
-      <MudText Typo="Typo.h6">The game needs to be accepted by @(game.InvitedPlayer.Name).</MudText>
-    }
-  }*@
-
   <div class="container">
     <div class="left-element">
       <MudText Typo="Typo.h5">Game @game.Id</MudText>
@@ -58,22 +34,7 @@ else if (this.GameState.Value.GameModel != null)
       <div class="game-actions">
         @if (game.IsOver())
         {
-          <p>@game.Result()</p>
-        }
-        else if (game.ProposedDrawPlayer != null)
-        {
-          @if (game.ProposedDrawPlayer.Id == this.Current.LoggedInPlayerId())
-          {
-            <p>You made a draw proposal. If you decide to make a move, the draw proposal will be revoked.</p>
-          }
-          else
-          {
-            <p>
-              @game.ProposedDrawPlayer.Name propesed a draw. Accept it?
-            </p>
-            <button @onclick="@(() => this.HandleDrawProposal(true))" type="button" class="btn btn btn-success">Yes</button>
-            <button @onclick="@(() => this.HandleDrawProposal(false))" type="button" class="btn btn btn-danger">No</button>
-          }
+          <MudText Typo="Typo.body2">@game.Result()</MudText>
         }
         else if (game.Accepted)
         {
@@ -83,27 +44,7 @@ else if (this.GameState.Value.GameModel != null)
       </div>
     </div>
     <div class="right-element">
-      <MovesComponent GameModel="@model"/>
+      <MovesComponent GameModel="@model" />
     </div>
   </div>
 }
-
-<div class="alerts-wrapper">
-  @if (this.GameState.Value.GameModel?.Game.CheckmatePlayer() != null)
-  {
-    <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckmatePlayer()!.Name} is checkmate.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
-  }
-  else if (this.GameState.Value.GameModel?.Game.StalematePlayer() != null)
-  {
-    <Alert Message="@($"{this.GameState.Value.GameModel.Game.StalematePlayer()!.Name} is stalemate.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
-  }
-  else if (this.GameState.Value.GameModel?.Game.CheckPlayer() != null)
-  {
-    <Alert Message="@($"{this.GameState.Value.GameModel.Game.CheckPlayer()!.Name} is check.")" Type="@Alert.AlertType.Danger" Dismissible="@false" />
-  }
-
-  @if (this.GameState.Value.HasErrors)
-  {
-    <Alert Message="@this.GameState.Value.ErrorMessage" Type="@Alert.AlertType.Warning" />
-  }
-</div>
