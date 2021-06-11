@@ -1,0 +1,14 @@
+<MudDialog>
+  <TitleContent>
+    <MudText Typo="Typo.h6">
+      <MudIcon Icon="far fa-question-circle" Class="mr-3 mb-n1"/>
+      @this.Title
+    </MudText>
+  </TitleContent>
+  <DialogContent>
+    <MudText>@this.Content</MudText>
+  </DialogContent>
+  <DialogActions>
+    <MudButton Color="@Color.Success" OnClick="@this.Close">Close</MudButton>
+  </DialogActions>
+</MudDialog>

@@ -5,16 +5,16 @@
 @if (this.IsLastMovedPiece)
 {
   <style>
-  @@keyframes move {
-    from {
-      margin-left: @PreviousPixelPosition(true)px;
-      margin-top: @PreviousPixelPosition(false)px;
+    @@keyframes move {
+      from {
+        margin-left: @PreviousPixelPosition(true)px;
+        margin-top: @PreviousPixelPosition(false)px;
+      }
+      to {
+        margin-left: 0;
+        margin-top: 0;
+      }
     }
-    to {
-      margin-left: 0;
-      margin-top: 0;
-    }
-  }
   </style>
 }
 

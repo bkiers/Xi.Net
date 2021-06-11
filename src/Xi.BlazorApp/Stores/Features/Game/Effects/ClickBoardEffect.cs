@@ -8,13 +8,6 @@ namespace Xi.BlazorApp.Stores.Features.Game.Effects
 
   public class ClickBoardEffect : Effect<ClickBoardAction>
   {
-    private readonly IGameService gameService;
-
-    public ClickBoardEffect(IGameService gameService)
-    {
-      this.gameService = gameService;
-    }
-
     public override Task HandleAsync(ClickBoardAction action, IDispatcher dispatcher)
     {
       var gameViewModel = action.GameModel;

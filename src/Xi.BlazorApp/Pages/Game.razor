@@ -7,14 +7,15 @@
 {
   <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
-
-@if(GameState.Value.GameModel != null)
+else if (this.GameState.Value.GameModel != null)
 {
   var model = GameState.Value.GameModel;
   var game = model.Game!;
 
+  @*
   if (!game.Accepted)
   {
+
     <MudText Typo="Typo.h5">@game.Id - @game.RedPlayer.Name (red) - @game.BlackPlayer.Name (black)</MudText>
 
     if (this.Current.LoggedInPlayerId() == game.InvitedPlayer.Id)
@@ -33,60 +34,58 @@
     {
       <MudText Typo="Typo.h6">The game needs to be accepted by @(game.InvitedPlayer.Name).</MudText>
     }
-  }
-  else
-  {
-    <div class="container">
-      <div class="left-element">
-        <MudText Typo="Typo.h5">Game @game.Id</MudText>
+  }*@
 
-        <PlayerComponent
-          IsTop="@true"
-          FlipBoard="@this.FlipBoard()"
-          GameModel="@model"/>
+  <div class="container">
+    <div class="left-element">
+      <MudText Typo="Typo.h5">Game @game.Id</MudText>
 
-        <BoardComponent
-          Board="@model.CurrentBoard()"
-          HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
-          FlipBoard="@this.FlipBoard()"/>
+      <PlayerComponent
+        IsTop="@true"
+        FlipBoard="@this.FlipBoard()"
+        GameModel="@model" />
 
-        <PlayerComponent
-          IsTop="@false"
-          FlipBoard="@this.FlipBoard()"
-          GameModel="@model"/>
+      <BoardComponent
+        Board="@model.CurrentBoard()"
+        HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
+        FlipBoard="@this.FlipBoard()" />
 
-        <div class="game-actions">
-          @if (game.IsOver())
+      <PlayerComponent
+        IsTop="@false"
+        FlipBoard="@this.FlipBoard()"
+        GameModel="@model" />
+
+      <div class="game-actions">
+        @if (game.IsOver())
+        {
+          <p>@game.Result()</p>
+        }
+        else if (game.ProposedDrawPlayer != null)
+        {
+          @if (game.ProposedDrawPlayer.Id == this.Current.LoggedInPlayerId())
           {
-            <p>@game.Result()</p>
-          }
-          else if (game.ProposedDrawPlayer != null)
-          {
-            @if (game.ProposedDrawPlayer.Id == this.Current.LoggedInPlayerId())
-            {
-              <p>You made a draw proposal. If you decide to make a move, the draw proposal will be revoked.</p>
-            }
-            else
-            {
-              <p>
-                @game.ProposedDrawPlayer.Name propesed a draw. Accept it?
-              </p>
-              <button @onclick="@(() => this.HandleDrawProposal(true))" type="button" class="btn btn btn-success">Yes</button>
-              <button @onclick="@(() => this.HandleDrawProposal(false))" type="button" class="btn btn btn-danger">No</button>
-            }
+            <p>You made a draw proposal. If you decide to make a move, the draw proposal will be revoked.</p>
           }
           else
           {
-            <button @onclick="@this.Forfeit" type="button" class="btn btn-sm btn-danger">Forfeit</button>
-            <button @onclick="@this.ProposeDraw" type="button" class="btn btn-sm btn-warning">Draw</button>
+            <p>
+              @game.ProposedDrawPlayer.Name propesed a draw. Accept it?
+            </p>
+            <button @onclick="@(() => this.HandleDrawProposal(true))" type="button" class="btn btn btn-success">Yes</button>
+            <button @onclick="@(() => this.HandleDrawProposal(false))" type="button" class="btn btn btn-danger">No</button>
           }
-        </div>
-      </div>
-      <div class="right-element">
-        <MovesComponent GameModel="@model"/>
+        }
+        else if (game.Accepted)
+        {
+          <MudButton OnClick="@this.Forfeit" Variant="Variant.Filled" Color="Color.Error" Size="Size.Small">Forfeit</MudButton>
+          <MudButton OnClick="@this.ProposeDraw" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small">Draw</MudButton>
+        }
       </div>
     </div>
-  }
+    <div class="right-element">
+      <MovesComponent GameModel="@model"/>
+    </div>
+  </div>
 }
 
 <div class="alerts-wrapper">

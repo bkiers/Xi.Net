@@ -3,20 +3,20 @@
   position: relative;
   left: 0;
   top: 0;
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
 }
 
 .cell {
   position: relative;
   top: 0;
   left: 0;
-  width: 60px;
+  width: 54px;
 }
 
 .highlight {
   position: absolute;
   top: 0;
   left: 0;
-  width: 60px;
+  width: 54px;
 }

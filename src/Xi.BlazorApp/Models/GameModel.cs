@@ -65,29 +65,29 @@ namespace Xi.BlazorApp.Models
 
       var turnColor = this.Game.TurnPlayerColor();
 
-      switch (this.FirstClick)
+      if (this.FirstClick == null && !cell.OccupiedBy(turnColor))
       {
-        case null when !cell.OccupiedBy(turnColor):
-          throw new Exception($"It's {turnColor}'s turn.");
-        case null:
-          this.FirstClick = cell;
-          break;
-        default:
-        {
-          if (this.FirstClick.Equals(cell))
-          {
-            // The user clicked the same cell: this means undo the first click.
-            this.FirstClick = null;
-          }
-          else
-          {
-            this.Game.Move(new Move(this.FirstClick, cell));
-            this.CurrentMoveIndex++;
-            this.FirstClick = null;
-          }
+        throw new Exception($"It's {turnColor}'s turn.");
+      }
 
-          break;
-        }
+      if (this.FirstClick == null)
+      {
+        this.FirstClick = cell;
+      }
+      else if (this.FirstClick.Equals(cell))
+      {
+        // The user clicked the same cell: this means undo the first click.
+        this.FirstClick = null;
+      }
+      else if (cell.OccupiedBy(turnColor))
+      {
+        this.FirstClick = cell;
+      }
+      else
+      {
+        this.Game.Move(new Move(this.FirstClick, cell));
+        this.CurrentMoveIndex++;
+        this.FirstClick = null;
       }
     }
 

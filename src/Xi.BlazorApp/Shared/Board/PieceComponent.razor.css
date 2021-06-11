@@ -1,7 +1,7 @@
 .piece {
   position: absolute;
-  top: 7px;
-  left: 7px;
-  width: 46px;
+  top: 6px;
+  left: 6px;
+  width: 42px;
   z-index: 999;
 }
