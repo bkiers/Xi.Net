@@ -15,7 +15,7 @@ namespace Xi.BlazorApp.Stores.Features.Game.Reducers
     [ReducerMethod]
     public static GameState Reduce(GameState state, DeclineGameAction action)
     {
-      return new(false, action.ErrorMessage, action.GameModel);
+      return new(false, null, action.GameModel);
     }
   }
 }

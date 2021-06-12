@@ -32,7 +32,6 @@ namespace Xi.BlazorApp.Shared.Board
       await base.OnInitializedAsync();
     }
 
-
     private List<Tuple<int, int, int>> MoveNumbers()
     {
       var moves = new List<Tuple<int, int, int>>();
@@ -46,7 +45,6 @@ namespace Xi.BlazorApp.Shared.Board
 
       return moves;
     }
-
 
     private void First()
     {

@@ -14,7 +14,7 @@ namespace Xi.BlazorApp.Pages
     private IDialogService DialogService { get; set; } = default!;
 
     [Inject]
-    public IGameService GameService { get; set; } = default!;
+    private IGameService GameService { get; set; } = default!;
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
