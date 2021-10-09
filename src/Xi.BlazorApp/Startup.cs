@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp
 {
+  using System;
   using Fluxor;
   using Microsoft.AspNetCore.Authentication;
   using Microsoft.AspNetCore.Authentication.Cookies;
@@ -63,6 +64,11 @@ namespace Xi.BlazorApp
         options.ClientId = this.Configuration["Google:ClientId"];
         options.ClientSecret = this.Configuration["Google:ClientSecret"];
         options.ClaimActions.MapJsonKey("urn:google:profile", "link");
+      });
+
+      services.ConfigureApplicationCookie(options =>
+      {
+        options.Cookie.Domain = this.Configuration["XiConfig:CookieDomain"];
       });
 
       services.AddHttpContextAccessor();
