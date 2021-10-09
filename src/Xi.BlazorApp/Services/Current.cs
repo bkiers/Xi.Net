@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp.Services
 {
+  using System.Linq;
   using System.Security.Claims;
   using Microsoft.AspNetCore.Http;
   using Xi.Models;
@@ -25,10 +26,10 @@ namespace Xi.BlazorApp.Services
     {
       var user = this.httpContextAccessor.HttpContext?.User!;
 
-      var name = user.FindFirst(ClaimTypes.GivenName)!.Value;
+      var name = user.FindFirst(ClaimTypes.GivenName)?.Value;
       var email = user.FindFirst(ClaimTypes.Email)!.Value;
 
-      return this.playerService.FindByEmailOrCreate(email, name);
+      return this.playerService.FindByEmailOrCreate(email, name ?? email.Split('@').First());
     }
 
     public bool LoggedIn()

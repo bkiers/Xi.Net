@@ -40,7 +40,9 @@ namespace Xi.BlazorApp.Pages
 
       // Get the information about the user from the external login provider
       var googleUser = this.User.Identities.FirstOrDefault();
-      this.logger.LogInformation($"googleUser={googleUser}, IsAuthenticated={googleUser?.IsAuthenticated}");
+      var email = googleUser?.FindFirst(ClaimTypes.Email)?.Value;
+
+      this.logger.LogInformation($"googleUser={googleUser}, email={email}, IsAuthenticated={googleUser?.IsAuthenticated}");
 
       if (googleUser?.IsAuthenticated == true)
       {
