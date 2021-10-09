@@ -1,18 +1,21 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div class="wrapper">
-  <MudText Typo="Typo.overline" Style="font-size: large">
-    @this.Player.Name &nbsp; @this.PotentialPoints()
-  </MudText>
+  <div>
+    <MudText Typo="Typo.overline" Style="font-size: large">
+      @this.Player.Name &nbsp; @this.PotentialPoints()
+    </MudText>
 
-  <CapturedPiecesComponent
-    GameModel="@this.GameModel"
-    CurrentColor="@this.CurrentColor"/>
-
-  @if (this.ShowClock)
-  {
-    <span class="clock">
-      <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value"/>
-    </span>
-  }
+    @if ( this.ShowClock )
+    {
+      <span class="clock">
+        <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value"/>
+      </span>
+    }
+  </div>
+  <div>
+    <CapturedPiecesComponent
+      GameModel="@this.GameModel"
+      CurrentColor="@this.CurrentColor"/>
+  </div>
 </div>

@@ -12,7 +12,7 @@ namespace Xi.BlazorApp.Shared.Board
     public GameModel GameModel { get; set; } = default!;
 
     [Parameter]
-    public int Index { get; set; } = default!;
+    public int Index { get; set; }
 
     [Inject]
     public IDispatcher Dispatcher { get; set; } = default!;
@@ -28,11 +28,6 @@ namespace Xi.BlazorApp.Shared.Board
     private void ConfirmMove()
     {
       this.Dispatcher.Dispatch(new ConfirmMoveAction(this.Current.LoggedInPlayerId(), this.GameModel, this.Index));
-    }
-
-    private void JumpToThisMove()
-    {
-      this.Dispatcher.Dispatch(new JumpToMoveAction(this.GameModel, this.Index));
     }
   }
 }

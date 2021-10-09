@@ -2,6 +2,7 @@ namespace Xi.BlazorApp.Services
 {
   using System.Security.Claims;
   using Microsoft.AspNetCore.Http;
+  using Xi.Models;
   using Xi.Models.Game;
 
   public class Current
@@ -22,10 +23,10 @@ namespace Xi.BlazorApp.Services
 
     public Player LoggedInPlayer()
     {
-      var user = this.httpContextAccessor.HttpContext?.User;
+      var user = this.httpContextAccessor.HttpContext?.User!;
 
-      var name = user!.FindFirst(ClaimTypes.GivenName)!.Value;
-      var email = user!.FindFirst(ClaimTypes.Email)!.Value;
+      var name = user.FindFirst(ClaimTypes.GivenName)!.Value;
+      var email = user.FindFirst(ClaimTypes.Email)!.Value;
 
       return this.playerService.FindByEmailOrCreate(email, name);
     }
@@ -34,7 +35,12 @@ namespace Xi.BlazorApp.Services
     {
       var user = this.httpContextAccessor.HttpContext?.User;
 
-      return user?.FindFirst(ClaimTypes.Email) != null;
+      return !string.IsNullOrEmpty(user?.FindFirst(ClaimTypes.Email)?.Value);
+    }
+
+    public Settings Settings()
+    {
+      return this.LoggedInPlayer().Settings;
     }
   }
 }

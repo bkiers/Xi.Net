@@ -1,12 +1,12 @@
 <AuthorizeView>
   <Authorized>
     <MudTooltip Text="@this.LoggedInToolTip">
-      <MudIconButton Icon="fas fa-sign-out-alt" Color="Color.Inherit" Edge="Edge.Start" Link="/Logout"/>
+      <MudIconButton Icon="fas fa-sign-out-alt" Color="Color.Inherit" Size="Size.Small" Edge="Edge.Start" Link="/Logout"/>
     </MudTooltip>
   </Authorized>
   <NotAuthorized>
     <MudTooltip Text="Log in with Google">
-      <MudIconButton Icon="fab fa-google" Color="Color.Inherit" Edge="Edge.Start" Link="@this.LoginUrl" Target="_top"/>
+      <MudIconButton Icon="fab fa-google" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Small" Link="@this.LoginUrl" Target="_top"/>
     </MudTooltip>
   </NotAuthorized>
 </AuthorizeView>

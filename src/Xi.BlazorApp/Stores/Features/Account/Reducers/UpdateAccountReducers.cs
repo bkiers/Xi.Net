@@ -7,7 +7,7 @@ namespace Xi.BlazorApp.Stores.Features.Account.Reducers
   public class UpdateAccountReducers
   {
     [ReducerMethod]
-    public static AccountState Reduce(AccountState state, UpdateAccountAction action)
+    public static AccountState Reduce(AccountState state, UpdateAccountSettingsAction settingsAction)
     {
       return new(true, null, null);
     }

@@ -1,5 +1,7 @@
 td.selected {
-  background: #dedede;
+  -webkit-box-shadow:inset 0 0 0 1px gray;
+  -moz-box-shadow:inset 0 0 0 1px gray;
+  box-shadow:inset 0 0 0 1px gray;
 }
 
 td {
@@ -22,10 +24,6 @@ td {
 .move-actions {
   vertical-align: middle;
   float: right;
-}
-
-.move {
-  cursor: pointer;
 }
 
 .img-captured-piece {

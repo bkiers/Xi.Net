@@ -2,7 +2,7 @@ table {
   border-collapse: collapse;
   min-width: 160px;
   display: block;
-  max-height: 720px;
+  max-height: 750px;
   overflow-y: scroll;
 }
 

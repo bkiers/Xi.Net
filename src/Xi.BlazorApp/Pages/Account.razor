@@ -53,7 +53,11 @@ else if (this.AccountState.Value.Player != null)
     </MudItem>
     <MudItem xs="6">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
-        <MudSwitch T="bool" Color="Color.Primary" Checked="@player.ShowPossibleMoves" CheckedChanged="@this.OnShowPossibleMovesToggled"/>
+        <MudSwitch
+          T="bool"
+          Color="Color.Primary"
+          Checked="@player.Settings.ShowPossibleMoves"
+          CheckedChanged="@this.OnShowPossibleMovesToggled"/>
       </MudPaper>
     </MudItem>
 

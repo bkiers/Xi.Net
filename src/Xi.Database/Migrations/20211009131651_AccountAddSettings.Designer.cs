@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Xi.Database;
@@ -9,9 +10,10 @@ using Xi.Database;
 namespace Xi.Database.Migrations
 {
     [DbContext(typeof(XiContext))]
-    partial class XiContextModelSnapshot : ModelSnapshot
+    [Migration("20211009131651_AccountAddSettings")]
+    partial class AccountAddSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

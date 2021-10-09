@@ -1,16 +1,17 @@
 namespace Xi.Models.Game
 {
   using System;
+  using Newtonsoft.Json;
 
   public class Player
   {
-    public Player(int id, string name, string email, int eloRating, bool showPossibleMoves, bool isAdmin)
+    public Player(int id, string name, string email, int eloRating, string? settingsJson, bool isAdmin)
     {
       this.Id = id;
       this.Name = name;
       this.Email = email;
       this.EloRating = eloRating;
-      this.ShowPossibleMoves = showPossibleMoves;
+      this.Settings = string.IsNullOrEmpty(settingsJson) ? new Settings() : JsonConvert.DeserializeObject<Settings>(settingsJson)!;
       this.IsAdmin = isAdmin;
     }
 
@@ -20,9 +21,9 @@ namespace Xi.Models.Game
 
     public string Email { get; }
 
-    public int EloRating { get; protected set; }
+    public int EloRating { get; private set; }
 
-    public bool ShowPossibleMoves { get; }
+    public Settings Settings { get; }
 
     public bool IsAdmin { get; }
 

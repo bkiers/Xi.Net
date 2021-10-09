@@ -8,8 +8,8 @@ namespace Xi.Models.Tests.Game
     [Test]
     public void ProcessEloPoints_WinWithSameRating_ChangesEqualPoints()
     {
-      var won = new Player(1, "name1", "email1", 1000, false, false);
-      var lost = new Player(1, "name2", "email2", 1000, false, false);
+      var won = new Player(1, "name1", "email1", 1000, "{}", false);
+      var lost = new Player(1, "name2", "email2", 1000, "{}", false);
 
       won.ProcessEloPoints(lost, false);
 
@@ -20,8 +20,8 @@ namespace Xi.Models.Tests.Game
     [Test]
     public void ProcessEloPoints_DrawWithSameRating_ChangesEqualPoints()
     {
-      var won = new Player(1, "name1", "email1", 1000, false, false);
-      var lost = new Player(1, "name2", "email2", 1000, false, false);
+      var won = new Player(1, "name1", "email1", 1000, "{}", false);
+      var lost = new Player(1, "name2", "email2", 1000, "{}", false);
 
       won.ProcessEloPoints(lost, true);
 
@@ -32,8 +32,8 @@ namespace Xi.Models.Tests.Game
     [Test]
     public void ProcessEloPoints_WinWithHighRating_ChangesFewPoints()
     {
-      var won = new Player(1, "name1", "email1", 1100, false, false);
-      var lost = new Player(1, "name2", "email2", 1000, false, false);
+      var won = new Player(1, "name1", "email1", 1100, "{}", false);
+      var lost = new Player(1, "name2", "email2", 1000, "{}", false);
 
       won.ProcessEloPoints(lost, false);
 
@@ -44,8 +44,8 @@ namespace Xi.Models.Tests.Game
     [Test]
     public void ProcessEloPoints_DrawWithHighRating_ChangesFewPoints()
     {
-      var won = new Player(1, "name1", "email1", 1100, false, false);
-      var lost = new Player(1, "name2", "email2", 1000, false, false);
+      var won = new Player(1, "name1", "email1", 1100, "{}", false);
+      var lost = new Player(1, "name2", "email2", 1000, "{}", false);
 
       won.ProcessEloPoints(lost, true);
 
@@ -56,8 +56,8 @@ namespace Xi.Models.Tests.Game
     [Test]
     public void ProcessEloPoints_WinWithLowRating_ChangesMorePoints()
     {
-      var won = new Player(1, "name1", "email1", 1000, false, false);
-      var lost = new Player(1, "name2", "email2", 1100, false, false);
+      var won = new Player(1, "name1", "email1", 1000, "{}", false);
+      var lost = new Player(1, "name2", "email2", 1100, "{}", false);
 
       won.ProcessEloPoints(lost, false);
 

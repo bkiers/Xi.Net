@@ -32,8 +32,11 @@ namespace Xi.BlazorApp.Pages
     private void OnShowPossibleMovesToggled(bool enabled)
     {
       var player = this.Current.LoggedInPlayer();
+      var settings = player.Settings;
 
-      this.Dispatcher.Dispatch(new UpdateAccountAction(player.Id, enabled));
+      settings.ShowPossibleMoves = enabled;
+
+      this.Dispatcher.Dispatch(new UpdateAccountSettingsAction(player.Id, settings));
     }
   }
 }

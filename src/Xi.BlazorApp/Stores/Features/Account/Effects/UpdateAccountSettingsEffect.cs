@@ -5,18 +5,18 @@ namespace Xi.BlazorApp.Stores.Features.Account.Effects
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Account.Actions.UpdateAccount;
 
-  public class UpdateAccountEffect : Effect<UpdateAccountAction>
+  public class UpdateAccountSettingsEffect : Effect<UpdateAccountSettingsAction>
   {
     private readonly IPlayerService playerService;
 
-    public UpdateAccountEffect(IPlayerService playerService)
+    public UpdateAccountSettingsEffect(IPlayerService playerService)
     {
       this.playerService = playerService;
     }
 
-    public override Task HandleAsync(UpdateAccountAction action, IDispatcher dispatcher)
+    public override Task HandleAsync(UpdateAccountSettingsAction settingsAction, IDispatcher dispatcher)
     {
-      var player = this.playerService.Update(action.PlayerId, action.ShowPossibleMoves);
+      var player = this.playerService.Update(settingsAction.PlayerId, settingsAction.Settings);
 
       dispatcher.Dispatch(new UpdateAccountSuccessAction(player));
 

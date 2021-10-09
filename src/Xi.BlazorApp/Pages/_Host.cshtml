@@ -39,6 +39,11 @@
         const table = document.getElementById('movesTable');
         table.scrollTop = table.scrollHeight;
       }
+
+      function scrollToFirstMove() {
+        const table = document.getElementById('movesTable');
+        table.scrollTop = 0;
+      }
     </script>
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>

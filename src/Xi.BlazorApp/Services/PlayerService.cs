@@ -2,9 +2,11 @@ namespace Xi.BlazorApp.Services
 {
   using System.Collections.Generic;
   using System.Linq;
+  using Newtonsoft.Json;
   using Xi.BlazorApp.Models;
   using Xi.Database;
   using Xi.Database.Dtos;
+  using Xi.Models;
   using Xi.Models.Game;
 
   public class PlayerService : IPlayerService
@@ -65,11 +67,11 @@ namespace Xi.BlazorApp.Services
       return player;
     }
 
-    public Player Update(int playerId, bool showPossibleMoves)
+    public Player Update(int playerId, Settings settings)
     {
       var player = this.db.Players.Single(p => p.Id == playerId);
 
-      player.ShowPossibleMoves = showPossibleMoves;
+      player.SettingsJson = JsonConvert.SerializeObject(settings);
 
       this.db.Players.Update(player);
       this.db.SaveChanges();

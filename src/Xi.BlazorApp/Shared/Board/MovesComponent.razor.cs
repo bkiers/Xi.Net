@@ -33,7 +33,9 @@ namespace Xi.BlazorApp.Shared.Board
         .Add(ModKeys.None, Keys.Left, this.Previous)
         .Add(ModKeys.None, Keys.Right, this.Next)
         .Add(ModKeys.None, Keys.Home, this.First)
-        .Add(ModKeys.None, Keys.End, this.Last);
+        .Add(ModKeys.None, Keys.End, this.Last)
+        .Add(ModKeys.None, Keys.Up, this.First)
+        .Add(ModKeys.None, Keys.Down, this.Last);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -60,9 +62,11 @@ namespace Xi.BlazorApp.Shared.Board
       return moves;
     }
 
-    private void First()
+    private async Task First()
     {
       this.Dispatcher.Dispatch(new FirstMoveAction(this.GameModel));
+
+      await this.JSRuntime.InvokeVoidAsync("scrollToFirstMove");
     }
 
     private void Previous()
@@ -75,9 +79,11 @@ namespace Xi.BlazorApp.Shared.Board
       this.Dispatcher.Dispatch(new NextMoveAction(this.GameModel));
     }
 
-    private void Last()
+    private async Task Last()
     {
       this.Dispatcher.Dispatch(new LastMoveAction(this.GameModel));
+
+      await this.JSRuntime.InvokeVoidAsync("scrollToLastMove");
     }
   }
 }

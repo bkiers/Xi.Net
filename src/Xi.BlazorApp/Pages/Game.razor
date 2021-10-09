@@ -10,7 +10,7 @@
 else if (this.GameState.Value.GameModel != null)
 {
   var model = GameState.Value.GameModel;
-  var game = model.Game!;
+  var game = model.Game;
 
   <div class="container">
     <div class="left-element">
@@ -23,7 +23,7 @@ else if (this.GameState.Value.GameModel != null)
 
       <BoardComponent
         Board="@model.CurrentBoard()"
-        HighlightedCells="@model.HighlightedCells(this.Current.LoggedInPlayer().ShowPossibleMoves)"
+        HighlightedCells="@model.HighlightedCells(this.Current.Settings().ShowPossibleMoves)"
         FlipBoard="@this.FlipBoard()" />
 
       <PlayerComponent
