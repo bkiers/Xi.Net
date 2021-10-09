@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Xi.BlazorApp.Shared.Board
 @namespace Xi.BlazorApp.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -33,6 +34,12 @@
       <a class="dismiss">🗙</a>
     </div>
 
+    <script>
+      function scrollToLastMove() {
+        const table = document.getElementById('movesTable');
+        table.scrollTop = table.scrollHeight;
+      }
+    </script>
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>

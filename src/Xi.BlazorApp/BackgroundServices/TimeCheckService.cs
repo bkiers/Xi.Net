@@ -23,6 +23,9 @@ namespace Xi.BlazorApp.BackgroundServices
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+      // Since this BackgroundService uses the database, first let possible migrations run before starting.
+      await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+
       this.logger.LogDebug("Started");
 
       stoppingToken.Register(() => this.logger.LogDebug("Terminated"));

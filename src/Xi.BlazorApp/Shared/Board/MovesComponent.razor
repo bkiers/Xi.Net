@@ -1,25 +1,29 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 <div>
-  <table class="table-condensed table-borderless">
-    <thead>
-      <tr>
-        <th></th>
-        <th><MudText Typo="Typo.overline" Style="font-size: medium">Red</MudText></th>
-        <th><MudText Typo="Typo.overline" Style="font-size: medium">Black</MudText></th>
-      </tr>
-    </thead>
+  <div id="tip">
+    <MudTooltip Text="Use the buttons 'left', 'right', 'home' and 'end' to navigate through the moves.">
+      <MudIcon Icon="@Icons.Material.Outlined.Lightbulb" Size="Size.Small" Color="Color.Default"/>
+    </MudTooltip>
+  </div>
+
+  <div>
+    <MudText Typo="Typo.overline" Style="font-size: medium; margin-left: 30px">Red</MudText>
+    <MudText Typo="Typo.overline" Style="font-size: medium; margin-left: 55px">Black</MudText>
+  </div>
+
+  <table id="movesTable" class="table-condensed table-borderless">
     <tbody>
-      @foreach (var (moveNumber, redIndex, blackIndex) in this.MoveNumbers())
-      {
-        <tr>
-          <td>
-            <MudText Typo="Typo.overline">@moveNumber</MudText>
-          </td>
-          <MoveComponent GameModel="@this.GameModel" Index="@redIndex"/>
-          <MoveComponent GameModel="@this.GameModel" Index="@blackIndex"/>
-        </tr>
-      }
+    @foreach ( var (moveNumber, redIndex, blackIndex) in this.MoveNumbers() )
+    {
+      <tr>
+        <td>
+          <MudText Typo="Typo.overline">@moveNumber</MudText>
+        </td>
+        <MoveComponent GameModel="@this.GameModel" Index="@redIndex"/>
+        <MoveComponent GameModel="@this.GameModel" Index="@blackIndex"/>
+      </tr>
+    }
     </tbody>
   </table>
 </div>

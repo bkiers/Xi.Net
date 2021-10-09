@@ -4,16 +4,19 @@ namespace Xi.Models.Game
 
   public class Move
   {
-    public Move(Cell fromCell, Cell toCell, DateTime? createdAt = null)
+    public Move(Cell fromCell, Cell toCell, string? capturedPiece = null, DateTime? createdAt = null)
     {
       this.FromCell = fromCell;
       this.ToCell = toCell;
+      this.CapturedPiece = capturedPiece;
       this.CreatedAt = createdAt;
     }
 
     public Cell FromCell { get; }
 
     public Cell ToCell { get; }
+
+    public string? CapturedPiece { get; }
 
     public DateTime? CreatedAt { get; }
 

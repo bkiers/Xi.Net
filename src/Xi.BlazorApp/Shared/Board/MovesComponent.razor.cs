@@ -5,6 +5,7 @@ namespace Xi.BlazorApp.Shared.Board
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Microsoft.JSInterop;
   using Toolbelt.Blazor.HotKeys;
   using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
@@ -21,15 +22,28 @@ namespace Xi.BlazorApp.Shared.Board
     [Inject]
     private HotKeys HotKeys { get; set; } = default!;
 
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
+      await base.OnInitializedAsync();
+
       this.HotKeys.CreateContext()
         .Add(ModKeys.None, Keys.Left, this.Previous)
         .Add(ModKeys.None, Keys.Right, this.Next)
         .Add(ModKeys.None, Keys.Home, this.First)
         .Add(ModKeys.None, Keys.End, this.Last);
+    }
 
-      await base.OnInitializedAsync();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+      await base.OnAfterRenderAsync(firstRender);
+
+      if (firstRender)
+      {
+        await this.JSRuntime.InvokeVoidAsync("scrollToLastMove");
+      }
     }
 
     private List<Tuple<int, int, int>> MoveNumbers()

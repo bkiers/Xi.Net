@@ -5,6 +5,10 @@
     @this.Player.Name &nbsp; @this.PotentialPoints()
   </MudText>
 
+  <CapturedPiecesComponent
+    GameModel="@this.GameModel"
+    CurrentColor="@this.CurrentColor"/>
+
   @if (this.ShowClock)
   {
     <span class="clock">

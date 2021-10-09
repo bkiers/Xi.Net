@@ -27,3 +27,9 @@ td {
 .move {
   cursor: pointer;
 }
+
+.img-captured-piece {
+  width: 15px;
+  float: right;
+  margin-right: 10px;
+}

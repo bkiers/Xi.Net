@@ -22,6 +22,8 @@ namespace Xi.Database.Dtos
     [Required]
     public int ToFileIndex { get; set; }
 
+    public string? CapturedPiece { get; set; }
+
     [Required]
     public int GameId { get; set; }
 

@@ -83,6 +83,7 @@ namespace Xi.Database.Dtos
         this.Moves.Select(m => new Move(
           new Cell(m.FromFileIndex, m.FromRankIndex),
           new Cell(m.ToFileIndex, m.ToRankIndex),
+          m.CapturedPiece,
           m.CreatedAt))
           .ToList(),
         this.Reminders.Select(r => new Reminder(r.MoveNumber)));

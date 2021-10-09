@@ -1,5 +1,9 @@
 table {
   border-collapse: collapse;
+  min-width: 160px;
+  display: block;
+  max-height: 720px;
+  overflow-y: scroll;
 }
 
 th {
@@ -17,6 +21,6 @@ i.fas {
   cursor: pointer;
 }
 
-table {
-  min-width: 160px;
+#tip {
+  float: right;
 }

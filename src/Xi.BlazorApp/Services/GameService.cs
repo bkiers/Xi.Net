@@ -272,6 +272,7 @@ namespace Xi.BlazorApp.Services
         FromRankIndex = fromCell.RankIndex,
         ToFileIndex = toCell.FileIndex,
         ToRankIndex = toCell.RankIndex,
+        CapturedPiece = toCell.Piece.SvgName(),
       };
 
       using var transaction = this.db.Database.BeginTransaction();
