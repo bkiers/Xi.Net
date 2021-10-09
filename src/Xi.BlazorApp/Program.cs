@@ -17,10 +17,13 @@ namespace Xi.BlazorApp
       return Host.CreateDefaultBuilder(args)
         .ConfigureAppConfiguration((hostingContext, config) =>
         {
-          var settingsFile = $"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json";
+          if (args.Length == 1)
+          {
+            var settingsFile = $"appsettings.{args[0]}.json";
 
-          Console.WriteLine($">>> Loading: {settingsFile}");
-          config.AddJsonFile(settingsFile);
+            Console.WriteLine($">>> Loading: {settingsFile}");
+            config.AddJsonFile(settingsFile);
+          }
         })
         .ConfigureWebHostDefaults(webBuilder =>
         {
