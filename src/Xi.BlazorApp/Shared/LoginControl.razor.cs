@@ -14,7 +14,5 @@ namespace Xi.BlazorApp.Shared
     private string LoginUrl => $"/Login?redirectUrl=/{this.ReturnUrl}";
 
     private string ReturnUrl => this.NavigationManager.ToBaseRelativePath(this.NavigationManager.Uri);
-
-    private string LoggedInToolTip => $"Sign out {this.Current.LoggedInPlayer().Name}";
   }
 }
