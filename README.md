@@ -4,7 +4,7 @@ TODO
 
 ## Database
 
-Setup the database:
+Login your PostgreSQL server (`psql postgres`) and create the database and user:
 
 ```sql
 CREATE DATABASE xi;

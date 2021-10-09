@@ -96,8 +96,8 @@ namespace Xi.BlazorApp
     {
       using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
       {
-        var context = serviceScope!.ServiceProvider.GetRequiredService<XiContext>();
-        context!.Database.Migrate();
+        var context = serviceScope.ServiceProvider.GetRequiredService<XiContext>();
+        context.Database.Migrate();
       }
 
       if (env.IsDevelopment())

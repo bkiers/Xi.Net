@@ -90,7 +90,7 @@ namespace Xi.Database.Dtos
 
     public int TurnPlayerId()
     {
-      return this.Moves.Count % 2 == 1 ? this.BlackPlayerId : this.RedPlayerId;
+      return this.TurnPlayer().Id;
     }
 
     public PlayerDto TurnPlayer()

@@ -31,6 +31,8 @@ namespace Xi.BlazorApp.BackgroundServices
       {
         using (IServiceScope scope = this.services.BuildServiceProvider().CreateScope())
         {
+          this.logger.LogDebug("Tick...");
+
           var eventPublisher = scope.ServiceProvider.GetRequiredService<IEventPublisher>();
           var gameService = scope.ServiceProvider.GetService<IGameService>()!;
 
@@ -41,9 +43,11 @@ namespace Xi.BlazorApp.BackgroundServices
             switch (hoursThinkingTime)
             {
               case < 0:
+                // Time's up!
                 await eventPublisher.PublishEventAsync(new GameEvent(game));
                 break;
               case < 12 when game.Game.Reminders.SingleOrDefault(r => r.MoveNumber == game.Game.Moves.Count) == null:
+                // Less than 12 hours, and no reminder was sent yet.
                 await eventPublisher.PublishEventAsync(new GameEvent(game));
                 break;
             }

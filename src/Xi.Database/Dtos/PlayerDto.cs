@@ -27,7 +27,13 @@ namespace Xi.Database.Dtos
 
     public Player ToPlayer()
     {
-      return new Player(this.Id, this.Name, this.Email, this.EloRating, this.ShowPossibleMoves, this.IsAdmin);
+      return new Player(
+        this.Id,
+        this.Name,
+        this.Email,
+        this.EloRating,
+        this.ShowPossibleMoves,
+        this.IsAdmin);
     }
   }
 }
