@@ -8,10 +8,18 @@ namespace Xi.BlazorApp.Pages
   using Microsoft.AspNetCore.Authorization;
   using Microsoft.AspNetCore.Mvc;
   using Microsoft.AspNetCore.Mvc.RazorPages;
+  using Microsoft.Extensions.Logging;
 
   [AllowAnonymous]
   public class Login : PageModel
   {
+    private readonly ILogger<Login> logger;
+
+    public Login(ILogger<Login> logger)
+    {
+      this.logger = logger;
+    }
+
     public IActionResult OnGetAsync(string redirectUrl = "/")
     {
       // Request a redirect to the external login provider.
@@ -28,8 +36,11 @@ namespace Xi.BlazorApp.Pages
 
     public async Task<IActionResult> OnGetCallbackAsync(string? redirectUrl, string? remoteError)
     {
+      this.logger.LogInformation($"redirectUrl={redirectUrl}, remoteError={remoteError}");
+
       // Get the information about the user from the external login provider
       var googleUser = this.User.Identities.FirstOrDefault();
+      this.logger.LogInformation($"googleUser={googleUser}, IsAuthenticated={googleUser?.IsAuthenticated}");
 
       if (googleUser?.IsAuthenticated == true)
       {
