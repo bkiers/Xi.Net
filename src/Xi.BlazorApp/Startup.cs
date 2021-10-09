@@ -6,6 +6,7 @@ namespace Xi.BlazorApp
   using Microsoft.AspNetCore.Builder;
   using Microsoft.AspNetCore.Hosting;
   using Microsoft.AspNetCore.Http;
+  using Microsoft.AspNetCore.HttpOverrides;
   using Microsoft.EntityFrameworkCore;
   using Microsoft.Extensions.Configuration;
   using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,11 @@ namespace Xi.BlazorApp
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.Configure<ForwardedHeadersOptions>(options =>
+      {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+      });
+
       services.Configure<XiConfig>(this.Configuration.GetSection(nameof(XiConfig)));
 
       services.AddRazorPages();

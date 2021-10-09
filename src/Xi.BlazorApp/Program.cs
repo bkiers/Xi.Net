@@ -15,7 +15,7 @@ namespace Xi.BlazorApp
     public static IHostBuilder CreateHostBuilder(string[] args)
     {
       return Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration((hostingContext, config) =>
+        .ConfigureAppConfiguration((_, config) =>
         {
           if (args.Length == 1)
           {
