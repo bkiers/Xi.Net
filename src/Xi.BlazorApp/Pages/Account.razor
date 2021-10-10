@@ -3,6 +3,10 @@
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
+<MudText Typo="Typo.h3">Xi</MudText>
+<MudText Typo="Typo.subtitle1" Style="font-size: x-small">Version: @Program.Version</MudText>
+<MudText Typo="Typo.subtitle1" Class="mb-6" Style="font-size: x-small">Build: @Program.Build</MudText>
+
 @if (this.AccountState.Value.IsLoading)
 {
   <MudProgressCircular Color="Color.Default" Indeterminate="true" />
@@ -13,45 +17,45 @@ else if (this.AccountState.Value.Player != null)
 
   <MudGrid>
 
-    <MudItem xs="6">
+    <MudItem xs="4">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Style="font-weight: bold;" Typo="Typo.body1">Name</MudText>
       </MudPaper>
     </MudItem>
-    <MudItem xs="6">
+    <MudItem xs="8">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Typo="Typo.body1">@player.Name</MudText>
       </MudPaper>
     </MudItem>
 
-    <MudItem xs="6">
+    <MudItem xs="4">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Style="font-weight: bold;" Typo="Typo.body1">Email</MudText>
       </MudPaper>
     </MudItem>
-    <MudItem xs="6">
+    <MudItem xs="8">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Typo="Typo.body1">@player.Email</MudText>
       </MudPaper>
     </MudItem>
 
-    <MudItem xs="6">
+    <MudItem xs="4">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Style="font-weight: bold;" Typo="Typo.body1">ELO rating</MudText>
       </MudPaper>
     </MudItem>
-    <MudItem xs="6">
+    <MudItem xs="8">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Typo="Typo.body1">@player.EloRating</MudText>
       </MudPaper>
     </MudItem>
 
-    <MudItem xs="6">
+    <MudItem xs="4">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudText Style="font-weight: bold;" Typo="Typo.body1">Show possible moves during the game?</MudText>
       </MudPaper>
     </MudItem>
-    <MudItem xs="6">
+    <MudItem xs="8">
       <MudPaper Class="d-flex mud-width-full" Elevation="0">
         <MudSwitch
           T="bool"

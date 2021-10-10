@@ -8,6 +8,9 @@ namespace Xi.BlazorApp
 
   public class Program
   {
+    public const string Version = "0.1.0";
+    public static readonly string Build = ReadFile("./build.txt");
+
     public static void Main(string[] args)
     {
       var host = CreateHostBuilder(args).Build();
@@ -28,6 +31,18 @@ namespace Xi.BlazorApp
         {
           webBuilder.UseStartup<Startup>();
         });
+    }
+
+    private static string ReadFile(string fileName)
+    {
+      try
+      {
+        return System.IO.File.ReadAllText(fileName).Trim();
+      }
+      catch
+      {
+        return "local development";
+      }
     }
   }
 }
