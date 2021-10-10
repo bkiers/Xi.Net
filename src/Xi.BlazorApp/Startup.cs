@@ -57,10 +57,13 @@ namespace Xi.BlazorApp
 
       services
         .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
-        {
-          options.Cookie.Domain = "bkrs.xs4all.space";
-        });
+        .AddCookie();
+
+      services.Configure<CookiePolicyOptions>(options =>
+      {
+        options.CheckConsentNeeded = _ => false;
+        options.MinimumSameSitePolicy = SameSiteMode.None;
+      });
 
       services.AddAuthentication().AddGoogle(options =>
       {
