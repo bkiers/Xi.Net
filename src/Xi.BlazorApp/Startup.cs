@@ -55,8 +55,12 @@ namespace Xi.BlazorApp
 
       services.AddHotKeys();
 
-      services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie();
+      services
+        .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+          options.Cookie.Domain = "bkrs.xs4all.space";
+        });
 
       services.AddAuthentication().AddGoogle(options =>
       {
