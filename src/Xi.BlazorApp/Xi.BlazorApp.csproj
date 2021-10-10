@@ -31,4 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Xi.Database\Xi.Database.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
+  </ItemGroup>
 </Project>
