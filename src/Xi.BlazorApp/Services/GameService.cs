@@ -212,6 +212,7 @@ namespace Xi.BlazorApp.Services
         .OrderByDescending(g => g.Id)
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
+        .Include(g => g.Moves)
         .Skip(page * pageSize)
         .Take(pageSize)
         .Select(g => new GameModel(g.ToGame()));
