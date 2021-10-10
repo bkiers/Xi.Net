@@ -1,6 +1,11 @@
 # Xi.Net
 
-TODO
+A Blazor app to play correspondence Chinese Chess. The frontend is built using 
+the amazing [MudBlazor](https://mudblazor.com/) framework.
+
+![screen dark mode](https://github.com/bkiers/Xi.Net/blob/master/screen-dm.png?raw=true)
+
+![screen light mode](https://github.com/bkiers/Xi.Net/blob/master/screen-lm.png?raw=true)
 
 ## Database
 
@@ -22,12 +27,17 @@ dotnet ef --startup-project ../Xi.BlazorApp Migrations add MigrationName
 
 ## Secrets
 
+Initialize the secrets:
 ```
 dotnet user-secrets init
 ```
+
+And add (at least) the Google secret and ID:
 
 ```
 dotnet user-secrets set "Google:ClientId" "YOUR_CLIENT_ID"
 dotnet user-secrets set "Google:ClientSecret" "YOUR_CLIENT_SECRET"
 dotnet user-secrets set "XiConfig:SendGridApiKey" "YOUR_API_KEY"
 ```
+
+The SendGrid API key is optional.
