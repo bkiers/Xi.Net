@@ -29,14 +29,15 @@ namespace Xi.BlazorApp.Services
       var name = user.FindFirst(ClaimTypes.GivenName)?.Value;
       var email = user.FindFirst(ClaimTypes.Email)!.Value;
 
-      return this.playerService.FindByEmailOrCreate(email, name ?? email.Split('@').First());
+      return this.playerService.FindByEmail(email)!;
     }
 
     public bool LoggedIn()
     {
       var user = this.httpContextAccessor.HttpContext?.User;
+      var email = user?.FindFirst(ClaimTypes.Email)?.Value;
 
-      return !string.IsNullOrEmpty(user?.FindFirst(ClaimTypes.Email)?.Value);
+      return this.playerService.FindByEmail(email ?? string.Empty) != null;
     }
 
     public Settings Settings()

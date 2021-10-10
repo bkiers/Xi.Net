@@ -45,28 +45,6 @@ namespace Xi.BlazorApp.Services
         .ToPlayer();
     }
 
-    public Player FindByEmailOrCreate(string email, string name)
-    {
-      var player = this.FindByEmail(email);
-
-      if (player == null)
-      {
-        var newPlayer = new PlayerDto
-        {
-          Name = name.Split(' ').First(),
-          Email = email,
-          SettingsJson = JsonConvert.SerializeObject(new Settings()),
-        };
-
-        this.db.Players.Add(newPlayer);
-        this.db.SaveChanges();
-
-        player = newPlayer.ToPlayer();
-      }
-
-      return player;
-    }
-
     public Player Update(int playerId, Settings settings)
     {
       var player = this.db.Players.Single(p => p.Id == playerId);

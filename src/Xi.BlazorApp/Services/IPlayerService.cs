@@ -14,8 +14,6 @@ namespace Xi.BlazorApp.Services
 
     Player FindById(int playerId);
 
-    Player FindByEmailOrCreate(string email, string name);
-
     Player Update(int playerId, Settings settings);
   }
 }
