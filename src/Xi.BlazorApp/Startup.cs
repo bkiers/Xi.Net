@@ -90,8 +90,6 @@ namespace Xi.BlazorApp
       {
         builder.AddInMemoryEventBus(subscriber =>
         {
-          subscriber.Subscribe<EmailReminderEventHandler.Event, EmailReminderEventHandler>();
-          subscriber.Subscribe<TimeRanOutEventHandler.Event, TimeRanOutEventHandler>();
           subscriber.Subscribe<GameOverEventHandler.Event, GameOverEventHandler>();
           subscriber.Subscribe<SendEmailEventHandler.Event, SendEmailEventHandler>();
         });

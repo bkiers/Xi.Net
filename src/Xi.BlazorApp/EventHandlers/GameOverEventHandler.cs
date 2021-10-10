@@ -21,7 +21,7 @@ namespace Xi.BlazorApp.EventHandlers
 
     public async Task HandleEventAsync(Event @event)
     {
-      this.logger.LogDebug($">>> event: {@event}");
+      this.logger.LogDebug($">>> GameOverEventHandler event: game {@event.GameModel.Game.Id}");
 
       var winner = @event.GameModel.Game.WinnerPlayer;
       var loser = winner == null ? null : @event.GameModel.OpponentOf(winner);

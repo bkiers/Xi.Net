@@ -20,7 +20,7 @@ namespace Xi.BlazorApp.EventHandlers
 
     public Task HandleEventAsync(Event @event)
     {
-      this.logger.LogDebug($">>> event: {@event}");
+      this.logger.LogDebug($">>> SendEmailEventHandler event: {@event.Template}");
 
       return this.emailService.Send(@event.Template, @event.ToPlayer, @event.GameModel);
     }

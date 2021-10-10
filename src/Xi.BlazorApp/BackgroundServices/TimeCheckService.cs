@@ -7,8 +7,12 @@ namespace Xi.BlazorApp.BackgroundServices
   using JKang.EventBus;
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Logging;
+  using Xi.BlazorApp.EventHandlers;
   using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Services;
+  using Xi.Database;
+  using Xi.Database.Dtos;
+  using Xi.Models.Game;
 
   public class TimeCheckService : BackgroundService
   {
@@ -38,20 +42,24 @@ namespace Xi.BlazorApp.BackgroundServices
 
           var eventPublisher = scope.ServiceProvider.GetRequiredService<IEventPublisher>();
           var gameService = scope.ServiceProvider.GetService<IGameService>()!;
+          var db = scope.ServiceProvider.GetService<XiContext>()!;
 
-          foreach (var game in gameService.UnfinishedGames())
+          foreach (var model in gameService.UnfinishedGames())
           {
-            var hoursThinkingTime = (game.Game.ClockRunsOutAt - DateTime.UtcNow)!.Value.TotalHours;
+            var hoursThinkingTime = (model.Game.ClockRunsOutAt - DateTime.UtcNow)!.Value.TotalHours;
 
             switch (hoursThinkingTime)
             {
               case < 0:
                 // Time's up!
-                await eventPublisher.PublishEventAsync(new GameEvent(game));
+                var updated = gameService.EndGame(model.Game.Id, model.OpponentOf(model.Game.TurnPlayer()).Id, GameResultType.TimeUp);
+                await eventPublisher.PublishEventAsync(new GameOverEventHandler.Event(updated));
                 break;
-              case < 12 when game.Game.Reminders.SingleOrDefault(r => r.MoveNumber == game.Game.Moves.Count) == null:
+              case < 12 when model.Game.Reminders.SingleOrDefault(r => r.MoveNumber == model.Game.Moves.Count) == null:
                 // Less than 12 hours, and no reminder was sent yet.
-                await eventPublisher.PublishEventAsync(new GameEvent(game));
+                db.Reminders.Add(new ReminderDto { GameId = model.Game.Id, MoveNumber = model.Game.Moves.Count });
+                await db.SaveChangesAsync(stoppingToken);
+                await eventPublisher.PublishEventAsync(new SendEmailEventHandler.Event(EmailTemplateType.MoveReminder, model.Game.TurnPlayer(), model));
                 break;
             }
           }
