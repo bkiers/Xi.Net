@@ -33,5 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
+    <None Include="build.txt" CopyToPublishDirectory="Always" />
   </ItemGroup>
 </Project>

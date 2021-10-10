@@ -8,6 +8,9 @@
 #   su - SOME_USER -c "screen -dmS xi_net"
 #   su - SOME_USER -c "screen -S xi_net -X stuff 'cd /path/to/Xi.Net && ./run-prod.sh\n'"
 
+# Write the current date-time into build.txt
+date +"%Y-%m-%d %T" > ./src/Xi.BlazorApp/build.txt
+
 # Clear any previous binaries
 rm -rf ./src/Xi.BlazorApp/bin/Release
 
@@ -16,4 +19,4 @@ dotnet publish -c Release -p:UseAppHost=false
 
 # Run the production build
 cd src/Xi.BlazorApp/bin/Release/net5.0/publish
-dotnet Xi.BlazorApp.dll --urls "https://localhost:9900" -- Production
+dotnet Xi.BlazorApp.dll --urls "https://localhost:9900"
