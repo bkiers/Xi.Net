@@ -9,14 +9,17 @@ namespace Xi.BlazorApp.Pages
   using Microsoft.AspNetCore.Mvc;
   using Microsoft.AspNetCore.Mvc.RazorPages;
   using Microsoft.Extensions.Logging;
+  using Xi.BlazorApp.Services;
 
   [AllowAnonymous]
   public class Login : PageModel
   {
+    private readonly IPlayerService playerService;
     private readonly ILogger<Login> logger;
 
-    public Login(ILogger<Login> logger)
+    public Login(IPlayerService playerService, ILogger<Login> logger)
     {
+      this.playerService = playerService;
       this.logger = logger;
     }
 
@@ -46,6 +49,15 @@ namespace Xi.BlazorApp.Pages
 
       if (googleUser?.IsAuthenticated == true)
       {
+        var exists = this.playerService.FindByEmail(email ?? string.Empty);
+
+        if (exists == null)
+        {
+          await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+          return this.LocalRedirect("/nonono");
+        }
+
         var authProperties = new AuthenticationProperties
         {
           IsPersistent = true,
