@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp
 {
+  using System.Net;
   using Fluxor;
   using Microsoft.AspNetCore.Authentication;
   using Microsoft.AspNetCore.Authentication.Cookies;
@@ -65,6 +66,12 @@ namespace Xi.BlazorApp
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
+      services.Configure<ForwardedHeadersOptions>(options =>
+      {
+        options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+      });
+
       services.AddAuthentication().AddGoogle(options =>
       {
         options.ClientId = this.Configuration["Google:ClientId"];
@@ -120,6 +127,13 @@ namespace Xi.BlazorApp
         app.UseExceptionHandler("/Error");
         app.UseHsts();
       }
+
+      app.UseForwardedHeaders(new ForwardedHeadersOptions
+      {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+      });
+
+      app.UseAuthentication();
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();
