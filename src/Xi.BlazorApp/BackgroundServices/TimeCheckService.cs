@@ -38,8 +38,6 @@ namespace Xi.BlazorApp.BackgroundServices
       {
         using (IServiceScope scope = this.services.BuildServiceProvider().CreateScope())
         {
-          this.logger.LogDebug("Tick...");
-
           var eventPublisher = scope.ServiceProvider.GetRequiredService<IEventPublisher>();
           var gameService = scope.ServiceProvider.GetService<IGameService>()!;
           var db = scope.ServiceProvider.GetService<XiContext>()!;
@@ -47,6 +45,8 @@ namespace Xi.BlazorApp.BackgroundServices
           foreach (var model in gameService.UnfinishedGames())
           {
             var hoursThinkingTime = (model.Game.ClockRunsOutAt - DateTime.UtcNow)!.Value.TotalHours;
+
+            this.logger.LogDebug($"Game {model.Game.Id}: hoursThinkingTime={hoursThinkingTime}");
 
             switch (hoursThinkingTime)
             {
