@@ -3,9 +3,9 @@
 A Blazor app to play correspondence Chinese Chess. The frontend is built using 
 the amazing [MudBlazor](https://mudblazor.com/) framework.
 
-![screen dark mode](https://github.com/bkiers/Xi.Net/blob/master/screen-dm.png?raw=true)
+![screen dark mode](https://raw.github.com/bkiers/Xi.Net/master/images/screen-dm.png)
 
-![screen light mode](https://github.com/bkiers/Xi.Net/blob/master/screen-lm.png?raw=true)
+![screen light mode](https://raw.github.com/bkiers/Xi.Net/master/images/screen-lm.png)
 
 ## Database
 
