@@ -3,7 +3,6 @@ namespace Xi.BlazorApp.Services
   using System.Collections.Generic;
   using System.Linq;
   using Newtonsoft.Json;
-  using Xi.BlazorApp.Models;
   using Xi.Database;
   using Xi.Database.Dtos;
   using Xi.Models;
@@ -56,6 +55,7 @@ namespace Xi.BlazorApp.Services
         {
           Name = name.Split(' ').First(),
           Email = email,
+          SettingsJson = JsonConvert.SerializeObject(new Settings()),
         };
 
         this.db.Players.Add(newPlayer);
