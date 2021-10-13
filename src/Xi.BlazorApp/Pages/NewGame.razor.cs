@@ -8,6 +8,7 @@ namespace Xi.BlazorApp.Pages
   using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.NewGame.Actions.CreateNewGame;
+  using Xi.BlazorApp.Stores.Features.Players.Actions;
   using Xi.BlazorApp.Stores.States;
   using Xi.Models.Game;
   using Color = Xi.Models.Game.Color;
@@ -40,6 +41,8 @@ namespace Xi.BlazorApp.Pages
     protected override void OnInitialized()
     {
       base.OnInitialized();
+
+      this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
 
       this.NewGameModel = new NewGameModel
       {

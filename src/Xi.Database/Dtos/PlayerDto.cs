@@ -1,9 +1,8 @@
 namespace Xi.Database.Dtos
 {
+  using System;
   using System.ComponentModel.DataAnnotations;
   using Microsoft.EntityFrameworkCore;
-  using Newtonsoft.Json;
-  using Xi.Models;
   using Xi.Models.Game;
 
   [Index(nameof(Email), IsUnique = true)]
@@ -21,11 +20,13 @@ namespace Xi.Database.Dtos
     [Required]
     public int EloRating { get; set; } = 1000;
 
-    [Required]
-    public bool IsAdmin { get; set; } = false;
+    public DateTimeOffset? LastSeenOn { get; set; }
 
     [Required]
     public string? SettingsJson { get; set; }
+
+    [Required]
+    public bool IsAdmin { get; set; } = false;
 
     public Player ToPlayer()
     {
@@ -34,6 +35,7 @@ namespace Xi.Database.Dtos
         this.Name,
         this.Email,
         this.EloRating,
+        this.LastSeenOn,
         this.SettingsJson,
         this.IsAdmin);
     }

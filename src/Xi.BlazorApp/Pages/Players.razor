@@ -1,0 +1,37 @@
+@page "/players"
+@attribute [Authorize]
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using Xi.Models.Game
+@using Color = MudBlazor.Color
+@using Xi.Models.Extensions
+
+<MudTable
+  Items="@(this.PlayersState.Value.Players ?? new List<Player>())"
+  Hover="@false"
+  Breakpoint="Breakpoint.Sm"
+  Loading="@(this.PlayersState.Value.IsLoading == true)"
+  LoadingProgressColor="Color.Info">
+
+  <ToolBarContent>
+    <MudText Typo="Typo.h6">Players</MudText>
+  </ToolBarContent>
+
+  <HeaderContent>
+    <MudTh>Player</MudTh>
+    <MudTh>ELO rating</MudTh>
+    <MudTh>Preferred theme</MudTh>
+    <MudTh>Moves turned on?</MudTh>
+    <MudTh>Last seen</MudTh>
+  </HeaderContent>
+
+  <RowTemplate>
+    <MudTd DataLabel="Player">@context.Name</MudTd>
+    <MudTd DataLabel="ELO rating">@context.EloRating</MudTd>
+    <MudTd DataLabel="Preferred theme">@(context.Settings.DarkMode ? "dark" : "light")</MudTd>
+    <MudTd DataLabel="Show possible moves during the game?">@(context.Settings.ShowPossibleMoves ? "yes" : "no")</MudTd>
+    <MudTd DataLabel="Last seen">@(context.LastSeenOn.HasValue ? context.LastSeenOn.SafeFormat("MMM' 'dd', 'HH:mm") : "unknown")</MudTd>
+  </RowTemplate>
+
+</MudTable>
