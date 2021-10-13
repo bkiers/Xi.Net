@@ -9,23 +9,31 @@
 #   su - SOME_USER -c "screen -dmS xi_net_chk"
 #   su - SOME_USER -c "screen -S xi_net_chk -X stuff 'cd /path/to/Xi.Net && ./check-changes.sh\n'"
 
+function restart_xi {
+  # Send a CTRL+C to the `xi_net` screen
+  screen -S xi_net -X stuff "^C"
+  
+  # Wait a bit so that the process can stop
+  sleep 5
+
+  # Restart the Xi app again
+  screen -S xi_net -X stuff './run-prod.sh\n'
+}
+
 while [ true ]
 do
-  if pgrep -x "Xi.BlazorApp" >/dev/null
+  RUNNING=$(ps aux | grep Xi.BlazorApp | grep :9900)
+
+  if [ -z "$RUNNING" ]
   then
-    echo "Xi is still running"
-  else
     echo "Xi has stopped, restarting!"
     
-    # Send a CTRL+C to the `xi_net` screen
-    screen -S xi_net -X stuff "^C"
-    # Wait a bit so that the process can stop
-    sleep 5
-    # Restart the Xi app again
-    screen -S xi_net -X stuff './run-prod.sh\n'
+    restart_xi
 
-    # Wait 2 minutes so that everything is up and running again
-    sleep 120
+    # Wait 60 seconds
+    sleep 60
+  else
+    echo "Xi is still running"
   fi
 
   git fetch origin
@@ -38,12 +46,7 @@ do
     # Pull the changes
     git pull --no-edit origin master
 
-    # Send a CTRL+C to the `xi_net` screen
-    screen -S xi_net -X stuff "^C"
-    # Wait a bit so that the process can stop
-    sleep 5
-    # Restart the Xi app again
-    screen -S xi_net -X stuff './run-prod.sh\n'
+    restart_xi
   fi
 
   # Wait 60 seconds

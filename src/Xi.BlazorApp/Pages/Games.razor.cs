@@ -36,7 +36,6 @@ namespace Xi.BlazorApp.Pages
       this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
     }
 
-
     private async Task<TableData<GameModel>> ReloadGames(TableState state)
     {
       var (totalGames, pagedGames) = this.GameService.PagedGames(state.Page, state.PageSize);

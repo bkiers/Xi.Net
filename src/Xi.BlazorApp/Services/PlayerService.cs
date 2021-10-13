@@ -57,7 +57,6 @@ namespace Xi.BlazorApp.Services
       return player.ToPlayer();
     }
 
-
     public bool DidSomething(int? playerId)
     {
       var player = this.db.Players.SingleOrDefault(p => p.Id == playerId);
