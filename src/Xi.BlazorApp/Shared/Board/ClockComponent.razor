@@ -1,5 +1,12 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<MudText Typo="Typo.overline" Style="font-size: large">
+@if (this.Large)
+{
+  <MudText Typo="Typo.overline" Style="font-size: large">
+    @this.FormattedCounter
+  </MudText>
+}
+else
+{
   @this.FormattedCounter
-</MudText>
+}

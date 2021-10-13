@@ -23,7 +23,7 @@ namespace Xi.Database.Dtos
 
     public int? EloRatingChangeBlack { get; set; }
 
-    public DateTime? ClockRunsOutAt { get; set; }
+    public DateTimeOffset? ClockRunsOutAt { get; set; }
 
     public int? ProposedDrawPlayerId { get; set; }
 

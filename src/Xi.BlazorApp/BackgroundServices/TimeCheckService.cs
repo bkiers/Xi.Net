@@ -44,7 +44,7 @@ namespace Xi.BlazorApp.BackgroundServices
 
           foreach (var model in gameService.UnfinishedGames())
           {
-            var hoursThinkingTime = (model.Game.ClockRunsOutAt - DateTime.UtcNow)!.Value.TotalHours;
+            var hoursThinkingTime = (model.Game.ClockRunsOutAt - DateTimeOffset.UtcNow)!.Value.TotalHours;
 
             this.logger.LogDebug($"Game {model.Game.Id}: hoursThinkingTime={hoursThinkingTime}");
 

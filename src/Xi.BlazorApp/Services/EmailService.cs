@@ -62,7 +62,7 @@ namespace Xi.BlazorApp.Services
       model.opponentName = gameModel.OpponentOf(player).Name;
       model.gameUrl = $"{this.config.BaseUri}/games/{gameModel.Game.Id}";
       model.newGameUrl = $"{this.config.BaseUri}/games/new";
-      model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt.ToStringNL("dddd dd MMMM HH:mm");
+      model.clockRunsOutAt = gameModel.Game.ClockRunsOutAt.SafeFormat("dddd dd MMMM HH:mm");
       model.winnerName = gameModel.Game.WinnerPlayer?.Name ?? string.Empty;
       model.loserPlayer = string.IsNullOrEmpty(model.winnerName) ? string.Empty : gameModel.OpponentOf(gameModel.Game.WinnerPlayer!).Name;
 

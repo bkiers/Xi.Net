@@ -35,7 +35,7 @@ namespace Xi.BlazorApp.Services
       }
 
       game.Accepted = true;
-      game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
+      game.ClockRunsOutAt = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
 
       this.db.SaveChanges();
 
@@ -291,7 +291,7 @@ namespace Xi.BlazorApp.Services
       }
       else
       {
-        game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
+        game.ClockRunsOutAt = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
       }
 
       // In case there was a draw-proposal, revoke it.
@@ -318,18 +318,17 @@ namespace Xi.BlazorApp.Services
     {
       var game = this.db.Games.SingleOrDefault(g => g.Id == gameId);
 
-      if (game?.ClockRunsOutAt == null || game.ClockRunsOutAt > DateTime.UtcNow || game.TurnPlayerId() != playerId)
+      if (game?.ClockRunsOutAt == null || game.ClockRunsOutAt > DateTimeOffset.UtcNow || game.TurnPlayerId() != playerId)
       {
         // Not  started yet, ClockRunsOutAt is in the future or it's not the player's turn
         return false;
       }
 
-      var hoursPastClockRunningOut = (DateTime.Now - game.ClockRunsOutAt).Value.TotalHours;
+      var hoursPastClockRunningOut = (DateTimeOffset.Now - game.ClockRunsOutAt).Value.TotalHours;
 
       // The timer can only be extended if it ran out less than 12 hours ago
       return hoursPastClockRunningOut < 12;
     }
-
 
     public GameModel BuyExtraTime(int playerId, int gameId)
     {
@@ -357,7 +356,7 @@ namespace Xi.BlazorApp.Services
       game.GameResultType = null;
       game.WinnerPlayerId = null;
 
-      game.ClockRunsOutAt = DateTime.Now + TimeSpan.FromHours(12);
+      game.ClockRunsOutAt = DateTimeOffset.Now + TimeSpan.FromHours(12);
 
       this.db.SaveChanges();
 

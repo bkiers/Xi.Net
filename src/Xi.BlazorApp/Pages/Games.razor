@@ -35,7 +35,16 @@
     <MudTd DataLabel="">@context.Game.EloRatingChangeRed</MudTd>
     <MudTd DataLabel="Black">@context.Game.BlackPlayer.Name</MudTd>
     <MudTd DataLabel="">@context.Game.EloRatingChangeBlack</MudTd>
-    <MudTd DataLabel="">@context.Game.Result()</MudTd>
+    <MudTd DataLabel="">
+      @context.Game.Result()
+
+      @if (context.Game.ClockRunsOutAt.HasValue)
+      {
+        <text>&nbsp; (time remaining: </text>
+        <ClockComponent ClockRunsOutAt="@context.Game.ClockRunsOutAt.Value" Large="@false"/>
+        <text>)</text>
+      }
+    </MudTd>
   </RowTemplate>
 
   <PagerContent>
