@@ -21,12 +21,12 @@ namespace Xi.BlazorApp.Pages
 
     protected override async Task OnInitializedAsync()
     {
+      await base.OnInitializedAsync();
+
       if (this.AccountState.Value.Player == null)
       {
         this.Dispatcher.Dispatch(new LoadAccountAction(this.Current.LoggedInPlayerId()));
       }
-
-      await base.OnInitializedAsync();
     }
 
     private void OnShowPossibleMovesToggled(bool enabled)

@@ -69,6 +69,11 @@ namespace Xi.BlazorApp.Shared
       this.theme = this.darkMode ? DarkTheme : DefaultTheme;
     }
 
+    private static string NavLinkStyle()
+    {
+      return "margin-top: 15px";
+    }
+
     private void ToggleDrawer()
     {
       this.drawerOpen = !this.drawerOpen;
