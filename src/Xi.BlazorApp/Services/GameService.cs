@@ -333,6 +333,11 @@ namespace Xi.BlazorApp.Services
 
     public GameModel BuyExtraTime(int playerId, int gameId)
     {
+      if (!this.CanExtendClock(playerId, gameId))
+      {
+        throw new Exception($"Player {playerId} cannot buy extra time");
+      }
+
       var game = this.db.Games
         .Include(g => g.RedPlayer)
         .Include(g => g.BlackPlayer)
