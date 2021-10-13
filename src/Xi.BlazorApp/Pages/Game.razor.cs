@@ -3,6 +3,7 @@ namespace Xi.BlazorApp.Pages
   using System.Threading.Tasks;
   using Fluxor;
   using Microsoft.AspNetCore.Components;
+  using Microsoft.JSInterop;
   using MudBlazor;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Shared;
@@ -41,9 +42,9 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-      base.OnInitialized();
+      await base.OnInitializedAsync();
 
       this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
       var game = this.GameState.Value.GameModel?.Game;
@@ -53,7 +54,7 @@ namespace Xi.BlazorApp.Pages
         this.Dispatcher.Dispatch(new LoadGameAction(this.GameId!.Value));
       }
 
-      this.GameState.StateChanged += (sender, state) =>
+      this.GameState.StateChanged += (_, state) =>
       {
         var currentGame = state.GameModel?.Game;
 
@@ -82,8 +83,17 @@ namespace Xi.BlazorApp.Pages
       };
     }
 
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+
+      this.GameState.StateChanged -= null;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+      await base.OnAfterRenderAsync(firstRender);
+
       var game = this.GameState.Value?.GameModel?.Game;
 
       if (game == null)
@@ -117,8 +127,6 @@ namespace Xi.BlazorApp.Pages
           await this.PromptAcceptDraw(game.ProposedDrawPlayer);
         }
       }
-
-      await base.OnAfterRenderAsync(firstRender);
     }
 
     private bool FlipBoard()

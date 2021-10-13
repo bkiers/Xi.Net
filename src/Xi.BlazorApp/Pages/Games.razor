@@ -38,7 +38,7 @@
     <MudTd DataLabel="">
       @context.Game.Result()
 
-      @if (context.Game.ClockRunsOutAt.HasValue)
+      @if (!context.Game.IsOver() && context.Game.ClockRunsOutAt.HasValue)
       {
         <text>&nbsp; (time remaining: </text>
         <ClockComponent ClockRunsOutAt="@context.Game.ClockRunsOutAt.Value" Large="@false"/>

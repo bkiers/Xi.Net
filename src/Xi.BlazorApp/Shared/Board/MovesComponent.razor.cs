@@ -42,7 +42,7 @@ namespace Xi.BlazorApp.Shared.Board
     {
       await base.OnAfterRenderAsync(firstRender);
 
-      if (firstRender)
+      if (firstRender || this.GameModel.JustMadeMoveAndReset())
       {
         await this.JSRuntime.InvokeVoidAsync("scrollToLastMove");
       }

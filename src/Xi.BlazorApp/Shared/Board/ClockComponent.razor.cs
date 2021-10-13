@@ -16,9 +16,9 @@ namespace Xi.BlazorApp.Shared.Board
 
     protected override async Task OnInitializedAsync()
     {
-      this.CountDown();
-
       await base.OnInitializedAsync();
+
+      this.CountDown();
     }
 
     private async void CountDown()

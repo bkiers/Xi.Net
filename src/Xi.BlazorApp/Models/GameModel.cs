@@ -7,6 +7,8 @@ namespace Xi.BlazorApp.Models
 
   public class GameModel
   {
+    private bool justMadeMove = false;
+
     public GameModel(Game game)
     {
       this.Game = game;
@@ -30,6 +32,13 @@ namespace Xi.BlazorApp.Models
     public int CurrentMoveIndex { get; private set; }
 
     public Cell? FirstClick { get; private set; }
+
+    public bool JustMadeMoveAndReset()
+    {
+      var temp = this.justMadeMove;
+      this.justMadeMove = false;
+      return temp;
+    }
 
     public bool CanBeConfirmed(int index, int loggedInPlayerId)
     {
@@ -88,6 +97,7 @@ namespace Xi.BlazorApp.Models
         this.Game.Move(new Move(this.FirstClick, cell));
         this.CurrentMoveIndex++;
         this.FirstClick = null;
+        this.justMadeMove = true;
       }
     }
 
