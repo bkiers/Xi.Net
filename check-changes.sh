@@ -16,6 +16,12 @@ do
     echo "Xi is still running"
   else
     echo "Xi has stopped, restarting!"
+    
+    # Send a CTRL+C to the `xi_net` screen
+    screen -S xi_net -X stuff "^C"
+    # Wait a bit so that the process can stop
+    sleep 5
+    # Restart the Xi app again
     screen -S xi_net -X stuff './run-prod.sh\n'
 
     # Wait 2 minutes so that everything is up and running again
