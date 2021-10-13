@@ -31,5 +31,9 @@ namespace Xi.BlazorApp.Services
     GameModel? NewGame(int loggedInPlayerId, int opponentPlayerId, Color loggedInPlayerColor, int daysPerMove);
 
     GameModel? Move(int loggedInPlayerId, int gameId, Cell fromCell, Cell toCell);
+
+    bool CanExtendClock(int playerId, int gameId);
+
+    GameModel BuyExtraTime(int playerId, int gameId);
   }
 }

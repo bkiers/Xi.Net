@@ -42,6 +42,8 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
+      base.OnInitialized();
+
       var game = this.GameState.Value.GameModel?.Game;
 
       if (game == null || game.Id != this.GameId)
@@ -76,8 +78,6 @@ namespace Xi.BlazorApp.Pages
           this.Snackbar.Add(state.ErrorMessage, Severity.Error);
         }
       };
-
-      base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
