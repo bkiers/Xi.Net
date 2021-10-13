@@ -11,6 +11,17 @@
 
 while [ true ]
 do
+  if pgrep -x "Xi.BlazorApp" >/dev/null
+  then
+    echo "Xi is still running"
+  else
+    echo "Xi has stopped, restarting!"
+    screen -S xi_net -X stuff './run-prod.sh\n'
+
+    # Wait 2 minutes so that everything is up and running again
+    sleep 120
+  fi
+
   git fetch origin
   DIFF=$(git diff master origin/master)
 
