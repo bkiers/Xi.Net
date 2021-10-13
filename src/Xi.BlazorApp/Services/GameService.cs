@@ -338,8 +338,14 @@ namespace Xi.BlazorApp.Services
         .Include(g => g.BlackPlayer)
         .Single(g => g.Id == gameId);
 
+      // Revert the ELO changes
       game.RedPlayer.EloRating += -1 * game.EloRatingChangeRed!.Value;
       game.BlackPlayer.EloRating += -1 * game.EloRatingChangeBlack!.Value;
+
+      // Distract 1 ELO point of the player who extended their clock
+      var redWon = game.WinnerPlayerId == game.RedPlayerId;
+      game.RedPlayer.EloRating += redWon ? 1 : -1;
+      game.BlackPlayer.EloRating += redWon ? -1 : 1;
 
       game.EloRatingChangeRed = null;
       game.EloRatingChangeBlack = null;
