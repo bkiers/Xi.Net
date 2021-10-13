@@ -4,11 +4,12 @@ namespace Xi.BlazorApp.Pages
   using Microsoft.AspNetCore.Components;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Stores.Features.Players.Actions;
+  using Xi.BlazorApp.Stores.States;
 
-  public partial class Index
+  public partial class Players
   {
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private IState<PlayersState> PlayersState { get; set; } = default!;
 
     [Inject]
     private IDispatcher Dispatcher { get; set; } = default!;
@@ -21,8 +22,7 @@ namespace Xi.BlazorApp.Pages
       base.OnInitialized();
 
       this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
-
-      this.NavigationManager.NavigateTo("/home");
+      this.Dispatcher.Dispatch(new GetPlayersAction());
     }
   }
 }

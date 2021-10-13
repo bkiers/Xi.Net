@@ -15,5 +15,7 @@ namespace Xi.BlazorApp.Services
     Player FindById(int playerId);
 
     Player Update(int playerId, Settings settings);
+
+    bool DidSomething(int? playerId);
   }
 }
