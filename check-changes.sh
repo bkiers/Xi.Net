@@ -11,21 +11,19 @@
 
 while [ true ]
 do
-  if pgrep -x "Xi.BlazorApp" >/dev/null
+  RUNNING=$(ps aux | grep Xi.BlazorApp | grep :9900)
+
+  if [ -z "$RUNNING" ]
   then
-    echo "Xi is still running"
-  else
     echo "Xi has stopped, restarting!"
     
-    # Send a CTRL+C to the `xi_net` screen
-    screen -S xi_net -X stuff "^C"
-    # Wait a bit so that the process can stop
-    sleep 5
     # Restart the Xi app again
     screen -S xi_net -X stuff './run-prod.sh\n'
 
-    # Wait 2 minutes so that everything is up and running again
-    sleep 120
+    # Wait 60 seconds
+    sleep 60
+  else
+    echo "Xi is still running"
   fi
 
   git fetch origin
@@ -40,8 +38,10 @@ do
 
     # Send a CTRL+C to the `xi_net` screen
     screen -S xi_net -X stuff "^C"
+    
     # Wait a bit so that the process can stop
     sleep 5
+
     # Restart the Xi app again
     screen -S xi_net -X stuff './run-prod.sh\n'
   fi
