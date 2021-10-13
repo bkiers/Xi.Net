@@ -4,7 +4,7 @@ namespace Xi.Models.Game
 
   public class Move
   {
-    public Move(Cell fromCell, Cell toCell, string? capturedPiece = null, DateTime? createdAt = null)
+    public Move(Cell fromCell, Cell toCell, string? capturedPiece = null, DateTimeOffset? createdAt = null)
     {
       this.FromCell = fromCell;
       this.ToCell = toCell;
@@ -18,7 +18,7 @@ namespace Xi.Models.Game
 
     public string? CapturedPiece { get; }
 
-    public DateTime? CreatedAt { get; }
+    public DateTimeOffset? CreatedAt { get; }
 
     public string DisplayFor(Color color)
     {

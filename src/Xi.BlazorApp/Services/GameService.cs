@@ -35,7 +35,7 @@ namespace Xi.BlazorApp.Services
       }
 
       game.Accepted = true;
-      game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
+      game.ClockRunsOutAt = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
 
       this.db.SaveChanges();
 
@@ -151,7 +151,6 @@ namespace Xi.BlazorApp.Services
 
       game.WinnerPlayerId = winnerPlayerId;
       game.GameResultType = gameResultType;
-      game.ClockRunsOutAt = null;
 
       this.db.SaveChanges();
 
@@ -292,7 +291,7 @@ namespace Xi.BlazorApp.Services
       }
       else
       {
-        game.ClockRunsOutAt = DateTime.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
+        game.ClockRunsOutAt = DateTimeOffset.UtcNow + TimeSpan.FromSeconds(game.SecondsPerMove);
       }
 
       // In case there was a draw-proposal, revoke it.
@@ -313,6 +312,55 @@ namespace Xi.BlazorApp.Services
       }
 
       return reloadedGameModel;
+    }
+
+    public bool CanExtendClock(int playerId, int gameId)
+    {
+      var game = this.db.Games.SingleOrDefault(g => g.Id == gameId);
+
+      if (game?.ClockRunsOutAt == null || game.ClockRunsOutAt > DateTimeOffset.UtcNow || game.TurnPlayerId() != playerId)
+      {
+        // Not  started yet, ClockRunsOutAt is in the future or it's not the player's turn
+        return false;
+      }
+
+      var hoursPastClockRunningOut = (DateTimeOffset.Now - game.ClockRunsOutAt).Value.TotalHours;
+
+      // The timer can only be extended if it ran out less than 12 hours ago
+      return hoursPastClockRunningOut < 12;
+    }
+
+    public GameModel BuyExtraTime(int playerId, int gameId)
+    {
+      if (!this.CanExtendClock(playerId, gameId))
+      {
+        throw new Exception($"Player {playerId} cannot buy extra time");
+      }
+
+      var game = this.db.Games
+        .Include(g => g.RedPlayer)
+        .Include(g => g.BlackPlayer)
+        .Single(g => g.Id == gameId);
+
+      // Revert the ELO changes
+      game.RedPlayer.EloRating += -1 * game.EloRatingChangeRed!.Value;
+      game.BlackPlayer.EloRating += -1 * game.EloRatingChangeBlack!.Value;
+
+      // Distract 1 ELO point of the player who extended their clock
+      var redWon = game.WinnerPlayerId == game.RedPlayerId;
+      game.RedPlayer.EloRating += redWon ? 1 : -1;
+      game.BlackPlayer.EloRating += redWon ? -1 : 1;
+
+      game.EloRatingChangeRed = null;
+      game.EloRatingChangeBlack = null;
+      game.GameResultType = null;
+      game.WinnerPlayerId = null;
+
+      game.ClockRunsOutAt = DateTimeOffset.Now + TimeSpan.FromHours(12);
+
+      this.db.SaveChanges();
+
+      return this.Game(gameId)!;
     }
   }
 }

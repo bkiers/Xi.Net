@@ -9,6 +9,7 @@ namespace Xi.BlazorApp.Pages
   using Xi.BlazorApp.Stores.Features.Game.Actions.EndGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
   using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
+  using Xi.BlazorApp.Stores.Features.Players.Actions;
   using Xi.BlazorApp.Stores.States;
   using Xi.Models.Extensions;
   using Xi.Models.Game;
@@ -42,6 +43,9 @@ namespace Xi.BlazorApp.Pages
 
     protected override void OnInitialized()
     {
+      base.OnInitialized();
+
+      this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
       var game = this.GameState.Value.GameModel?.Game;
 
       if (game == null || game.Id != this.GameId)
@@ -76,8 +80,6 @@ namespace Xi.BlazorApp.Pages
           this.Snackbar.Add(state.ErrorMessage, Severity.Error);
         }
       };
-
-      base.OnInitialized();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

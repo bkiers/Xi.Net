@@ -3,10 +3,19 @@
 <div class="wrapper">
   <div>
     <MudText Typo="Typo.overline" Style="font-size: large">
-      @this.Player.Name &nbsp; @this.PotentialPoints()
+      @this.Player.Name
+      &nbsp;
+      @this.PotentialPoints()
+      &nbsp;
+      @if (this.ShowExtendClockButton())
+      {
+        <MudTooltip Text="Within 12 hours running out of time, you can get an extra 12 hours on your clock">
+          <MudIconButton Icon="@Icons.Material.Filled.MoreTime" Color="Color.Secondary" OnClick="@this.Extend" aria-label=""/>
+        </MudTooltip>
+      }
     </MudText>
 
-    @if ( this.ShowClock )
+    @if (this.ShowClock)
     {
       <span class="clock">
         <ClockComponent ClockRunsOutAt="@this.GameModel.Game.ClockRunsOutAt!.Value"/>

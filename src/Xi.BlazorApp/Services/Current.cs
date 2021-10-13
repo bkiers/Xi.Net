@@ -17,6 +17,11 @@ namespace Xi.BlazorApp.Services
       this.httpContextAccessor = httpContextAccessor;
     }
 
+    public int? PossibleLoggedInPlayerId()
+    {
+      return this.LoggedIn() ? this.LoggedInPlayerId() : null;
+    }
+
     public int LoggedInPlayerId()
     {
       return this.LoggedInPlayer().Id;

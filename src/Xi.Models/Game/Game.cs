@@ -22,7 +22,7 @@ namespace Xi.Models.Game
       int? eloRatingChangeBlack,
       GameResultType? gameResultType,
       int secondsPerMove,
-      DateTime? clockRunsOutAt,
+      DateTimeOffset? clockRunsOutAt,
       bool accepted,
       IEnumerable<Move> moves,
       IEnumerable<Reminder> reminders)
@@ -72,7 +72,7 @@ namespace Xi.Models.Game
 
     public int SecondsPerMove { get; }
 
-    public DateTime? ClockRunsOutAt { get; }
+    public DateTimeOffset? ClockRunsOutAt { get; }
 
     public bool Accepted { get; }
 
@@ -190,7 +190,7 @@ namespace Xi.Models.Game
 
       if (!this.GameResultType.HasValue)
       {
-        return $"In progress, {this.TurnPlayer().Name} has until {this.ClockRunsOutAt.ToStringNL("MMM' 'dd', 'HH:mm")}";
+        return $"In progress, {this.TurnPlayer().Name} has until {this.ClockRunsOutAt.SafeFormat("MMM' 'dd', 'HH:mm")}";
       }
 
       return this.GameResultType.Value switch

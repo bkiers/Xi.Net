@@ -5,12 +5,13 @@ namespace Xi.Models.Game
 
   public class Player
   {
-    public Player(int id, string name, string email, int eloRating, string? settingsJson, bool isAdmin)
+    public Player(int id, string name, string email, int eloRating, DateTimeOffset? lastSeenOn, string? settingsJson, bool isAdmin)
     {
       this.Id = id;
       this.Name = name;
       this.Email = email;
       this.EloRating = eloRating;
+      this.LastSeenOn = lastSeenOn;
       this.Settings = string.IsNullOrEmpty(settingsJson) ? new Settings() : JsonConvert.DeserializeObject<Settings>(settingsJson)!;
       this.IsAdmin = isAdmin;
     }
@@ -22,6 +23,8 @@ namespace Xi.Models.Game
     public string Email { get; }
 
     public int EloRating { get; private set; }
+
+    public DateTimeOffset? LastSeenOn { get; set; }
 
     public Settings Settings { get; }
 

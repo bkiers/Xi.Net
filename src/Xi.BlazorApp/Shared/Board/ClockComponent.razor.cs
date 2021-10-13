@@ -7,7 +7,10 @@ namespace Xi.BlazorApp.Shared.Board
   public partial class ClockComponent
   {
     [Parameter]
-    public DateTime ClockRunsOutAt { get; set; }
+    public DateTimeOffset ClockRunsOutAt { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; } = true;
 
     private string? FormattedCounter { get; set; }
 
@@ -20,7 +23,7 @@ namespace Xi.BlazorApp.Shared.Board
 
     private async void CountDown()
     {
-      while ((this.ClockRunsOutAt - DateTime.UtcNow).TotalSeconds >= 0)
+      while ((this.ClockRunsOutAt - DateTimeOffset.UtcNow).TotalSeconds >= 0)
       {
         this.FormattedCounter = this.GetFormattedCounter();
         this.StateHasChanged();
@@ -31,7 +34,7 @@ namespace Xi.BlazorApp.Shared.Board
 
     private string GetFormattedCounter()
     {
-      var remaining = this.ClockRunsOutAt - DateTime.UtcNow;
+      var remaining = this.ClockRunsOutAt - DateTimeOffset.UtcNow;
 
       if (remaining < TimeSpan.FromDays(1))
       {

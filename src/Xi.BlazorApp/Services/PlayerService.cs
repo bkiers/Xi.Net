@@ -1,10 +1,10 @@
 namespace Xi.BlazorApp.Services
 {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
   using Newtonsoft.Json;
   using Xi.Database;
-  using Xi.Database.Dtos;
   using Xi.Models;
   using Xi.Models.Game;
 
@@ -55,6 +55,21 @@ namespace Xi.BlazorApp.Services
       this.db.SaveChanges();
 
       return player.ToPlayer();
+    }
+
+
+    public bool DidSomething(int? playerId)
+    {
+      var player = this.db.Players.SingleOrDefault(p => p.Id == playerId);
+
+      if (player == null)
+      {
+        return false;
+      }
+
+      player.LastSeenOn = DateTimeOffset.Now;
+
+      return this.db.SaveChanges() == 1;
     }
   }
 }

@@ -2,11 +2,13 @@ namespace Xi.BlazorApp.Pages
 {
   using System;
   using System.Threading.Tasks;
+  using Fluxor;
   using Microsoft.AspNetCore.Components;
   using MudBlazor;
   using Xi.BlazorApp.Models;
   using Xi.BlazorApp.Services;
   using Xi.BlazorApp.Shared;
+  using Xi.BlazorApp.Stores.Features.Players.Actions;
 
   public partial class Games
   {
@@ -19,7 +21,21 @@ namespace Xi.BlazorApp.Pages
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
 
+    [Inject]
+    private IDispatcher Dispatcher { get; set; } = default!;
+
+    [Inject]
+    private Current Current { get; set; } = default!;
+
     private MudTable<GameModel> Table { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+      base.OnInitialized();
+
+      this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
+    }
+
 
     private async Task<TableData<GameModel>> ReloadGames(TableState state)
     {
