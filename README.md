@@ -1,6 +1,6 @@
 # Xi.Net
 
-A Blazor app to play correspondence Chinese Chess. The frontend is built using 
+A Blazor app to play correspondence Chinese Chess. The frontend is built using
 the amazing [MudBlazor](https://mudblazor.com/) framework.
 
 ![screen dark mode](https://raw.github.com/bkiers/Xi.Net/master/images/screen-dm.png)
@@ -37,7 +37,8 @@ And add (at least) the Google secret and ID:
 ```
 dotnet user-secrets set "Google:ClientId" "YOUR_CLIENT_ID"
 dotnet user-secrets set "Google:ClientSecret" "YOUR_CLIENT_SECRET"
-dotnet user-secrets set "XiConfig:SendGridApiKey" "YOUR_API_KEY"
+dotnet user-secrets set "XiConfig:MailjetApiKey" "YOUR_API_KEY"
+dotnet user-secrets set "XiConfig:MailjetApiSecret" "YOUR_API_SECRET"
 ```
 
-The SendGrid API key is optional.
+The Mailjet API key- and secret are optional.

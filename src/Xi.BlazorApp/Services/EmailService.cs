@@ -6,10 +6,10 @@ namespace Xi.BlazorApp.Services
   using System.Linq;
   using System.Text.RegularExpressions;
   using System.Threading.Tasks;
+  using Mailjet.Client;
+  using Mailjet.Client.TransactionalEmails;
   using Microsoft.Extensions.Logging;
   using Microsoft.Extensions.Options;
-  using SendGrid;
-  using SendGrid.Helpers.Mail;
   using Xi.BlazorApp.Config;
   using Xi.BlazorApp.Models;
   using Xi.Models.Extensions;
@@ -35,7 +35,7 @@ namespace Xi.BlazorApp.Services
       var memberInfos = type.GetType().GetMember(type.ToString());
       var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == type.GetType());
       var valueAttributes = enumValueMemberInfo!.GetCustomAttributes(typeof(SubjectAttribute), false);
-      var model = this.CreateTemplateMode(toPlayer, gameModel);
+      var model = this.CreateTemplateModel(toPlayer, gameModel);
 
       var subject = ((SubjectAttribute)valueAttributes[0]).Text;
       var htmlContent = template(model);
@@ -53,7 +53,7 @@ namespace Xi.BlazorApp.Services
       return true;
     }
 
-    private ExpandoObject CreateTemplateMode(Player player, GameModel gameModel)
+    private ExpandoObject CreateTemplateModel(Player player, GameModel gameModel)
     {
       dynamic model = new ExpandoObject();
 
@@ -71,15 +71,30 @@ namespace Xi.BlazorApp.Services
 
     private async Task<bool> ReallySend(Player toPlayer, string subject, string plainTextContent, string htmlContent)
     {
-      var client = new SendGridClient(this.config.SendGridApiKey!);
+      var client = new MailjetClient(this.config.MailjetApiKey, this.config.MailjetApiSecret);
 
-      var from = new EmailAddress(this.config.ReplyToAddress);
-      var to = new EmailAddress(toPlayer.Email, toPlayer.Name);
-      var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+      var email = new TransactionalEmailBuilder()
+        .WithFrom(new SendContact(this.config.ReplyToAddress))
+        .WithSubject(subject)
+        .WithTextPart(plainTextContent)
+        .WithHtmlPart(htmlContent)
+        .WithTo(new SendContact(toPlayer.Email))
+        .Build();
 
-      var response = await client.SendEmailAsync(msg);
+      try
+      {
+        var response = await client.SendTransactionalEmailAsync(email);
 
-      return response.IsSuccessStatusCode;
+        this.logger.LogInformation($"Successfully sent email to {toPlayer.Email} ({response.Messages.Length})");
+
+        return true;
+      }
+      catch (Exception e)
+      {
+        this.logger.LogError(e, $"Could not send email to {toPlayer.Email}: {e.Message}");
+
+        return false;
+      }
     }
   }
 }
