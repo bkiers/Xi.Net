@@ -4,7 +4,9 @@ namespace Xi.BlazorApp.Config
   {
     public bool EmailEnabled { get; set; }
 
-    public string? SendGridApiKey { get; set; }
+    public string? MailjetApiKey { get; set; }
+
+    public string? MailjetApiSecret { get; set; }
 
     public string? BaseUri { get; set; }
 
