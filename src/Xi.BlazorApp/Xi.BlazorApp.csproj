@@ -34,5 +34,6 @@
   <ItemGroup>
     <None Include="appsettings.Production.json" CopyToPublishDirectory="Always" />
     <None Include="build.txt" CopyToPublishDirectory="Always" />
+    <Content Include="EmailTemplates\*" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

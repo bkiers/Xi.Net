@@ -1,5 +1,6 @@
 namespace Xi.BlazorApp
 {
+  using System;
   using System.Net;
   using Fluxor;
   using Microsoft.AspNetCore.Authentication;
@@ -112,6 +113,8 @@ namespace Xi.BlazorApp
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      Console.WriteLine($"~~> Starting up in {env.EnvironmentName} mode");
+
       using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope())
       {
         var context = serviceScope.ServiceProvider.GetRequiredService<XiContext>();
