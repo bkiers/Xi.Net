@@ -28,29 +28,44 @@ namespace Xi.BlazorApp.Services
 
     public async Task<bool> Send(EmailTemplateType type, Player toPlayer, GameModel gameModel)
     {
-      var templatePath = Path.Combine("EmailTemplates", $"{type}.mt");
-      var templateSource = File.ReadAllText(templatePath);
-      var template = Mustachio.Parser.Parse(templateSource);
-
-      var memberInfos = type.GetType().GetMember(type.ToString());
-      var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == type.GetType());
-      var valueAttributes = enumValueMemberInfo!.GetCustomAttributes(typeof(SubjectAttribute), false);
-      var model = this.CreateTemplateModel(toPlayer, gameModel);
-
-      var subject = ((SubjectAttribute)valueAttributes[0]).Text;
-      var htmlContent = template(model);
-      var plainTextContent = Regex.Replace(htmlContent, @"<[\s\S]*?>[ \t]*[\r\n]?", string.Empty);
-
-      this.logger.LogDebug($"subject --> {subject}");
-      this.logger.LogDebug($"htmlContent --> {htmlContent}");
-      this.logger.LogDebug($"plainTextContent --> {plainTextContent}");
-
-      if (this.config.EmailEnabled)
+      try
       {
-        return await this.ReallySend(toPlayer, subject, plainTextContent, htmlContent);
-      }
+        this.logger.LogInformation($"Send type={type}, Player.Email={toPlayer.Email}, Game.Id={gameModel.Game.Id}");
 
-      return true;
+        var templatePath = Path.Combine("EmailTemplates", $"{type}.mt");
+        var templateSource = await File.ReadAllTextAsync(templatePath);
+        var template = Mustachio.Parser.Parse(templateSource);
+
+        var memberInfos = type.GetType().GetMember(type.ToString());
+        var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == type.GetType());
+        var valueAttributes = enumValueMemberInfo!.GetCustomAttributes(typeof(SubjectAttribute), false);
+        var model = this.CreateTemplateModel(toPlayer, gameModel);
+
+        var subject = ((SubjectAttribute)valueAttributes[0]).Text;
+        var htmlContent = template(model);
+        var plainTextContent = Regex.Replace(htmlContent, @"<[\s\S]*?>[ \t]*[\r\n]?", string.Empty);
+
+        this.logger.LogDebug($"subject --> {subject}");
+        this.logger.LogDebug($"htmlContent --> {htmlContent}");
+        this.logger.LogDebug($"plainTextContent --> {plainTextContent}");
+
+        if (this.config.EmailEnabled)
+        {
+          this.logger.LogInformation("Going to send real email");
+
+          return await this.ReallySend(toPlayer, subject, plainTextContent, htmlContent);
+        }
+
+        this.logger.LogInformation("Not sending real email");
+
+        return true;
+      }
+      catch (Exception e)
+      {
+        this.logger.LogError(e, $"Could not send email: {e.Message}");
+
+        return false;
+      }
     }
 
     private ExpandoObject CreateTemplateModel(Player player, GameModel gameModel)
