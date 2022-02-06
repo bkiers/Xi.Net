@@ -1,8 +1,7 @@
-namespace Xi.Models.Game
+namespace Xi.Models.Game;
+
+public enum Color
 {
-  public enum Color
-  {
-    Red,
-    Black,
-  }
+  Red,
+  Black,
 }

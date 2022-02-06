@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.Shared.Actions
-{
-  public abstract class FailureAction
-  {
-    protected FailureAction(string errorMessage)
-    {
-      this.ErrorMessage = errorMessage;
-    }
+namespace Xi.BlazorApp.Stores.Features.Shared.Actions;
 
-    public string ErrorMessage { get; }
+public abstract class FailureAction
+{
+  protected FailureAction(string errorMessage)
+  {
+    this.ErrorMessage = errorMessage;
   }
+
+  public string ErrorMessage { get; }
 }

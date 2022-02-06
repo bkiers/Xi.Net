@@ -1,14 +1,13 @@
-namespace Xi.Models.Game
+namespace Xi.Models.Game;
+
+public enum Compass
 {
-  public enum Compass
-  {
-    N,
-    NE,
-    E,
-    SE,
-    S,
-    SW,
-    W,
-    NW,
-  }
+  N,
+  NE,
+  E,
+  SE,
+  S,
+  SW,
+  W,
+  NW,
 }

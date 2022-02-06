@@ -1,14 +1,13 @@
-namespace Xi.BlazorApp.Stores.Features.Account.Actions.UpdateAccount
+namespace Xi.BlazorApp.Stores.Features.Account.Actions.UpdateAccount;
+
+using Xi.Models.Game;
+
+public class UpdateAccountSuccessAction
 {
-  using Xi.Models.Game;
-
-  public class UpdateAccountSuccessAction
+  public UpdateAccountSuccessAction(Player player)
   {
-    public UpdateAccountSuccessAction(Player player)
-    {
-      this.Player = player;
-    }
-
-    public Player Player { get; }
+    this.Player = player;
   }
+
+  public Player Player { get; }
 }

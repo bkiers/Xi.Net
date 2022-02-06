@@ -1,14 +1,13 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
+
+using Xi.BlazorApp.Models;
+
+public class LoadGameSuccessAction
 {
-  using Xi.BlazorApp.Models;
-
-  public class LoadGameSuccessAction
+  public LoadGameSuccessAction(GameModel gameModel)
   {
-    public LoadGameSuccessAction(GameModel gameModel)
-    {
-      this.GameModel = gameModel;
-    }
-
-    public GameModel GameModel { get; }
+    this.GameModel = gameModel;
   }
+
+  public GameModel GameModel { get; }
 }

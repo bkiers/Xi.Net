@@ -1,11 +1,10 @@
-namespace Xi.Models.Game
+namespace Xi.Models.Game;
+
+public enum GameResultType
 {
-  public enum GameResultType
-  {
-    Checkmate,
-    Stalemate,
-    Draw,
-    TimeUp,
-    Forfeit,
-  }
+  Checkmate,
+  Stalemate,
+  Draw,
+  TimeUp,
+  Forfeit,
 }

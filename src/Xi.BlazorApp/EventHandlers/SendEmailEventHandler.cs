@@ -1,44 +1,43 @@
-namespace Xi.BlazorApp.EventHandlers
+namespace Xi.BlazorApp.EventHandlers;
+
+using System.Threading.Tasks;
+using JKang.EventBus;
+using Microsoft.Extensions.Logging;
+using Xi.BlazorApp.Models;
+using Xi.BlazorApp.Services;
+using Xi.Models.Game;
+
+public class SendEmailEventHandler : IEventHandler<SendEmailEventHandler.Event>
 {
-  using System.Threading.Tasks;
-  using JKang.EventBus;
-  using Microsoft.Extensions.Logging;
-  using Xi.BlazorApp.Models;
-  using Xi.BlazorApp.Services;
-  using Xi.Models.Game;
+  private readonly IEmailService emailService;
+  private readonly ILogger<SendEmailEventHandler> logger;
 
-  public class SendEmailEventHandler : IEventHandler<SendEmailEventHandler.Event>
+  public SendEmailEventHandler(IEmailService emailService, ILogger<SendEmailEventHandler> logger)
   {
-    private readonly IEmailService emailService;
-    private readonly ILogger<SendEmailEventHandler> logger;
+    this.emailService = emailService;
+    this.logger = logger;
+  }
 
-    public SendEmailEventHandler(IEmailService emailService, ILogger<SendEmailEventHandler> logger)
+  public Task HandleEventAsync(Event @event)
+  {
+    this.logger.LogDebug($">>> SendEmailEventHandler event: {@event.Template}");
+
+    return this.emailService.Send(@event.Template, @event.ToPlayer, @event.GameModel);
+  }
+
+  public class Event
+  {
+    public Event(EmailTemplateType template, Player toPlayer, GameModel gameModel)
     {
-      this.emailService = emailService;
-      this.logger = logger;
+      this.Template = template;
+      this.ToPlayer = toPlayer;
+      this.GameModel = gameModel;
     }
 
-    public Task HandleEventAsync(Event @event)
-    {
-      this.logger.LogDebug($">>> SendEmailEventHandler event: {@event.Template}");
+    public EmailTemplateType Template { get; }
 
-      return this.emailService.Send(@event.Template, @event.ToPlayer, @event.GameModel);
-    }
+    public Player ToPlayer { get; }
 
-    public class Event
-    {
-      public Event(EmailTemplateType template, Player toPlayer, GameModel gameModel)
-      {
-        this.Template = template;
-        this.ToPlayer = toPlayer;
-        this.GameModel = gameModel;
-      }
-
-      public EmailTemplateType Template { get; }
-
-      public Player ToPlayer { get; }
-
-      public GameModel GameModel { get; }
-    }
+    public GameModel GameModel { get; }
   }
 }
