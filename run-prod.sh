@@ -18,5 +18,5 @@ rm -rf ./src/Xi.BlazorApp/bin/Release
 dotnet publish -c Release -p:UseAppHost=false
 
 # Run the production build
-cd src/Xi.BlazorApp/bin/Release/net5.0/publish
+cd src/Xi.BlazorApp/bin/Release/net6.0/publish
 dotnet Xi.BlazorApp.dll --urls "https://localhost:9900"
