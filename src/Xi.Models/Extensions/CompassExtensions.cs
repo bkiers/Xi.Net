@@ -5,6 +5,11 @@ using Xi.Models.Game;
 
 public static class CompassExtensions
 {
+  public static (int DeltaFile, int DeltaRank) DeltaFileRank(this Compass compass, Piece piece)
+  {
+    return (compass.DeltaFile(piece), compass.DeltaRank(piece));
+  }
+
   private static int DeltaFile(this Compass compass, Piece piece)
   {
     switch (compass)
@@ -25,7 +30,6 @@ public static class CompassExtensions
     }
   }
 
-
   private static int DeltaRank(this Compass compass, Piece piece)
   {
     switch (compass)
@@ -44,10 +48,5 @@ public static class CompassExtensions
       default:
         throw new ArgumentException($"Unknown direction: {compass}");
     }
-  }
-
-  public static (int DeltaFile, int DeltaRank) DeltaFileRank(this Compass compass, Piece piece)
-  {
-    return (compass.DeltaFile(piece), compass.DeltaRank(piece));
   }
 }
