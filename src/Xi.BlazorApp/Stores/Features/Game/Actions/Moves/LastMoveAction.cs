@@ -1,14 +1,13 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.Moves
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
+
+using Xi.BlazorApp.Models;
+
+public class LastMoveAction
 {
-  using Xi.BlazorApp.Models;
-
-  public class LastMoveAction
+  public LastMoveAction(GameModel gameModel)
   {
-    public LastMoveAction(GameModel gameModel)
-    {
-      this.GameModel = gameModel;
-    }
-
-    public GameModel GameModel { get; }
+    this.GameModel = gameModel;
   }
+
+  public GameModel GameModel { get; }
 }

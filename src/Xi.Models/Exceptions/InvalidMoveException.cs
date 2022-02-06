@@ -1,12 +1,11 @@
-namespace Xi.Models.Exceptions
-{
-  using System;
+namespace Xi.Models.Exceptions;
 
-  public class InvalidMoveException : Exception
+using System;
+
+public class InvalidMoveException : Exception
+{
+  public InvalidMoveException(string message)
+    : base(message)
   {
-    public InvalidMoveException(string message)
-      : base(message)
-    {
-    }
   }
 }

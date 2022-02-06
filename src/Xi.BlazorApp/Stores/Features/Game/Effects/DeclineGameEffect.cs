@@ -1,24 +1,23 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Effects
+namespace Xi.BlazorApp.Stores.Features.Game.Effects;
+
+using System.Threading.Tasks;
+using Fluxor;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
+
+public class DeclineGameEffect : Effect<DeclineGameAction>
 {
-  using System.Threading.Tasks;
-  using Fluxor;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.StartGame;
+  private readonly IGameService gameService;
 
-  public class DeclineGameEffect : Effect<DeclineGameAction>
+  public DeclineGameEffect(IGameService gameService)
   {
-    private readonly IGameService gameService;
+    this.gameService = gameService;
+  }
 
-    public DeclineGameEffect(IGameService gameService)
-    {
-      this.gameService = gameService;
-    }
+  public override Task HandleAsync(DeclineGameAction action, IDispatcher dispatcher)
+  {
+    this.gameService.Decline(action.Player.Id, action.GameModel.Game.Id);
 
-    public override Task HandleAsync(DeclineGameAction action, IDispatcher dispatcher)
-    {
-      this.gameService.Decline(action.Player.Id, action.GameModel.Game.Id);
-
-      return Task.CompletedTask;
-    }
+    return Task.CompletedTask;
   }
 }

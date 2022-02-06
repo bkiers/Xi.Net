@@ -1,28 +1,27 @@
-namespace Xi.BlazorApp.Pages
+namespace Xi.BlazorApp.Pages;
+
+using Fluxor;
+using Microsoft.AspNetCore.Components;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.Players.Actions;
+using Xi.BlazorApp.Stores.States;
+
+public partial class Players
 {
-  using Fluxor;
-  using Microsoft.AspNetCore.Components;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Players.Actions;
-  using Xi.BlazorApp.Stores.States;
+  [Inject]
+  private IState<PlayersState> PlayersState { get; set; } = default!;
 
-  public partial class Players
+  [Inject]
+  private IDispatcher Dispatcher { get; set; } = default!;
+
+  [Inject]
+  private Current Current { get; set; } = default!;
+
+  protected override void OnInitialized()
   {
-    [Inject]
-    private IState<PlayersState> PlayersState { get; set; } = default!;
+    base.OnInitialized();
 
-    [Inject]
-    private IDispatcher Dispatcher { get; set; } = default!;
-
-    [Inject]
-    private Current Current { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-      base.OnInitialized();
-
-      this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
-      this.Dispatcher.Dispatch(new GetPlayersAction());
-    }
+    this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
+    this.Dispatcher.Dispatch(new GetPlayersAction());
   }
 }

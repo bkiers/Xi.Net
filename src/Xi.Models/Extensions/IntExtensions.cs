@@ -1,12 +1,11 @@
-namespace Xi.Models.Extensions
-{
-  using System;
+namespace Xi.Models.Extensions;
 
-  public static class IntExtensions
+using System;
+
+public static class IntExtensions
+{
+  public static int ToDays(this int seconds)
   {
-    public static int ToDays(this int seconds)
-    {
-      return (int)TimeSpan.FromSeconds(seconds).TotalDays;
-    }
+    return (int)TimeSpan.FromSeconds(seconds).TotalDays;
   }
 }

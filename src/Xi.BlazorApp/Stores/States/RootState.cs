@@ -1,17 +1,16 @@
-namespace Xi.BlazorApp.Stores.States
+namespace Xi.BlazorApp.Stores.States;
+
+public abstract class RootState
 {
-  public abstract class RootState
+  protected RootState(bool isLoading, string? errorMessage)
   {
-    protected RootState(bool isLoading, string? errorMessage)
-    {
-      this.IsLoading = isLoading;
-      this.ErrorMessage = errorMessage;
-    }
-
-    public bool IsLoading { get; }
-
-    public string? ErrorMessage { get; }
-
-    public bool HasErrors => !string.IsNullOrWhiteSpace(this.ErrorMessage);
+    this.IsLoading = isLoading;
+    this.ErrorMessage = errorMessage;
   }
+
+  public bool IsLoading { get; }
+
+  public string? ErrorMessage { get; }
+
+  public bool HasErrors => !string.IsNullOrWhiteSpace(this.ErrorMessage);
 }

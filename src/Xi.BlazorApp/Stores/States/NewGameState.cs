@@ -1,15 +1,14 @@
-namespace Xi.BlazorApp.Stores.States
+namespace Xi.BlazorApp.Stores.States;
+
+using Xi.BlazorApp.Models;
+
+public class NewGameState : RootState
 {
-  using Xi.BlazorApp.Models;
-
-  public class NewGameState : RootState
+  public NewGameState(bool isLoading, string? errorMessage, GameModel? gameViewModel)
+    : base(isLoading, errorMessage)
   {
-    public NewGameState(bool isLoading, string? errorMessage, GameModel? gameViewModel)
-      : base(isLoading, errorMessage)
-    {
-      this.GameViewModel = gameViewModel;
-    }
-
-    public GameModel? GameViewModel { get; }
+    this.GameViewModel = gameViewModel;
   }
+
+  public GameModel? GameViewModel { get; }
 }

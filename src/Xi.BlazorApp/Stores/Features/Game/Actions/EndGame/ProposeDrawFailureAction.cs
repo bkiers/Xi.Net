@@ -1,16 +1,15 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.EndGame
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.EndGame;
+
+using Xi.BlazorApp.Models;
+using Xi.BlazorApp.Stores.Features.Shared.Actions;
+
+public class ProposeDrawFailureAction : FailureAction
 {
-  using Xi.BlazorApp.Models;
-  using Xi.BlazorApp.Stores.Features.Shared.Actions;
-
-  public class ProposeDrawFailureAction : FailureAction
+  public ProposeDrawFailureAction(GameModel gameModel, string errorMessage)
+    : base(errorMessage)
   {
-    public ProposeDrawFailureAction(GameModel gameModel, string errorMessage)
-      : base(errorMessage)
-    {
-      this.GameModel = gameModel;
-    }
-
-    public GameModel GameModel { get; }
+    this.GameModel = gameModel;
   }
+
+  public GameModel GameModel { get; }
 }

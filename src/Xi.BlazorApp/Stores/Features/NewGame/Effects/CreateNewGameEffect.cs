@@ -1,38 +1,37 @@
-namespace Xi.BlazorApp.Stores.Features.NewGame.Effects
+namespace Xi.BlazorApp.Stores.Features.NewGame.Effects;
+
+using System;
+using System.Threading.Tasks;
+using Fluxor;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.NewGame.Actions.CreateNewGame;
+
+public class CreateNewGameEffect : Effect<CreateNewGameAction>
 {
-  using System;
-  using System.Threading.Tasks;
-  using Fluxor;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.NewGame.Actions.CreateNewGame;
+  private readonly IGameService gameService;
 
-  public class CreateNewGameEffect : Effect<CreateNewGameAction>
+  public CreateNewGameEffect(IGameService gameService)
   {
-    private readonly IGameService gameService;
+    this.gameService = gameService;
+  }
 
-    public CreateNewGameEffect(IGameService gameService)
+  public override Task HandleAsync(CreateNewGameAction action, IDispatcher dispatcher)
+  {
+    try
     {
-      this.gameService = gameService;
+      var game = this.gameService.NewGame(
+        action.LoggedInPlayerId,
+        action.OpponentPlayerId,
+        action.PlayingWithColor,
+        action.DaysPerMove);
+
+      dispatcher.Dispatch(new CreateNewGameSuccessAction(game!));
+    }
+    catch (Exception e)
+    {
+      dispatcher.Dispatch(new CreateNewGameFailureAction(e.Message));
     }
 
-    public override Task HandleAsync(CreateNewGameAction action, IDispatcher dispatcher)
-    {
-      try
-      {
-        var game = this.gameService.NewGame(
-          action.LoggedInPlayerId,
-          action.OpponentPlayerId,
-          action.PlayingWithColor,
-          action.DaysPerMove);
-
-        dispatcher.Dispatch(new CreateNewGameSuccessAction(game!));
-      }
-      catch (Exception e)
-      {
-        dispatcher.Dispatch(new CreateNewGameFailureAction(e.Message));
-      }
-
-      return Task.CompletedTask;
-    }
+    return Task.CompletedTask;
   }
 }

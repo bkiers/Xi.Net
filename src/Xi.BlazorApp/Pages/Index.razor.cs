@@ -1,28 +1,27 @@
-namespace Xi.BlazorApp.Pages
+namespace Xi.BlazorApp.Pages;
+
+using Fluxor;
+using Microsoft.AspNetCore.Components;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.Players.Actions;
+
+public partial class Index
 {
-  using Fluxor;
-  using Microsoft.AspNetCore.Components;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Players.Actions;
+  [Inject]
+  private NavigationManager NavigationManager { get; set; } = default!;
 
-  public partial class Index
+  [Inject]
+  private IDispatcher Dispatcher { get; set; } = default!;
+
+  [Inject]
+  private Current Current { get; set; } = default!;
+
+  protected override void OnInitialized()
   {
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    base.OnInitialized();
 
-    [Inject]
-    private IDispatcher Dispatcher { get; set; } = default!;
+    this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
 
-    [Inject]
-    private Current Current { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-      base.OnInitialized();
-
-      this.Dispatcher.Dispatch(new DidSomethingAction(this.Current.PossibleLoggedInPlayerId()));
-
-      this.NavigationManager.NavigateTo("/home");
-    }
+    this.NavigationManager.NavigateTo("/home");
   }
 }
