@@ -1,26 +1,25 @@
-namespace Xi.BlazorApp.Stores.Features.ExtendClock.Effects
+namespace Xi.BlazorApp.Stores.Features.ExtendClock.Effects;
+
+using System.Threading.Tasks;
+using Fluxor;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.ExtendClock.Actions;
+
+public class GetExtendClockEffect : Effect<GetExtendClockAction>
 {
-  using System.Threading.Tasks;
-  using Fluxor;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.ExtendClock.Actions;
+  private readonly IGameService gameService;
 
-  public class GetExtendClockEffect : Effect<GetExtendClockAction>
+  public GetExtendClockEffect(IGameService gameService)
   {
-    private readonly IGameService gameService;
+    this.gameService = gameService;
+  }
 
-    public GetExtendClockEffect(IGameService gameService)
-    {
-      this.gameService = gameService;
-    }
+  public override Task HandleAsync(GetExtendClockAction action, IDispatcher dispatcher)
+  {
+    var isPossible = this.gameService.CanExtendClock(action.PlayerId, action.GameId);
 
-    public override Task HandleAsync(GetExtendClockAction action, IDispatcher dispatcher)
-    {
-      var isPossible = this.gameService.CanExtendClock(action.PlayerId, action.GameId);
+    dispatcher.Dispatch(new GetExtendClockResult(isPossible));
 
-      dispatcher.Dispatch(new GetExtendClockResult(isPossible));
-
-      return Task.CompletedTask;
-    }
+    return Task.CompletedTask;
   }
 }

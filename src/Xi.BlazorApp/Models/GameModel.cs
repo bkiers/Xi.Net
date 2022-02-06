@@ -1,148 +1,147 @@
-namespace Xi.BlazorApp.Models
+namespace Xi.BlazorApp.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xi.Models.Game;
+
+public class GameModel
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using Xi.Models.Game;
+  private bool justMadeMove = false;
 
-  public class GameModel
+  public GameModel(Game game)
   {
-    private bool justMadeMove = false;
+    this.Game = game;
+    this.ActualTurnPlayerColor = game.TurnPlayerColor();
+    this.CurrentMoveIndex = this.Game.Moves.Any() ? this.Game.Moves.Count - 1 : -1;
+    this.FirstClick = null;
+  }
 
-    public GameModel(Game game)
+  public GameModel(Game game, Color actualTurnPlayerColor, int currentMoveIndex, Cell? firstClick)
+  {
+    this.Game = game;
+    this.ActualTurnPlayerColor = actualTurnPlayerColor;
+    this.CurrentMoveIndex = currentMoveIndex;
+    this.FirstClick = firstClick;
+  }
+
+  public Game Game { get; }
+
+  public Color ActualTurnPlayerColor { get; }
+
+  public int CurrentMoveIndex { get; private set; }
+
+  public Cell? FirstClick { get; private set; }
+
+  public bool JustMadeMoveAndReset()
+  {
+    var temp = this.justMadeMove;
+    this.justMadeMove = false;
+    return temp;
+  }
+
+  public bool CanBeConfirmed(int index, int loggedInPlayerId)
+  {
+    if (this.Game.IsOver() || this.ActualTurnPlayerColor != this.Game.PlayingWithColor(loggedInPlayerId))
     {
-      this.Game = game;
-      this.ActualTurnPlayerColor = game.TurnPlayerColor();
-      this.CurrentMoveIndex = this.Game.Moves.Any() ? this.Game.Moves.Count - 1 : -1;
+      return false;
+    }
+
+    var lastConfirmedMove = this.Game.Moves.FindLast(m => m.CreatedAt.HasValue);
+    var indexLastConfirmedMove = lastConfirmedMove == null ? -1 : this.Game.Moves.IndexOf(lastConfirmedMove);
+
+    return indexLastConfirmedMove + 1 == index;
+  }
+
+  public Board CurrentBoard()
+  {
+    // There is always 1 board more than there are moves: the first board is the start-board.
+    return this.Game.Board(this.CurrentMoveIndex + 1);
+  }
+
+  public Player OpponentOf(Player player)
+  {
+    return this.Game.RedPlayer.Id == player.Id ? this.Game.BlackPlayer : this.Game.RedPlayer;
+  }
+
+  public void Click(Cell cell)
+  {
+    if (this.Game.Moves.Count != this.CurrentMoveIndex + 1)
+    {
+      // Ignore clicks on the board if we're not focussed on the last move.
+      return;
+    }
+
+    var turnColor = this.Game.TurnPlayerColor();
+
+    if (this.FirstClick == null && !cell.OccupiedBy(turnColor))
+    {
+      throw new Exception($"It's {turnColor}'s turn.");
+    }
+
+    if (this.FirstClick == null)
+    {
+      this.FirstClick = cell;
+    }
+    else if (this.FirstClick.Equals(cell))
+    {
+      // The user clicked the same cell: this means undo the first click.
       this.FirstClick = null;
     }
-
-    public GameModel(Game game, Color actualTurnPlayerColor, int currentMoveIndex, Cell? firstClick)
+    else if (cell.OccupiedBy(turnColor))
     {
-      this.Game = game;
-      this.ActualTurnPlayerColor = actualTurnPlayerColor;
-      this.CurrentMoveIndex = currentMoveIndex;
-      this.FirstClick = firstClick;
+      this.FirstClick = cell;
     }
-
-    public Game Game { get; }
-
-    public Color ActualTurnPlayerColor { get; }
-
-    public int CurrentMoveIndex { get; private set; }
-
-    public Cell? FirstClick { get; private set; }
-
-    public bool JustMadeMoveAndReset()
+    else
     {
-      var temp = this.justMadeMove;
-      this.justMadeMove = false;
-      return temp;
+      this.Game.Move(new Move(this.FirstClick, cell));
+      this.CurrentMoveIndex++;
+      this.FirstClick = null;
+      this.justMadeMove = true;
     }
+  }
 
-    public bool CanBeConfirmed(int index, int loggedInPlayerId)
+  public ISet<Cell> HighlightedCells(bool showPossibleMoves)
+  {
+    var set = new HashSet<Cell>();
+
+    if (this.FirstClick == null)
     {
-      if (this.Game.IsOver() || this.ActualTurnPlayerColor != this.Game.PlayingWithColor(loggedInPlayerId))
+      if (this.Game.Moves.Any())
       {
-        return false;
-      }
+        var lastMove = this.Game.Moves[this.CurrentMoveIndex];
 
-      var lastConfirmedMove = this.Game.Moves.FindLast(m => m.CreatedAt.HasValue);
-      var indexLastConfirmedMove = lastConfirmedMove == null ? -1 : this.Game.Moves.IndexOf(lastConfirmedMove);
-
-      return indexLastConfirmedMove + 1 == index;
-    }
-
-    public Board CurrentBoard()
-    {
-      // There is always 1 board more than there are moves: the first board is the start-board.
-      return this.Game.Board(this.CurrentMoveIndex + 1);
-    }
-
-    public Player OpponentOf(Player player)
-    {
-      return this.Game.RedPlayer.Id == player.Id ? this.Game.BlackPlayer : this.Game.RedPlayer;
-    }
-
-    public void Click(Cell cell)
-    {
-      if (this.Game.Moves.Count != this.CurrentMoveIndex + 1)
-      {
-        // Ignore clicks on the board if we're not focussed on the last move.
-        return;
-      }
-
-      var turnColor = this.Game.TurnPlayerColor();
-
-      if (this.FirstClick == null && !cell.OccupiedBy(turnColor))
-      {
-        throw new Exception($"It's {turnColor}'s turn.");
-      }
-
-      if (this.FirstClick == null)
-      {
-        this.FirstClick = cell;
-      }
-      else if (this.FirstClick.Equals(cell))
-      {
-        // The user clicked the same cell: this means undo the first click.
-        this.FirstClick = null;
-      }
-      else if (cell.OccupiedBy(turnColor))
-      {
-        this.FirstClick = cell;
-      }
-      else
-      {
-        this.Game.Move(new Move(this.FirstClick, cell));
-        this.CurrentMoveIndex++;
-        this.FirstClick = null;
-        this.justMadeMove = true;
-      }
-    }
-
-    public ISet<Cell> HighlightedCells(bool showPossibleMoves)
-    {
-      var set = new HashSet<Cell>();
-
-      if (this.FirstClick == null)
-      {
-        if (this.Game.Moves.Any())
-        {
-          var lastMove = this.Game.Moves[this.CurrentMoveIndex];
-
-          set.Add(lastMove.FromCell);
-          set.Add(lastMove.ToCell);
-        }
-
-        return set;
-      }
-
-      set.Add(this.FirstClick);
-
-      if (showPossibleMoves)
-      {
-        set.UnionWith(this.Game.ValidToCells(this.FirstClick));
+        set.Add(lastMove.FromCell);
+        set.Add(lastMove.ToCell);
       }
 
       return set;
     }
 
-    public void UndoFirstClick()
+    set.Add(this.FirstClick);
+
+    if (showPossibleMoves)
     {
-      this.FirstClick = null;
+      set.UnionWith(this.Game.ValidToCells(this.FirstClick));
     }
 
-    public (Cell? FromCell, Cell? ToCell) GetCurrentMoveCells()
+    return set;
+  }
+
+  public void UndoFirstClick()
+  {
+    this.FirstClick = null;
+  }
+
+  public (Cell? FromCell, Cell? ToCell) GetCurrentMoveCells()
+  {
+    if (this.Game.Moves.Count == 0)
     {
-      if (this.Game.Moves.Count == 0)
-      {
-        return (null, null);
-      }
-
-      var currentMove = this.Game.Moves[this.CurrentMoveIndex];
-
-      return (currentMove.FromCell, currentMove.ToCell);
+      return (null, null);
     }
+
+    var currentMove = this.Game.Moves[this.CurrentMoveIndex];
+
+    return (currentMove.FromCell, currentMove.ToCell);
   }
 }

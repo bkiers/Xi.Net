@@ -1,78 +1,77 @@
-namespace Xi.Models.Game
+namespace Xi.Models.Game;
+
+using System;
+using Xi.Models.Extensions;
+
+public class Cell : ICloneable
 {
-  using System;
-  using Xi.Models.Extensions;
-
-  public class Cell : ICloneable
+  public Cell(int fileIndex, int rankIndex, Piece? piece = null)
   {
-    public Cell(int fileIndex, int rankIndex, Piece? piece = null)
+    this.FileIndex = fileIndex;
+    this.RankIndex = rankIndex;
+    this.Piece = piece;
+  }
+
+  public int FileIndex { get; }
+
+  public int RankIndex { get; }
+
+  public Piece? Piece { get; internal set; }
+
+  public bool Occupied => this.Piece != null;
+
+  public bool Unoccupied => this.Piece == null;
+
+  public bool OccupiedBy(Color color) => this.Occupied && this.Piece!.Color == color;
+
+  public bool OccupiedBy<TP>(Color color)
+    where TP : Piece
+    => this.Occupied && this.Piece!.Color == color && this.Piece.GetType() == typeof(TP);
+
+  public object Clone()
+  {
+    return new Cell(this.FileIndex, this.RankIndex, this.Piece);
+  }
+
+  public override bool Equals(object? obj)
+  {
+    if (obj == null || this.GetType() != obj.GetType())
     {
-      this.FileIndex = fileIndex;
-      this.RankIndex = rankIndex;
-      this.Piece = piece;
+      return false;
     }
 
-    public int FileIndex { get; }
+    var that = (Cell)obj;
 
-    public int RankIndex { get; }
+    return this.FileIndex == that.FileIndex && this.RankIndex == that.RankIndex;
+  }
 
-    public Piece? Piece { get; internal set; }
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(this.FileIndex, this.RankIndex);
+  }
 
-    public bool Occupied => this.Piece != null;
+  public bool OnEnemyTerritory(Color color)
+  {
+    return !this.OnOwnTerritory(color);
+  }
 
-    public bool Unoccupied => this.Piece == null;
+  public bool OnOwnTerritory(Color color)
+  {
+    return color.IsBlack() ? this.RankIndex <= 4 : this.RankIndex >= 5;
+  }
 
-    public bool OccupiedBy(Color color) => this.Occupied && this.Piece!.Color == color;
-
-    public bool OccupiedBy<TP>(Color color)
-      where TP : Piece
-      => this.Occupied && this.Piece!.Color == color && this.Piece.GetType() == typeof(TP);
-
-    public object Clone()
+  public bool InOwnCastle(Color color)
+  {
+    if (this.FileIndex is < 3 or > 5)
     {
-      return new Cell(this.FileIndex, this.RankIndex, this.Piece);
+      return false;
     }
 
-    public override bool Equals(object? obj)
-    {
-      if (obj == null || this.GetType() != obj.GetType())
-      {
-        return false;
-      }
+    return color.IsBlack() ? this.RankIndex <= 2 : this.RankIndex >= 7;
+  }
 
-      var that = (Cell)obj;
-
-      return this.FileIndex == that.FileIndex && this.RankIndex == that.RankIndex;
-    }
-
-    public override int GetHashCode()
-    {
-      return HashCode.Combine(this.FileIndex, this.RankIndex);
-    }
-
-    public bool OnEnemyTerritory(Color color)
-    {
-      return !this.OnOwnTerritory(color);
-    }
-
-    public bool OnOwnTerritory(Color color)
-    {
-      return color.IsBlack() ? this.RankIndex <= 4 : this.RankIndex >= 5;
-    }
-
-    public bool InOwnCastle(Color color)
-    {
-      if (this.FileIndex is < 3 or > 5)
-      {
-        return false;
-      }
-
-      return color.IsBlack() ? this.RankIndex <= 2 : this.RankIndex >= 7;
-    }
-
-    public override string ToString()
-    {
-      return $"(fileIndex: {this.FileIndex}, rankIndex: {this.RankIndex})";
-    }
+  public override string ToString()
+  {
+    return $"(fileIndex: {this.FileIndex}, rankIndex: {this.RankIndex})";
   }
 }

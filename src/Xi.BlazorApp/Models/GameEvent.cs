@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Models
-{
-  public class GameEvent
-  {
-    public GameEvent(GameModel gameModel)
-    {
-      this.GameModel = gameModel;
-    }
+namespace Xi.BlazorApp.Models;
 
-    public GameModel GameModel { get; }
+public class GameEvent
+{
+  protected GameEvent(GameModel gameModel)
+  {
+    this.GameModel = gameModel;
   }
+
+  public GameModel GameModel { get; }
 }

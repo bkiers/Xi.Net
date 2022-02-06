@@ -1,4 +1,3 @@
-namespace Xi.BlazorApp.Stores.Features.Players.Actions
-{
-  public record GetPlayersAction;
-}
+namespace Xi.BlazorApp.Stores.Features.Players.Actions;
+
+public record GetPlayersAction;

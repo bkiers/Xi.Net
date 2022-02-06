@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.Players
+namespace Xi.BlazorApp.Stores.Features.Players;
+
+using Fluxor;
+using Xi.BlazorApp.Stores.States;
+
+public class PlayersFeature : Feature<PlayersState>
 {
-  using Fluxor;
-  using Xi.BlazorApp.Stores.States;
+  public override string GetName() => "Players";
 
-  public class PlayersFeature : Feature<PlayersState>
-  {
-    public override string GetName() => "Players";
-
-    protected override PlayersState GetInitialState() => new();
-  }
+  protected override PlayersState GetInitialState() => new();
 }

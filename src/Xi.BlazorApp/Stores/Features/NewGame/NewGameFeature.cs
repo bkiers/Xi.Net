@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.NewGame
+namespace Xi.BlazorApp.Stores.Features.NewGame;
+
+using Fluxor;
+using Xi.BlazorApp.Stores.States;
+
+public class NewGameFeature : Feature<NewGameState>
 {
-  using Fluxor;
-  using Xi.BlazorApp.Stores.States;
+  public override string GetName() => "NewGame";
 
-  public class NewGameFeature : Feature<NewGameState>
-  {
-    public override string GetName() => "NewGameF";
-
-    protected override NewGameState GetInitialState() => new(false, null, null);
-  }
+  protected override NewGameState GetInitialState() => new(false, null, null);
 }

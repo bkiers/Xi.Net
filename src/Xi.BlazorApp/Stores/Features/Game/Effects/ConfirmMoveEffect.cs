@@ -1,35 +1,34 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Effects
+namespace Xi.BlazorApp.Stores.Features.Game.Effects;
+
+using System;
+using System.Threading.Tasks;
+using Fluxor;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
+
+public class ConfirmMoveEffect : Effect<ConfirmMoveAction>
 {
-  using System;
-  using System.Threading.Tasks;
-  using Fluxor;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
+  private readonly IGameService gameService;
 
-  public class ConfirmMoveEffect : Effect<ConfirmMoveAction>
+  public ConfirmMoveEffect(IGameService gameService)
   {
-    private readonly IGameService gameService;
+    this.gameService = gameService;
+  }
 
-    public ConfirmMoveEffect(IGameService gameService)
+  public override Task HandleAsync(ConfirmMoveAction action, IDispatcher dispatcher)
+  {
+    try
     {
-      this.gameService = gameService;
+      var move = action.GameModel.Game.Moves[action.Index];
+      var game = this.gameService.Move(action.LoggedInUserId, action.GameModel.Game.Id, move.FromCell, move.ToCell);
+
+      dispatcher.Dispatch(new ConfirmMoveSuccessAction(game!));
+    }
+    catch (Exception e)
+    {
+      dispatcher.Dispatch(new ConfirmMoveFailureAction(action.GameModel, e.Message));
     }
 
-    public override Task HandleAsync(ConfirmMoveAction action, IDispatcher dispatcher)
-    {
-      try
-      {
-        var move = action.GameModel.Game.Moves[action.Index];
-        var game = this.gameService.Move(action.LoggedInUserId, action.GameModel.Game.Id, move.FromCell, move.ToCell);
-
-        dispatcher.Dispatch(new ConfirmMoveSuccessAction(game!));
-      }
-      catch (Exception e)
-      {
-        dispatcher.Dispatch(new ConfirmMoveFailureAction(action.GameModel, e.Message));
-      }
-
-      return Task.CompletedTask;
-    }
+    return Task.CompletedTask;
   }
 }

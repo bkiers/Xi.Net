@@ -1,18 +1,17 @@
-namespace Xi.Models.Extensions
+namespace Xi.Models.Extensions;
+
+using System;
+using System.Globalization;
+
+public static class DateTimeExtensions
 {
-  using System;
-  using System.Globalization;
-
-  public static class DateTimeExtensions
+  public static string SafeFormat(this DateTimeOffset? dateTime, string format)
   {
-    public static string SafeFormat(this DateTimeOffset? dateTime, string format)
+    if (!dateTime.HasValue)
     {
-      if (!dateTime.HasValue)
-      {
-        return string.Empty;
-      }
-
-      return dateTime.Value.ToString(format, new CultureInfo("en-US"));
+      return string.Empty;
     }
+
+    return dateTime.Value.ToString(format, new CultureInfo("en-US"));
   }
 }

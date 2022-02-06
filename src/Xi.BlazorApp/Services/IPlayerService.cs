@@ -1,21 +1,20 @@
-namespace Xi.BlazorApp.Services
+namespace Xi.BlazorApp.Services;
+
+using System.Collections.Generic;
+using Xi.Models;
+using Xi.Models.Game;
+
+public interface IPlayerService
 {
-  using System.Collections.Generic;
-  using Xi.Models;
-  using Xi.Models.Game;
+  List<Player> AllPlayers();
 
-  public interface IPlayerService
-  {
-    List<Player> AllPlayers();
+  List<Player> AllPlayersExcept(int playerId);
 
-    List<Player> AllPlayersExcept(int playerId);
+  Player? FindByEmail(string email);
 
-    Player? FindByEmail(string email);
+  Player FindById(int playerId);
 
-    Player FindById(int playerId);
+  Player Update(int playerId, Settings settings);
 
-    Player Update(int playerId, Settings settings);
-
-    bool DidSomething(int? playerId);
-  }
+  bool DidSomething(int? playerId);
 }

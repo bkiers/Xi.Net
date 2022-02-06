@@ -1,14 +1,13 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Actions.Moves
+namespace Xi.BlazorApp.Stores.Features.Game.Actions.Moves;
+
+using Xi.BlazorApp.Models;
+
+public class NextMoveAction
 {
-  using Xi.BlazorApp.Models;
-
-  public class NextMoveAction
+  public NextMoveAction(GameModel gameModel)
   {
-    public NextMoveAction(GameModel gameModel)
-    {
-      this.GameModel = gameModel;
-    }
-
-    public GameModel GameModel { get; }
+    this.GameModel = gameModel;
   }
+
+  public GameModel GameModel { get; }
 }
