@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.Account.Actions.LoadAccount
-{
-  public class LoadAccountAction
-  {
-    public LoadAccountAction(int playerId)
-    {
-      this.PlayerId = playerId;
-    }
+namespace Xi.BlazorApp.Stores.Features.Account.Actions.LoadAccount;
 
-    public int PlayerId { get; }
+public class LoadAccountAction
+{
+  public LoadAccountAction(int playerId)
+  {
+    this.PlayerId = playerId;
   }
+
+  public int PlayerId { get; }
 }

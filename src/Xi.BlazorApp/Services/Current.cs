@@ -1,53 +1,51 @@
-namespace Xi.BlazorApp.Services
+namespace Xi.BlazorApp.Services;
+
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Xi.Models;
+using Xi.Models.Game;
+
+public class Current
 {
-  using System.Linq;
-  using System.Security.Claims;
-  using Microsoft.AspNetCore.Http;
-  using Xi.Models;
-  using Xi.Models.Game;
+  private readonly IPlayerService playerService;
+  private readonly IHttpContextAccessor httpContextAccessor;
 
-  public class Current
+  public Current(IPlayerService playerService, IHttpContextAccessor httpContextAccessor)
   {
-    private readonly IPlayerService playerService;
-    private readonly IHttpContextAccessor httpContextAccessor;
+    this.playerService = playerService;
+    this.httpContextAccessor = httpContextAccessor;
+  }
 
-    public Current(IPlayerService playerService, IHttpContextAccessor httpContextAccessor)
-    {
-      this.playerService = playerService;
-      this.httpContextAccessor = httpContextAccessor;
-    }
+  public int? PossibleLoggedInPlayerId()
+  {
+    return this.LoggedIn() ? this.LoggedInPlayerId() : null;
+  }
 
-    public int? PossibleLoggedInPlayerId()
-    {
-      return this.LoggedIn() ? this.LoggedInPlayerId() : null;
-    }
+  public int LoggedInPlayerId()
+  {
+    return this.LoggedInPlayer().Id;
+  }
 
-    public int LoggedInPlayerId()
-    {
-      return this.LoggedInPlayer().Id;
-    }
+  public Player LoggedInPlayer()
+  {
+    var user = this.httpContextAccessor.HttpContext?.User!;
 
-    public Player LoggedInPlayer()
-    {
-      var user = this.httpContextAccessor.HttpContext?.User!;
+    var name = user.FindFirst(ClaimTypes.GivenName)?.Value;
+    var email = user.FindFirst(ClaimTypes.Email)!.Value;
 
-      var name = user.FindFirst(ClaimTypes.GivenName)?.Value;
-      var email = user.FindFirst(ClaimTypes.Email)!.Value;
+    return this.playerService.FindByEmail(email)!;
+  }
 
-      return this.playerService.FindByEmail(email)!;
-    }
+  public bool LoggedIn()
+  {
+    var user = this.httpContextAccessor.HttpContext?.User;
+    var email = user?.FindFirst(ClaimTypes.Email)?.Value;
 
-    public bool LoggedIn()
-    {
-      var user = this.httpContextAccessor.HttpContext?.User;
-      var email = user?.FindFirst(ClaimTypes.Email)?.Value;
+    return this.playerService.FindByEmail(email ?? string.Empty) != null;
+  }
 
-      return this.playerService.FindByEmail(email ?? string.Empty) != null;
-    }
-
-    public Settings Settings()
-    {
-      return this.LoggedInPlayer().Settings;
-    }
+  public Settings Settings()
+  {
+    return this.LoggedInPlayer().Settings;
   }
 }

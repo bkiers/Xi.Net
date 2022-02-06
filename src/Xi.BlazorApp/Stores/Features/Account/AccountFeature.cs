@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.Account
+namespace Xi.BlazorApp.Stores.Features.Account;
+
+using Fluxor;
+using Xi.BlazorApp.Stores.States;
+
+public class AccountFeature : Feature<AccountState>
 {
-  using Fluxor;
-  using Xi.BlazorApp.Stores.States;
+  public override string GetName() => "Account";
 
-  public class AccountFeature : Feature<AccountState>
-  {
-    public override string GetName() => "Account";
-
-    protected override AccountState GetInitialState() => new(false, null, null);
-  }
+  protected override AccountState GetInitialState() => new(false, null, null);
 }

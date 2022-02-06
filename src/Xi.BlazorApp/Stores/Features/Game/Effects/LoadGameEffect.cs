@@ -1,33 +1,32 @@
-namespace Xi.BlazorApp.Stores.Features.Game.Effects
+namespace Xi.BlazorApp.Stores.Features.Game.Effects;
+
+using System.Threading.Tasks;
+using Fluxor;
+using Xi.BlazorApp.Services;
+using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
+
+public class LoadGameEffect : Effect<LoadGameAction>
 {
-  using System.Threading.Tasks;
-  using Fluxor;
-  using Xi.BlazorApp.Services;
-  using Xi.BlazorApp.Stores.Features.Game.Actions.LoadGame;
+  private readonly IGameService gameService;
 
-  public class LoadGameEffect : Effect<LoadGameAction>
+  public LoadGameEffect(IGameService gameService)
   {
-    private readonly IGameService gameService;
+    this.gameService = gameService;
+  }
 
-    public LoadGameEffect(IGameService gameService)
+  public override Task HandleAsync(LoadGameAction action, IDispatcher dispatcher)
+  {
+    var gameViewModel = this.gameService.Game(action.GameId);
+
+    if (gameViewModel == null)
     {
-      this.gameService = gameService;
+      dispatcher.Dispatch(new LoadGameFailureAction($"Could not find a game with id: '{action.GameId}'"));
+    }
+    else
+    {
+      dispatcher.Dispatch(new LoadGameSuccessAction(gameViewModel!));
     }
 
-    public override Task HandleAsync(LoadGameAction action, IDispatcher dispatcher)
-    {
-      var gameViewModel = this.gameService.Game(action.GameId);
-
-      if (gameViewModel == null)
-      {
-        dispatcher.Dispatch(new LoadGameFailureAction($"Could not find a game with id: '{action.GameId}'"));
-      }
-      else
-      {
-        dispatcher.Dispatch(new LoadGameSuccessAction(gameViewModel!));
-      }
-
-      return Task.CompletedTask;
-    }
+    return Task.CompletedTask;
   }
 }

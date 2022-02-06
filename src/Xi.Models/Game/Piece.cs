@@ -1,59 +1,58 @@
-namespace Xi.Models.Game
+namespace Xi.Models.Game;
+
+using System;
+using System.Collections.Generic;
+
+public abstract class Piece
 {
-  using System;
-  using System.Collections.Generic;
+  public const string NoPiece = ".";
 
-  public abstract class Piece
+  private readonly string asciiNotation;
+
+  protected Piece(string asciiNotation, Color color)
   {
-    public const string NoPiece = ".";
+    this.asciiNotation = asciiNotation.ToLower();
+    this.Color = color;
+  }
 
-    private readonly string asciiNotation;
+  public string AsciiNotation => this.Color == Color.Red ? this.asciiNotation.ToUpper() : this.asciiNotation;
 
-    protected Piece(string asciiNotation, Color color)
+  public Color Color { get; }
+
+  public static Piece? Parse(char asciiNotation)
+  {
+    var color = char.IsLower(asciiNotation) ? Color.Black : Color.Red;
+
+    return asciiNotation.ToString().ToLower() switch
     {
-      this.asciiNotation = asciiNotation.ToLower();
-      this.Color = color;
+      Pawn.AsciiChar => new Pawn(color),
+      Cannon.AsciiChar => new Cannon(color),
+      Rook.AsciiChar => new Rook(color),
+      Horse.AsciiChar => new Horse(color),
+      Elephant.AsciiChar => new Elephant(color),
+      Adviser.AsciiChar => new Adviser(color),
+      King.AsciiChar => new King(color),
+      NoPiece => null,
+      _ => throw new ArgumentException($"Unknown piece for ASCII char: {asciiNotation}"),
+    };
+  }
+
+  public abstract List<Cell> Attacking(Cell current, Board board);
+
+  public override bool Equals(object? obj)
+  {
+    if (obj == null || this.GetType() != obj.GetType())
+    {
+      return false;
     }
 
-    public string AsciiNotation => this.Color == Color.Red ? this.asciiNotation.ToUpper() : this.asciiNotation;
+    Piece that = (Piece)obj;
 
-    public Color Color { get; }
+    return this.AsciiNotation == that.AsciiNotation;
+  }
 
-    public static Piece? Parse(char asciiNotation)
-    {
-      var color = char.IsLower(asciiNotation) ? Color.Black : Color.Red;
-
-      return asciiNotation.ToString().ToLower() switch
-      {
-        Pawn.AsciiChar => new Pawn(color),
-        Cannon.AsciiChar => new Cannon(color),
-        Rook.AsciiChar => new Rook(color),
-        Horse.AsciiChar => new Horse(color),
-        Elephant.AsciiChar => new Elephant(color),
-        Adviser.AsciiChar => new Adviser(color),
-        King.AsciiChar => new King(color),
-        NoPiece => null,
-        _ => throw new ArgumentException($"Unknown piece for ASCII char: {asciiNotation}"),
-      };
-    }
-
-    public abstract List<Cell> Attacking(Cell current, Board board);
-
-    public override bool Equals(object? obj)
-    {
-      if (obj == null || this.GetType() != obj.GetType())
-      {
-        return false;
-      }
-
-      Piece that = (Piece)obj;
-
-      return this.AsciiNotation == that.AsciiNotation;
-    }
-
-    public override int GetHashCode()
-    {
-      return this.AsciiNotation.GetHashCode();
-    }
+  public override int GetHashCode()
+  {
+    return this.AsciiNotation.GetHashCode();
   }
 }

@@ -1,52 +1,51 @@
-namespace Xi.BlazorApp.Shared.Board
+namespace Xi.BlazorApp.Shared.Board;
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+
+public partial class ClockComponent
 {
-  using System;
-  using System.Threading.Tasks;
-  using Microsoft.AspNetCore.Components;
+  [Parameter]
+  public DateTimeOffset ClockRunsOutAt { get; set; }
 
-  public partial class ClockComponent
+  [Parameter]
+  public bool Large { get; set; } = true;
+
+  private string? FormattedCounter { get; set; }
+
+  protected override async Task OnInitializedAsync()
   {
-    [Parameter]
-    public DateTimeOffset ClockRunsOutAt { get; set; }
+    await base.OnInitializedAsync();
 
-    [Parameter]
-    public bool Large { get; set; } = true;
+    this.CountDown();
+  }
 
-    private string? FormattedCounter { get; set; }
-
-    protected override async Task OnInitializedAsync()
+  private async void CountDown()
+  {
+    while ((this.ClockRunsOutAt - DateTimeOffset.UtcNow).TotalSeconds >= 0)
     {
-      await base.OnInitializedAsync();
+      this.FormattedCounter = this.GetFormattedCounter();
+      this.StateHasChanged();
 
-      this.CountDown();
+      await Task.Delay(1000);
+    }
+  }
+
+  private string GetFormattedCounter()
+  {
+    var remaining = this.ClockRunsOutAt - DateTimeOffset.UtcNow;
+
+    if (remaining < TimeSpan.FromDays(1))
+    {
+      return remaining.ToString(@"'0 days 'hh\:mm\:ss");
     }
 
-    private async void CountDown()
+    if (remaining < TimeSpan.FromDays(2))
     {
-      while ((this.ClockRunsOutAt - DateTimeOffset.UtcNow).TotalSeconds >= 0)
-      {
-        this.FormattedCounter = this.GetFormattedCounter();
-        this.StateHasChanged();
-
-        await Task.Delay(1000);
-      }
+      return remaining.ToString(@"d' day 'hh\:mm\:ss");
     }
 
-    private string GetFormattedCounter()
-    {
-      var remaining = this.ClockRunsOutAt - DateTimeOffset.UtcNow;
-
-      if (remaining < TimeSpan.FromDays(1))
-      {
-        return remaining.ToString(@"'0 days 'hh\:mm\:ss");
-      }
-
-      if (remaining < TimeSpan.FromDays(2))
-      {
-        return remaining.ToString(@"d' day 'hh\:mm\:ss");
-      }
-
-      return remaining.ToString(@"d' days 'hh\:mm\:ss");
-    }
+    return remaining.ToString(@"d' days 'hh\:mm\:ss");
   }
 }

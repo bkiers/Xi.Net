@@ -1,12 +1,11 @@
-namespace Xi.Models.Game
-{
-  public class Reminder
-  {
-    public Reminder(int moveNumber)
-    {
-      this.MoveNumber = moveNumber;
-    }
+namespace Xi.Models.Game;
 
-    public int MoveNumber { get; }
+public class Reminder
+{
+  public Reminder(int moveNumber)
+  {
+    this.MoveNumber = moveNumber;
   }
+
+  public int MoveNumber { get; }
 }

@@ -1,12 +1,11 @@
-namespace Xi.BlazorApp.Stores.Features.ExtendClock
+namespace Xi.BlazorApp.Stores.Features.ExtendClock;
+
+using Fluxor;
+using Xi.BlazorApp.Stores.States;
+
+public class ExtendClockFeature : Feature<ExtendClockState>
 {
-  using Fluxor;
-  using Xi.BlazorApp.Stores.States;
+  public override string GetName() => "ExtendClock";
 
-  public class ExtendClockFeature : Feature<ExtendClockState>
-  {
-    public override string GetName() => "ExtendClock";
-
-    protected override ExtendClockState GetInitialState() => new();
-  }
+  protected override ExtendClockState GetInitialState() => new();
 }
