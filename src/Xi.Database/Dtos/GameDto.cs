@@ -80,7 +80,7 @@ public class GameDto
       this.SecondsPerMove,
       this.ClockRunsOutAt,
       this.Accepted,
-      this.Moves.Select(m => new Move(
+      this.Moves.OrderBy(m => m.CreatedAt).Select(m => new Move(
           new Cell(m.FromFileIndex, m.FromRankIndex),
           new Cell(m.ToFileIndex, m.ToRankIndex),
           m.CapturedPiece,
